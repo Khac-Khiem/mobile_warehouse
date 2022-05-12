@@ -11,8 +11,8 @@ import 'package:mobile_cha_warehouse/presentation/screens/receipt/add_list_recei
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/receipt_screen.dart';
 
 List<GoodsReceiptEntryData> goodsReceiptEntryData = [];
-
 //
+List<GoodsReceiptEntryContainerData> goodsReceiptEntryConainerData = [];
 List<GoodsReceipt> goodsReceipt = [];
 //Lấy all goodIssueId mà nhân công đó có, để đưa vô Dropdown Picker
 List<String> goodReceiptIdsView = [];
@@ -28,10 +28,10 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     on<LoadAllReceiptEvent>(_onLoadingReceipt);
     on<ChooseReceiptEvent>(_onChooseReceipt);
   }
-  Stream<void> _onLoadingReceipt(
-      ReceiptEvent event, Emitter<ReceiptState> emit) async* {
+  Future<void> _onLoadingReceipt(
+      ReceiptEvent event, Emitter<ReceiptState> emit) async {
     if (event is LoadAllReceiptEvent) {
-      yield ReceiptInitialState();
+      emit(ReceiptInitialState());
       try {
         selectedGoodReceiptId = '';
         final allReceipt = await receiptUseCase.getAllReceipts();
@@ -40,7 +40,7 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
             goodReceiptIdsView.add(allReceipt[i].goodsReceiptId);
           }
           goodsReceipt = allReceipt;
-          yield IssueStateLoadSuccess(DateTime.now(), goodReceiptIdsView);
+          emit(ReceiptStateLoadSuccess(DateTime.now(), goodReceiptIdsView));
         } else {
           print('error');
         }
@@ -50,10 +50,10 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     }
   }
 
-  Stream<void> _onChooseReceipt(
-      ReceiptEvent event, Emitter<ReceiptState> emit) async* {
+  Future<void> _onChooseReceipt(
+      ReceiptEvent event, Emitter<ReceiptState> emit) async {
     if (event is ChooseReceiptEvent) {
-      yield ReceiptStateListLoading();
+      emit(ReceiptStateListLoading());
       try {
         listBasketIssueChecked.clear();
         goodsReceiptEntryData.clear();
@@ -62,25 +62,23 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
           goodsReceiptEntryData
               .add(GoodsReceiptEntryData(i, receipt.entries[i], false));
         }
-        yield ReceiptStateListLoadSuccess(DateTime.now());
+        emit(ReceiptStateListLoadSuccess(DateTime.now()));
       } catch (e) {
         // state fail
+        emit(ReceiptStateFailure(DateTime.now()));
       }
     }
   }
 
-  Stream<void> _onClickToggle(
-      ReceiptEvent event, Emitter<IssueState> emit) async* {
-    if (event is ToggleReceiptEvent) {
-     
-      goodsReceiptEntryData[basketReceiptIndex].status =
-          !goodsIssueEntryData[basketReceiptIndex].status;
-      yield IssueStateListRefresh(
-          basketReceiptIndex,
-          goodsReceiptEntryData[basketReceiptIndex].status,
-          DateTime.now());
-    }
-  }
+  // Future<void> _onClickToggle(
+  //     ReceiptEvent event, Emitter<IssueState> emit) async {
+  //   if (event is ToggleReceiptEvent) {
+  //     goodsReceiptEntryData[basketReceiptIndex].status =
+  //         !goodsIssueEntryData[basketReceiptIndex].status;
+  //     emit(IssueStateListRefresh(basketReceiptIndex,
+  //         goodsReceiptEntryData[basketReceiptIndex].status, DateTime.now()));
+  //   }
+  // }
 }
 
 class GoodsReceiptEntryData {
@@ -88,4 +86,12 @@ class GoodsReceiptEntryData {
   GoodsReceiptEntry goodsReceiptEntry;
   bool status;
   GoodsReceiptEntryData(this.index, this.goodsReceiptEntry, this.status);
+}
+
+class GoodsReceiptEntryContainerData {
+  int index;
+  bool status;
+  GoodsReceiptEntryContainer goodsReceiptEntryContainer;
+  GoodsReceiptEntryContainerData(
+      this.index, this.status, this.goodsReceiptEntryContainer);
 }

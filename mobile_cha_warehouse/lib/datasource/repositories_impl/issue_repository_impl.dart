@@ -8,13 +8,15 @@ class IssueRepoImpl implements IssuesRepo {
   @override
   Future<List<GoodsIssue>> getGoodsIssues() {
     // TODO: implement getIssues
-    throw UnimplementedError();
+    final issues = issueService.getGoodsIssue();
+    return issues;
   }
 
   @override
   Future<GoodsIssue> getGoodsIssueById(String goodsIssueId) {
     // TODO: implement getGoodsIssueById
-    throw UnimplementedError();
+    final issue = issueService.getGoodsIssueById(goodsIssueId);
+    return issue;
   }
 
   @override

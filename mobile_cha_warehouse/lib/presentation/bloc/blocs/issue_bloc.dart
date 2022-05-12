@@ -2,7 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/datasource/models/goods_issues_model.dart';
 import 'package:mobile_cha_warehouse/datasource/models/warehouse_employee_model.dart';
 import 'package:mobile_cha_warehouse/domain/entities/good_issue.dart';
+import 'package:mobile_cha_warehouse/domain/entities/storage_slot.dart';
 import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
+import 'package:mobile_cha_warehouse/domain/usecases/container_usecase.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/issue_usecase.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
@@ -11,7 +13,7 @@ import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_s
 //
 List<GoodsIssueEntryData> goodsIssueEntryData = [];
 //
-List<GoodsIssue> goodsIssueData = [];
+List<Location> locationContainer = [];
 //
 List<GoodsIssueEntryContainerData> goodsIssueEntryContainerData = [];
 //Lấy list các Basket đã được checked, để sau này Confirm isTaken
@@ -25,17 +27,20 @@ String selectedGoodIssueId = '';
 
 class IssueBloc extends Bloc<IssueEvent, IssueState> {
   IssueUseCase issueUseCase;
-
-  IssueBloc(this.issueUseCase) : super(IssueStateInitial()) {
+  ContainerUseCase containerUseCase;
+  IssueBloc(this.issueUseCase, this.containerUseCase)
+      : super(IssueStateInitial()) {
     on<LoadAllIssueEvent>(_onLoadingIssue);
     on<ChooseIssueEvent>(_onChooseIssue);
     on<ToggleIssueEvent>(_onClickToggle);
+    on<FetchLocationIssueEvent>(_onLoadLocation);
+
     //on((ChosseContainerIssueEvent event, emit) => )
   }
-  Stream<void> _onLoadingIssue(
-      IssueEvent event, Emitter<IssueState> emit) async* {
+  Future<void> _onLoadingIssue(
+      IssueEvent event, Emitter<IssueState> emit) async {
     if (event is LoadAllIssueEvent) {
-      yield IssueStateInitial();
+      emit(IssueStateInitial());
       try {
         listBasketIssueChecked.clear();
         selectedGoodIssueId = '';
@@ -44,11 +49,10 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
           for (int i = 0; i < allIssue.length; i++) {
             goodIssueIdsView.add(allIssue[i].id);
           }
-          goodsIssueData = allIssue;
-          yield IssueStateLoadSuccess(DateTime.now(), goodIssueIdsView);
+          emit(IssueStateLoadSuccess(DateTime.now(), goodIssueIdsView));
         } else {
           print('error');
-          yield IssueStateFailure(DateTime.now());
+          emit(IssueStateFailure(DateTime.now()));
         }
       } catch (e) {
         // state fail
@@ -56,10 +60,11 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
     }
   }
 
-  Stream<void> _onChooseIssue(
-      IssueEvent event, Emitter<IssueState> emit) async* {
+  Future<void> _onChooseIssue(
+      IssueEvent event, Emitter<IssueState> emit) async {
+
     if (event is ChooseIssueEvent) {
-      yield IssueStateListLoading();
+      emit(IssueStateListLoading());
       try {
         goodsIssueEntryData.clear();
         final issue = await issueUseCase.getIssueById(event.goodIssueId);
@@ -68,19 +73,44 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
               index: i, goodsIssueEntry: issue.entries[i], status: false));
         }
 
-        yield IssueStateListLoadSuccess(DateTime.now());
+        emit(IssueStateListLoadSuccess(DateTime.now()));
       } catch (e) {
-        yield IssueStateFailure(DateTime.now());
+        emit(IssueStateFailure(DateTime.now()));
       }
     }
   }
 
-  Stream<void> _onClickToggle(
-      IssueEvent event, Emitter<IssueState> emit) async* {
+  Future<void> _onClickToggle(
+      IssueEvent event, Emitter<IssueState> emit) async {
     if (event is ToggleIssueEvent) {
-      goodsIssueEntryContainerData[basketIssueIndex].status = !goodsIssueEntryContainerData[basketIssueIndex].status;
-      yield IssueStateListRefresh(
-        basketIssueIndex, goodsIssueEntryContainerData[basketIssueIndex].status, DateTime.now());
+      goodsIssueEntryContainerData[basketIssueIndex]
+              .goodsIssueEntryContainer
+              .isTaken =
+          !goodsIssueEntryContainerData[basketIssueIndex]
+              .goodsIssueEntryContainer
+              .isTaken;
+      emit(IssueStateListRefresh(
+          basketIssueIndex,
+          goodsIssueEntryContainerData[basketIssueIndex]
+              .goodsIssueEntryContainer
+              .isTaken,
+          DateTime.now()));
+    }
+  }
+
+  Future<void> _onLoadLocation(
+      IssueEvent event, Emitter<IssueState> emit) async {
+    if (event is FetchLocationIssueEvent) {
+      emit(LoadingLocationState());
+      try {
+        //
+        final container = await containerUseCase.getContainerById(event.id);
+        locationContainer.add(container.storageSlot);
+     //   print(locationContainer[0].shelfId);
+        emit(LoadLocationContainerSuccess());
+      } catch (e) {
+        emit(IssueStateFailure(DateTime.now()));
+      }
     }
   }
 }
@@ -98,7 +128,6 @@ class GoodsIssueEntryData {
 class GoodsIssueEntryContainerData {
   int index;
   GoodsIssueEntryContainer goodsIssueEntryContainer;
-  bool status;
-  GoodsIssueEntryContainerData(
-      this.index, this.goodsIssueEntryContainer, this.status);
+
+  GoodsIssueEntryContainerData(this.index, this.goodsIssueEntryContainer);
 }

@@ -38,7 +38,7 @@ class ChosseContainerIssueEvent extends IssueEvent {
 // }
 class ToggleIssueEvent extends IssueEvent {
   final int index;
-  ToggleIssueEvent( this.index);
+  ToggleIssueEvent(this.index);
   @override
   List<Object> get props => [index];
 }
@@ -57,4 +57,13 @@ class ConfirmClickedIssueEvent extends IssueEvent {
   ConfirmClickedIssueEvent(this.timestamp);
   @override
   List<Object> get props => [timestamp];
+}
+
+// event load vị trí rổ khi truy xuất container
+class FetchLocationIssueEvent extends IssueEvent {
+  String id;
+  FetchLocationIssueEvent(this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id];
 }

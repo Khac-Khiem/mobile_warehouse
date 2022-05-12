@@ -328,7 +328,7 @@ class ColumnHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 120 * SizeConfig.ratioWidth,
+                  width: 100 * SizeConfig.ratioWidth,
                   child: Text(
                     "Mã SP",
                     style: TextStyle(
@@ -336,16 +336,16 @@ class ColumnHeader extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   )),
-              SizedBox(
-                width: 60 * SizeConfig.ratioWidth,
-                child: Text(
-                  "Vị trí",
-                  style: TextStyle(
-                      fontSize: 21 * SizeConfig.ratioFont,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              // SizedBox(
+              //   width: 60 * SizeConfig.ratioWidth,
+              //   child: Text(
+              //     "Vị trí",
+              //     style: TextStyle(
+              //         fontSize: 21 * SizeConfig.ratioFont,
+              //         fontWeight: FontWeight.bold),
+              //     textAlign: TextAlign.center,
+              //   ),
+              // ),
               SizedBox(
                 width: 100 * SizeConfig.ratioWidth,
                 child: Text(
@@ -357,9 +357,9 @@ class ColumnHeader extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 80 * SizeConfig.ratioWidth,
+                width: 100 * SizeConfig.ratioWidth,
                 child: Text(
-                  "SL",
+                  "Ghi chú",
                   style: TextStyle(
                       fontSize: 21 * SizeConfig.ratioFont,
                       fontWeight: FontWeight.bold),

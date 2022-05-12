@@ -9,10 +9,8 @@ import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
+import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
-
-String basketReceiptId = '';
-int basketReceiptIndex = 0;
 
 class ReceiptScreen extends StatefulWidget {
   const ReceiptScreen({Key? key}) : super(key: key);
@@ -170,7 +168,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                   BlocProvider.of<ReceiptBloc>(context).add(
                                       ChooseReceiptEvent(
                                           selectedGoodReceiptId));
-                                 
                                 },
                               ),
                             ),
@@ -188,58 +185,115 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         SizedBox(
                           height: 20 * SizeConfig.ratioHeight,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(1),
-                          child: SizedBox(
-                              width: 380 * SizeConfig.ratioWidth,
-                              height: 60 * SizeConfig.ratioHeight,
-                              // ignore: deprecated_member_use
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                      width: 80 * SizeConfig.ratioWidth,
-                                      child: Text(
-                                        "Mã SP",
-                                        style: TextStyle(
-                                            fontSize: 21 * SizeConfig.ratioFont,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      )),
-                                  SizedBox(
-                                    width: 80 * SizeConfig.ratioWidth,
-                                    child: Text(
-                                      "Mã Rổ",
-                                      style: TextStyle(
-                                          fontSize: 21 * SizeConfig.ratioFont,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 80 * SizeConfig.ratioWidth,
-                                    child: Text(
-                                      "Ngày SX",
-                                      style: TextStyle(
-                                          fontSize: 21 * SizeConfig.ratioFont,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 100 * SizeConfig.ratioWidth,
-                                    child: Text(
-                                      "SL/KL",
-                                      style: TextStyle(
-                                          fontSize: 21 * SizeConfig.ratioFont,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ),
+                        Builder(builder: (BuildContext context) {
+                          if (receiptState is ReceiptStateLoadSuccess) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                receiptState.listIssueId.length != 0
+                                    ? ExceptionErrorState(
+                                        height: 300,
+                                        title: "Đã tìm thấy đơn nhập kho",
+                                        message:
+                                            "Vui lòng chọn đơn để tiếp tục",
+                                        imageDirectory: 'lib/assets/touch.png',
+                                        imageHeight: 120,
+                                      )
+                                    : ExceptionErrorState(
+                                        height: 300,
+                                        title: "Không tìm thấy dữ liệu",
+                                        message:
+                                            "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
+                                        imageDirectory:
+                                            'lib/assets/sad_face_search.png',
+                                        imageHeight: 140,
+                                      ),
+                              ],
+                            );
+                          } else if (receiptState is ReceiptStateListLoading) {
+                            return CircularLoading();
+                          } else {
+                            return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                //Chú ý có câu selection ở đây
+                                children: goodsReceiptEntryData.length != 0
+                                    ? [
+                                        ColumnHeader(),
+                                        Column(
+                                          children: goodsReceiptEntryData
+                                              .map((item) => RowReceipt(
+                                                    item,
+                                                  ))
+                                              .toList(),
+                                        )
+                                      ]
+                                    : [
+                                        ExceptionErrorState(
+                                          height: 300,
+                                          title: "Không tìm thấy dữ liệu",
+                                          message:
+                                              "Các rổ trong đơn này đã được \nlấy ra khỏi kho, vui lòng \nkiểm tra lại đơn.",
+                                          imageDirectory:
+                                              'lib/assets/sad_commander.png',
+                                          imageHeight: 100,
+                                        ),
+                                      ]);
+                          }
+                        }),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(1),
+                        //   child: SizedBox(
+                        //       width: 380 * SizeConfig.ratioWidth,
+                        //       height: 60 * SizeConfig.ratioHeight,
+                        //       // ignore: deprecated_member_use
+                        //       child: Row(
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         children: [
+                        //           SizedBox(
+                        //               width: 80 * SizeConfig.ratioWidth,
+                        //               child: Text(
+                        //                 "Mã entry",
+                        //                 style: TextStyle(
+                        //                     fontSize: 21 * SizeConfig.ratioFont,
+                        //                     fontWeight: FontWeight.bold),
+                        //                 textAlign: TextAlign.center,
+                        //               )),
+                        //           SizedBox(
+                        //             width: 80 * SizeConfig.ratioWidth,
+                        //             child: Text(
+                        //               "Mã SP",
+                        //               style: TextStyle(
+                        //                   fontSize: 21 * SizeConfig.ratioFont,
+                        //                   fontWeight: FontWeight.bold),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           ),
+                        //           SizedBox(
+                        //             width: 80 * SizeConfig.ratioWidth,
+                        //             child: Text(
+                        //               "Số lượng",
+                        //               style: TextStyle(
+                        //                   fontSize: 21 * SizeConfig.ratioFont,
+                        //                   fontWeight: FontWeight.bold),
+                        //               textAlign: TextAlign.center,
+                        //             ),
+                        //           ),
+                        //           // SizedBox(
+                        //           //   width: 100 * SizeConfig.ratioWidth,
+                        //           //   child: Text(
+                        //           //     "SL/KL",
+                        //           //     style: TextStyle(
+                        //           //         fontSize: 21 * SizeConfig.ratioFont,
+                        //           //         fontWeight: FontWeight.bold),
+                        //           //     textAlign: TextAlign.center,
+                        //           //   ),
+                        //           // ),
+                        //         ],
+                        //       )),
+                        // ),
                         Column(
                           children: goodsReceiptEntryData
                               .map((item) => RowReceipt(
@@ -247,7 +301,10 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                   ))
                               .toList(),
                         ),
-                     
+                        CustomizedButton(
+                            text: 'Xác Nhận',
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '///'))
                       ],
                     ),
                   ),
@@ -278,7 +335,7 @@ class RowReceipt extends StatelessWidget {
                 SizedBox(
                     width: 100 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.containerId,
+                      goodsReceiptEntryRow.goodsReceiptEntry.itemId.toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -287,7 +344,7 @@ class RowReceipt extends StatelessWidget {
                     )),
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
-                  child: Text(goodsReceiptEntryRow.goodsReceiptEntry.item.name,
+                  child: Text(goodsReceiptEntryRow.goodsReceiptEntry.item.id,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -297,7 +354,7 @@ class RowReceipt extends StatelessWidget {
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
                   child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.productionDate
+                      goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
                           .toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
@@ -326,10 +383,15 @@ class RowReceipt extends StatelessWidget {
             onPressed: () async {
               goodsIssueEntryContainerData.clear();
               //Sự kiện click vào từng dòng
-              basketReceiptId =
-                  goodsReceiptEntryRow.goodsReceiptEntry.containerId;
-              basketReceiptIndex = goodsReceiptEntryRow.index;
-              Navigator.pushNamed(context, '/qr_scanner_screen');
+              for (int i = 0;
+                  i < goodsReceiptEntryRow.goodsReceiptEntry.containers.length;
+                  i++) {
+                // goodsIssueEntryContainerData.add(GoodsIssueEntryContainerData(
+                //     i, goodsIssueEntryRow.goodsIssueEntry.container[i],));
+                goodsReceiptEntryConainerData
+                    .add(goodsReceiptEntryRow.goodsReceiptEntry.containers[i]);
+              }
+              Navigator.pushNamed(context, '/list_container_receipt_screen');
             },
           ),
         ),

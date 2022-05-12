@@ -7,13 +7,15 @@ enum EItemSource { internal, external }
 class Item extends Equatable {
   String id;
   String name;
-  double piecesPerKilogram;
-  double minimumStockLevel;
-  double maximumStockLevel;
-  EUnit unit;
-  EItemSource itemSource;
-  WarehouseEmployee manager;
-  Item(this.id, this.name, this.piecesPerKilogram, this.minimumStockLevel, this.maximumStockLevel,this.unit,this.itemSource, this.manager);
+  int piecesPerKilogram;
+  int minimumStockLevel;
+  int maximumStockLevel;
+  int unit;
+  int itemSource;
+  // WarehouseEmployee manager;
+  dynamic manager;
+  Item(this.id, this.name, this.piecesPerKilogram, this.minimumStockLevel,
+      this.maximumStockLevel, this.unit, this.itemSource, this.manager);
 
   @override
   // TODO: implement props

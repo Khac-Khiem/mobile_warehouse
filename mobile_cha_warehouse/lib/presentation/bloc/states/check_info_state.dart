@@ -10,7 +10,7 @@ class CheckInfoStateLoading extends CheckInfoState {
 
 class CheckInfoStateSuccess extends CheckInfoState {
   ContainerData basket;
-  CheckInfoStateSuccess({required this.basket}) : assert(basket != null);
+  CheckInfoStateSuccess(this.basket);
   @override
   List<Object> get props => [basket];
 }

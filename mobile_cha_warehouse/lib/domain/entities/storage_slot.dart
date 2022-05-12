@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:mobile_cha_warehouse/domain/entities/container.dart';
 import 'package:mobile_cha_warehouse/domain/entities/item.dart';
 
-
 class Slot extends Equatable {
   int id;
   ContainerData container;
@@ -57,4 +56,18 @@ class Shelf extends Equatable {
   @override
   // TODO: implement props
   List<Object?> get props => [id];
+}
+
+class Location extends Equatable {
+  String shelfId;
+  int rowId;
+  int cellId;
+  int sliceId;
+  int levelId;
+  int id;
+  Location(this.shelfId, this.rowId, this.cellId, this.sliceId, this.levelId,
+      this.id);
+  @override
+  // TODO: implement props
+  List<Object?> get props =>[id];
 }

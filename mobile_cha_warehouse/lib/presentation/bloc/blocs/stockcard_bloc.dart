@@ -17,86 +17,55 @@ class StockCardViewBloc extends Bloc<StockCardViewEvent, StockCardViewState> {
   StockCardsUseCase stockCardsUseCase;
   ItemUseCase itemUseCase;
   StockCardViewBloc(this.stockCardsUseCase, this.itemUseCase)
-      : super(StockCardViewStateLoadingProduct());
-  @override
-  Stream<StockCardViewState> mapEventToState(StockCardViewEvent event) async* {
+      : super(StockCardViewStateLoadingProduct()) {
+    on<StockCardViewEventLoadAllProductID>(_onLoadID);
+    on<StockCardViewEventSelectProductId>(_onSelectItemID);
+  }
+  Future<void> _onLoadID(
+      StockCardViewEvent event, Emitter<StockCardViewState> emit) async {
     if (event is StockCardViewEventLoadAllProductID) {
-      yield StockCardViewStateLoadingProduct();
+      emit(StockCardViewStateLoadingProduct());
       try {
         allProductIdList.clear();
         final productOrErr = await itemUseCase.getAllItem();
-        allProductList = productOrErr;
+        print(productOrErr.toString());
+
         if (productOrErr.isNotEmpty) {
           // allProductIdList =
           //     allProductList.select((product, index) => product.id).toList();
-          for (int i = 0; i < allProductIdList.length; i++) {
-           
-                allProductIdList.add(allProductList[i].id);
-              
-            
+          for (int i = 0; i < productOrErr.length; i++) {
+            allProductIdList.add(productOrErr[i].id);
+            allProductList.add(productOrErr[i]);
           }
-          yield StockCardViewStateLoadProductSuccess();
-        } 
-        else {
-      //     yield StockCardViewStateLoadFailed(errorPackage: productOrErr);
-         }
-      // } on SocketException {
-      //   yield StockCardViewStateLoadFailed(
-      //       errorPackage: ErrorPackage(
-      //           errorCode: "SocketException",
-      //           message: "Lost connection to the server",
-      //           detail: ""));
-     } catch (e) {
-      //   yield StockCardViewStateLoadFailed(
-      //       errorPackage: new ErrorPackage(
-      //           errorCode: "Exception", message: "", detail: ""));
-       }
-    }
-    else if (event is StockCardViewEventSelectProductId)  {
-      try {
-        final productSelected = allProductList
-            .where((element) => element.id == event.productId)
-            .toList()
-            .first;
-      yield StockCardViewStateSelectedProductID(productSelected.id);
+          print(allProductIdList.toString());
+          emit(StockCardViewStateLoadProductSuccess());
+        } else {
+          print(productOrErr.toString());
+          //     yield StockCardViewStateLoadFailed(errorPackage: productOrErr);
+        }
+      } catch (e) {
+        print(e);
       }
-       catch (e) {
+    }
+  }
+
+  Future<void> _onSelectItemID(
+      StockCardViewEvent event, Emitter<StockCardViewState> emit) async {
+    if (event is StockCardViewEventSelectProductId) {
+      try {
+     
+        for (int i = 0; i < allProductList.length; i++) {
+          if (allProductList[i].id == event.productId) {
+            emit(StockCardViewStateSelectedProductID(allProductList[i].name));
+          }
+        }
+        //  emit(StockCardViewStateSelectedProductID(productSelected.name));
+      } catch (e) {
+        print(e);
         // yield StockCardViewStateLoadFailed(
         //     errorPackage: new ErrorPackage(
         //         errorCode: "Exception", message: "", detail: ""));
       }
-
-    } 
-    //else if (event is StockCardViewEventLoad) {
-    //   if (event.endDate.compareTo(event.startDate) != 1) {
-    //     yield StockCardViewStateLoadFailed(
-    //         errorPackage: ErrorPackage(errorCode: "WrongDate"));
-    //   } else {
-    //     yield StockCardViewStateLoading();
-    //     try {
-    //       final stockCardOrErr = await stockCardsUseCase.(
-    //           event.productId,
-    //           DateFormat('yyyy-MM-dd').format(event.startDate),
-    //           DateFormat('yyyy-MM-dd').format(event.endDate));
-    //       if (stockCardOrErr is StockCard) {
-    //         yield StockCardViewStateLoadSuccess(
-    //             timestamp: event.timestamp, stockCard: stockCardOrErr);
-    //       } else {
-    //         yield StockCardViewStateLoadFailed(
-    //             errorPackage: stockCardOrErr); //đưa ra Something went wrong
-    //       }
-    //     } on SocketException {
-    //       yield StockCardViewStateLoadFailed(
-    //           errorPackage: ErrorPackage(
-    //               errorCode: "SocketException",
-    //               message: "Lost connection to the server",
-    //               detail: ""));
-    //     } catch (e) {
-    //       yield StockCardViewStateLoadFailed(
-    //           errorPackage: new ErrorPackage(
-    //               errorCode: "Exception", message: "", detail: ""));
-    //     }
-    //   }
-    // }
+    }
   }
 }

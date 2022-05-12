@@ -18,12 +18,12 @@ class Constants {
   static const Color secondaryColor = Color(0xff00294D);
   static const MaterialColor materialMainColor =
       MaterialColor(0xff001D37, <int, Color>{
-    50: Color(0xff001D37),
-    100: Color(0xff001D37),
-    200: Color(0xff001D37),
-    300: Color(0xff001D37),
-    400: Color(0xff001D37),
-    500: Color(0xff001D37),
+    50: Color(0xff001D20),
+    100: Color(0xff001D25),
+    200: Color(0xff001D30),
+    300: Color(0xff001D35),
+    400: Color(0xff001D40),
+    500: Color(0xff001D45),
     600: Color(0xff001D37),
     700: Color(0xff001D37),
     800: Color(0xff001D37),

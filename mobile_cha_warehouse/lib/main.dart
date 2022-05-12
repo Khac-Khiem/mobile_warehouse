@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_cha_warehouse/injector.dart';
 import 'package:mobile_cha_warehouse/presentation/router/app_router.dart';
 
-main() {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDependencies();
   // runApp(DevicePreview(
   //   builder: (context) => MyApp(),
   //   enabled: true,
@@ -16,14 +18,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      onGenerateRoute:  AppRoute.onGenerateRoute,
+      onGenerateRoute: AppRoute.onGenerateRoute,
       debugShowCheckedModeBanner: false,
       title: "Storage Management",
     );
   }
-
 }

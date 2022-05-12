@@ -13,12 +13,9 @@ import '../../../constant.dart';
 List<String> labelTextList = [
   "Mã QR:",
   "Mã sản phẩm:",
-  "Tên sản phẩm:",
-  "Khối/số lượng:",
+  "Kế hoạch:",
   "Thực kiểm:",
-  "Đơn vị:",
-  "Ngày sản xuất:",
-  "Vị trí hiện tại:"
+  "Ngày SX:",
 ];
 
 class LabelText extends StatelessWidget {
@@ -45,21 +42,15 @@ class LabelText extends StatelessWidget {
 class QRScannedData {
   String containerId;
   String itemId;
-  double plannedQuantity;
-  double actualQuantity;
+  int plannedQuantity;
+  int actualQuantity;
   DateTime productionDate;
   QRScannedData(this.containerId, this.itemId, this.plannedQuantity,
       this.actualQuantity, this.productionDate);
 }
 
-List<QRScannedData> textFieldContent = [
-  //Mặc định, chứ mỗi khi StateSuccess thì sẽ cài lại hết
-  // "BCDEFGH",
-  // "M012",
-  // "1000",
-  // "1000",
-  // "2021-05-05",
-];
+// dùng để hiển thị cho người dùng chỉnh sửa
+List<QRScannedData> qrScannedData = [];
 
 class TextInput extends StatelessWidget {
   String contentTextField;
@@ -128,83 +119,69 @@ class ModifyInfoScreen extends StatelessWidget {
           else {
             //dùng if nhưng mục đích là để ép kiểu, do không dùng as để ép được
             if (checkInfoState is CheckInfoStateSuccess) {
-              listReceiptsChecked.add(GoodsReceiptEntryData(
-                  counter,
-                  GoodsReceiptEntry(
-                      checkInfoState.basket.id,
-                      checkInfoState.basket.plannedQuantity,
-                      checkInfoState.basket.actualQuantity,
-                      checkInfoState.basket.productionDate,
-                      checkInfoState.basket.product),
-                  true));
-              counter++;
-
-              textFieldContent.add(QRScannedData(
-                  checkInfoState.basket.id,
-                  checkInfoState.basket.product.id,
-                  checkInfoState.basket.plannedQuantity,
-                  checkInfoState.basket.actualQuantity,
-                  checkInfoState.basket.productionDate));
-              
-              }
-
-              return SingleChildScrollView(
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(10 * SizeConfig.ratioHeight),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 350 * SizeConfig.ratioWidth,
-                        child: Row(
-                          children: [
-                            Column(
-                                children: labelTextList
-                                    .map((text) => LabelText(
-                                          text,
-                                        ))
-                                    .toList()),
-                            SizedBox(
-                              width: 15 * SizeConfig.ratioWidth,
-                            ),
-                            Column(
-                                children: textFieldContent
-                                    .map((item) => TextInput(
-                                          item.toString(),
-                                        ))
-                                    .toList())
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20 * SizeConfig.ratioHeight,
-                      ),
-                      Column(
-                        children: [
-                          CustomizedButton(
-                            text: "Tiếp tục",
-                            bgColor: Constants.mainColor,
-                            fgColor: Colors.white,
-                            onPressed: () {
-                              //  listReceiptsChecked.add(GoodsReceiptEntry(checkInfoState., plannedQuantity, actualQuantity, productionDate, item));
-
-                              Navigator.pushNamed(context, '/add_list_receipt');
-                            },
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => ChooseSlotScreen()))
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              );
+              qrScannedData.clear();
+              qrScannedData[0].itemId = checkInfoState.basket.product.id;
+              qrScannedData[0].containerId = checkInfoState.basket.id;
+              qrScannedData[0].plannedQuantity =
+                  checkInfoState.basket.plannedQuantity;
+              qrScannedData[0].actualQuantity = 0;
+              qrScannedData[0].productionDate = DateTime.now();
             }
+
+            return SingleChildScrollView(
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(10 * SizeConfig.ratioHeight),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 350 * SizeConfig.ratioWidth,
+                      child: Row(
+                        children: [
+                          Column(
+                              children: labelTextList
+                                  .map((text) => LabelText(
+                                        text,
+                                      ))
+                                  .toList()),
+                          SizedBox(
+                            width: 15 * SizeConfig.ratioWidth,
+                          ),
+                          Column(children: [
+                            TextInput(qrScannedData[0].containerId),
+                            TextInput(qrScannedData[0].itemId),
+                            TextInput(
+                                qrScannedData[0].plannedQuantity.toString()),
+                            TextInput(
+                                qrScannedData[0].actualQuantity.toString()),
+                            TextInput(DateTime.now().toString()),
+                          ])
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20 * SizeConfig.ratioHeight,
+                    ),
+                    Column(
+                      children: [
+                        CustomizedButton(
+                          text: "Tiếp tục",
+                          bgColor: Constants.mainColor,
+                          fgColor: Colors.white,
+                          onPressed: () {
+                            listReceiptsChecked.add(qrScannedData[0]);
+                            Navigator.pushNamed(context, '/receipt_screen');
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
           }
-        ));
+        }));
   }
 }

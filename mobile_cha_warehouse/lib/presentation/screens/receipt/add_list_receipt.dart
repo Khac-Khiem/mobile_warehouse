@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_cha_warehouse/domain/entities/goods_receipt.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/receipt/modify_info_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../constant.dart';
 import '../../../function.dart';
 // trang nay dung de xem lai cac ro da quet QR
-List<GoodsReceiptEntryData> listReceiptsChecked = [];
-int counter = 0;
+List<QRScannedData> listReceiptsChecked = [];
 
 class AddListReceiptScreen extends StatefulWidget {
   @override
@@ -31,7 +31,7 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
                     SizedBox(
                         width: 120 * SizeConfig.ratioWidth,
                         child: Text(
-                          "Mã SP",
+                          "Mã Rổ",
                           style: TextStyle(
                               fontSize: 21 * SizeConfig.ratioFont,
                               fontWeight: FontWeight.bold),
@@ -40,7 +40,7 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
                     SizedBox(
                       width: 60 * SizeConfig.ratioWidth,
                       child: Text(
-                        "Mã Rổ",
+                        "Mã SP",
                         style: TextStyle(
                             fontSize: 21 * SizeConfig.ratioFont,
                             fontWeight: FontWeight.bold),
@@ -50,7 +50,7 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
                     SizedBox(
                       width: 100 * SizeConfig.ratioWidth,
                       child: Text(
-                        "Ngày SX",
+                        "Thực kiểm",
                         style: TextStyle(
                             fontSize: 21 * SizeConfig.ratioFont,
                             fontWeight: FontWeight.bold),
@@ -61,6 +61,16 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
                       width: 80 * SizeConfig.ratioWidth,
                       child: Text(
                         "SL",
+                        style: TextStyle(
+                            fontSize: 21 * SizeConfig.ratioFont,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                     SizedBox(
+                      width: 80 * SizeConfig.ratioWidth,
+                      child: Text(
+                        "Date",
                         style: TextStyle(
                             fontSize: 21 * SizeConfig.ratioFont,
                             fontWeight: FontWeight.bold),
@@ -87,7 +97,7 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
 }
 
 class RowReceipt extends StatelessWidget {
-  GoodsReceiptEntryData goodsReceiptEntryRow;
+  QRScannedData goodsReceiptEntryRow;
 
   RowReceipt(this.goodsReceiptEntryRow);
   @override
@@ -106,7 +116,7 @@ class RowReceipt extends StatelessWidget {
               SizedBox(
                   width: 120 * SizeConfig.ratioWidth,
                   child: Text(
-                    goodsReceiptEntryRow.goodsReceiptEntry.containerId,
+                    goodsReceiptEntryRow.containerId,
                     style: TextStyle(
                       fontSize: 21 * SizeConfig.ratioFont,
                       fontWeight: FontWeight.bold,
@@ -115,7 +125,7 @@ class RowReceipt extends StatelessWidget {
                   )),
               SizedBox(
                 width: 60 * SizeConfig.ratioWidth,
-                child: Text(goodsReceiptEntryRow.goodsReceiptEntry.item.name,
+                child: Text(goodsReceiptEntryRow.itemId,
                     style: TextStyle(
                       fontSize: 21 * SizeConfig.ratioFont,
                       fontWeight: FontWeight.bold,
@@ -125,7 +135,7 @@ class RowReceipt extends StatelessWidget {
               SizedBox(
                 width: 100 * SizeConfig.ratioWidth,
                 child: Text(
-                    goodsReceiptEntryRow.goodsReceiptEntry.productionDate
+                    goodsReceiptEntryRow.plannedQuantity
                         .toString(),
                     style: TextStyle(
                       fontSize: 21 * SizeConfig.ratioFont,
@@ -136,7 +146,7 @@ class RowReceipt extends StatelessWidget {
               SizedBox(
                 width: 80 * SizeConfig.ratioWidth,
                 child: Text(
-                    goodsReceiptEntryRow.goodsReceiptEntry.actualQuantity
+                    goodsReceiptEntryRow.actualQuantity
                         .toString(),
                     style: TextStyle(
                       fontSize: 21 * SizeConfig.ratioFont,
@@ -144,6 +154,18 @@ class RowReceipt extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center),
               ),
+              SizedBox(
+                width: 80 * SizeConfig.ratioWidth,
+                child: Text(
+                    goodsReceiptEntryRow.productionDate
+                        .toString(),
+                    style: TextStyle(
+                      fontSize: 21 * SizeConfig.ratioFont,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center),
+              ),
+
             ],
           ),
         ),

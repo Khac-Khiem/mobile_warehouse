@@ -17,7 +17,7 @@ class CheckInfoBloc extends Bloc<CheckInfoEvent, CheckInfoState> {
             await containerUseCase.getContainerById(checkInfoEvent.basketID);
         if (basketOrErr is ContainerData) {
           //Trả về view nguyên cái basket, view tự tách ra mà dùng
-          yield CheckInfoStateSuccess(basket: basketOrErr);
+          yield CheckInfoStateSuccess(basketOrErr);
         } else {
           yield CheckInfoStateFailure(); // Viết vậy để truyền String vô thôi
         }

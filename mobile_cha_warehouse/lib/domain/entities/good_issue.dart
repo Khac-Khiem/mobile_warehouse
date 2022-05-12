@@ -6,45 +6,43 @@ import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
 // model lưu trữ từng rổ của một dòng trong đơn xuất kho
 class GoodsIssueEntryContainer extends Equatable {
   double quantity;
-  DateTime productionDate;
+  String productionDate;
   String containerId;
-  Slot storageSlot;
+  // Slot storageSlot;
+  bool isTaken;
   GoodsIssueEntryContainer(
-      this.quantity, this.productionDate, this.containerId, this.storageSlot);
+      this.quantity, this.productionDate, this.containerId, this.isTaken);
   @override
   // TODO: implement props
   List<Object?> get props =>
-      [quantity, productionDate, containerId, storageSlot];
+      [quantity, productionDate, containerId, isTaken];
 }
 
 // từng dòng của một đơn xuất kho
 class GoodsIssueEntry extends Equatable {
-  double plannedQuantity;
-  double actualQuantity;
+  int totalQuantity;
   String note;
   WarehouseEmployee employee;
-  Item product;
+  Item item;
   List<GoodsIssueEntryContainer> container;
-  GoodsIssueEntry(this.plannedQuantity, this.actualQuantity, this.note,
-      this.product, this.employee, this.container);
+  //List<dynamic> container;
+  GoodsIssueEntry(
+      this.totalQuantity, this.note, this.item, this.employee, this.container);
   @override
   // TODO: implement props
-  List<Object?> get props =>
-      [plannedQuantity, actualQuantity, note, employee, product, container];
+  List<Object?> get props => [totalQuantity, note, employee, item, container];
 }
 
 //Model của một đơn xuất kho
 class GoodsIssue extends Equatable {
   String id;
-  DateTime timestamp;
+  String timestamp;
   bool isConfirmed;
-  bool causeStockChanges;
   List<GoodsIssueEntry> entries;
-  GoodsIssue(this.id, this.timestamp, this.isConfirmed, this.causeStockChanges,
-      this.entries);
+  GoodsIssue(this.id, this.timestamp, this.isConfirmed, this.entries);
   @override
   // TODO: implement props
-  List<Object?> get props => [id, timestamp, isConfirmed, causeStockChanges, entries];
+  List<Object?> get props => [id, timestamp, isConfirmed, entries];
 }
 
 ////////

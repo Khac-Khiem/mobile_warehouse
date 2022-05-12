@@ -3,18 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../constant.dart';
 
 //to check info basket with QRcode
-String basketIssueId = '';
-int basketIssueIndex = 0;
+String basketReceiptId = '';
+int basketReceiptIndex = 0;
 
-class ListContainerScreen extends StatelessWidget {
+class ListContainerReceiptScreen extends StatelessWidget {
   // List<GoodsIssueEntryContainerData> goodsIssueEntryContainerData;
-  ListContainerScreen();
+  ListContainerReceiptScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +43,12 @@ class ListContainerScreen extends StatelessWidget {
           backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
           //nút bên phải
           title: const Text(
-            'Danh sách các rổ cần xuất',
+            'Danh sách các rổ cần nhập',
             style: TextStyle(fontSize: 22), //chuẩn
           ),
         ),
         endDrawer: DrawerUser(),
-        body: BlocConsumer<IssueBloc, IssueState>(
+        body: BlocConsumer<ReceiptBloc, ReceiptState>(
             listener: (context, issueState) {},
             builder: (context, issueState) {
               return Column(
@@ -92,17 +93,10 @@ class ListContainerScreen extends StatelessWidget {
                         ],
                       )),
                   Column(
-                    children: goodsIssueEntryContainerData
+                    children: goodsReceiptEntryConainerData
                         .map((item) => RowContainer(item))
                         .toList(),
-                  ),
-                  CustomizedButton(
-                                text: 'Xác nhận',
-                                onPressed: () => 
-                                // hiển thị thông báo 
-                                // gửi dữ liệu rổ lên server 
-                                Navigator.pop(context),
-                              )
+                  )
                 ],
               );
             }));
@@ -110,8 +104,8 @@ class ListContainerScreen extends StatelessWidget {
 }
 
 class RowContainer extends StatelessWidget {
-  GoodsIssueEntryContainerData goodsIssueEntryContainerData;
-  RowContainer(this.goodsIssueEntryContainerData);
+  GoodsReceiptEntryContainerData goodsReceiptEntryContainerData;
+  RowContainer(this.goodsReceiptEntryContainerData);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -130,8 +124,8 @@ class RowContainer extends StatelessWidget {
                 SizedBox(
                     width: 80 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsIssueEntryContainerData
-                          .goodsIssueEntryContainer.containerId,
+                      goodsReceiptEntryContainerData
+                          .goodsReceiptEntryContainer.containerId,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -141,8 +135,8 @@ class RowContainer extends StatelessWidget {
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
                   child: Text(
-                      goodsIssueEntryContainerData
-                          .goodsIssueEntryContainer.quantity
+                      goodsReceiptEntryContainerData
+                          .goodsReceiptEntryContainer.planedQuantity
                           .toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
@@ -154,8 +148,8 @@ class RowContainer extends StatelessWidget {
                   width: 120 * SizeConfig.ratioWidth,
                   child: Text(
                       DateFormat("dd-MM-yyyy").format(DateTime.parse(
-                          goodsIssueEntryContainerData
-                              .goodsIssueEntryContainer.productionDate)),
+                          goodsReceiptEntryContainerData
+                              .goodsReceiptEntryContainer.productionDate)),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -164,22 +158,19 @@ class RowContainer extends StatelessWidget {
                 ),
               ],
             ),
-            color: goodsIssueEntryContainerData.goodsIssueEntryContainer.isTaken
+            color: goodsReceiptEntryContainerData.status
                 ? Colors.grey[700]
                 : Colors.grey[300],
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
-              basketIssueId = goodsIssueEntryContainerData
-                  .goodsIssueEntryContainer.containerId;
-              basketIssueIndex = goodsIssueEntryContainerData.index;
+              basketReceiptId = goodsReceiptEntryContainerData
+                  .goodsReceiptEntryContainer.containerId;
+              basketReceiptIndex = goodsReceiptEntryContainerData.index;
 
               //Sự kiện click vào từng dòng
               //trang vi tri => tiep tuc quet ma
-              BlocProvider.of<IssueBloc>(context)
-                  .add(FetchLocationIssueEvent(basketIssueId));
-
-              Navigator.pushNamed(context, '/location_screen');
+              Navigator.pushNamed(context, '/qr_scanner_issue_screen');
             },
           ),
         ),

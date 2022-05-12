@@ -87,3 +87,14 @@ class ReportInconsistencyFailedIssueState extends IssueState {
   @override
   List<Object> get props => [timestamp];
 }
+class LoadLocationContainerSuccess extends IssueState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+class LoadingLocationState extends IssueState{
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+
+}

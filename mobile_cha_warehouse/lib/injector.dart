@@ -31,8 +31,11 @@ import 'package:mobile_cha_warehouse/domain/usecases/login_usecase.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/receipt_usecase.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/slot_usecase.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/stockcard_usecase.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/login_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/stockcard_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/others/login_screen.dart';
 
 final injector = GetIt.instance;
@@ -66,11 +69,18 @@ Future<void> initializeDependencies() async {
       InconsistencyContainerUseCase(injector()));
   injector.registerSingleton<ItemUseCase>(ItemUseCase(injector()));
   injector.registerSingleton<SlotUseCase>(SlotUseCase(injector()));
-  injector
-      .registerSingleton<StockCardsUseCase>(StockCardsUseCase(injector()));
+  injector.registerSingleton<StockCardsUseCase>(StockCardsUseCase(injector()));
   injector.registerSingleton<LoginUsecase>(LoginUsecase(injector()));
   //register bloc
-   injector.registerFactory<LoginBloc>(() => LoginBloc());
-    injector.registerFactory<IssueBloc>(() => IssueBloc(injector()));
-
+  injector.registerFactory<LoginBloc>(() => LoginBloc());
+  // injector.registerFactory<IssueBloc>(() => IssueBloc(injector()));
+  injector.registerSingleton<IssueBloc>(IssueBloc(injector(), injector()));
+  //injector.registerFactory<ReceiptBloc>(() => ReceiptBloc(injector()));
+  injector.registerSingleton<ReceiptBloc>(ReceiptBloc(injector()));
+  injector.registerSingleton<CheckInfoBloc>(CheckInfoBloc(injector()));
+  
+  injector.registerSingleton<StockCardViewBloc>(
+      StockCardViewBloc(injector(), injector()));
+  // injector.registerFactory<StockCardViewBloc>(
+  //     () => StockCardViewBloc(injector(), injector()));
 }

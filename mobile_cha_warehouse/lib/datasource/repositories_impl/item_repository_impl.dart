@@ -7,8 +7,8 @@ class ItemRepositoryimpl implements ItemRepository {
   ItemRepositoryimpl(this.itemService);
   @override
   Future<List<Item>> getAllItem() {
-    // TODO: implement getAllItem
-    throw UnimplementedError();
+    final items = itemService.getAllItems();
+    return items;
   }
 
   @override

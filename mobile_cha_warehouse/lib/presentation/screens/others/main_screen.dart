@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/function.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/stockcard_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/stockcard_event.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/qr_scanner_screen.dart';
@@ -11,15 +15,19 @@ import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../constant.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({ Key? key }) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        AlertDialogTwoBtnCustomized(context, 'Bạn có chắc?', 'Đăng xuất khỏi hệ thống','Đăng xuất', 'Trở lại',(){logout(context);} ,(){
-           Navigator.pushNamed(context, '/list_receipt');
-        }, 18, 22).show();
+        AlertDialogTwoBtnCustomized(context, 'Bạn có chắc?',
+                'Đăng xuất khỏi hệ thống', 'Đăng xuất', 'Trở lại', () {
+          logout(context);
+        }, () {
+          Navigator.pushNamed(context, '/list_receipt');
+        }, 18, 22)
+            .show();
         // AlertDialogTwoBtnCustomized(
         //     context: context,
         //     title: "Bạn có chắc?",
@@ -47,13 +55,16 @@ class MainScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             MainAppName(),
+              MainAppName(),
               SizedBox(
                 height: 50 * SizeConfig.ratioHeight,
               ),
               CustomizedButton(
                 text: "Nhập kho",
-                onPressed: () {
+                onPressed: () async {
+                  BlocProvider.of<ReceiptBloc>(context)
+                      .add(LoadAllReceiptEvent(DateTime.now()));
+
                   Navigator.pushNamed(context, '/receipt_screen');
                   scanQRresult = "-1";
                   //scanQRresult = "bb210611150004035";
@@ -65,6 +76,9 @@ class MainScreen extends StatelessWidget {
               CustomizedButton(
                 text: "Xuất kho",
                 onPressed: () async {
+                  BlocProvider.of<IssueBloc>(context)
+                      .add(LoadAllIssueEvent(DateTime.now()));
+
                   Navigator.pushNamed(context, '/issue_screen');
                 },
               ),
@@ -73,18 +87,19 @@ class MainScreen extends StatelessWidget {
               ),
               CustomizedButton(
                 text: "Thẻ kho",
-                onPressed: () {
-                  BlocProvider.of<StockCardViewBloc>(context).add(StockCardViewEventLoadAllProductID(DateTime.now()));
-                Navigator.pushNamed(context, '/stockcard_screen');
+                onPressed: () async {
+                  BlocProvider.of<StockCardViewBloc>(context)
+                      .add(StockCardViewEventLoadAllProductID(DateTime.now()));
+                  Navigator.pushNamed(context, '/stockcard_screen');
                 },
               ),
-               SizedBox(
+              SizedBox(
                 height: 4 * SizeConfig.ratioHeight,
               ),
               CustomizedButton(
                 text: "Kiểm kê",
                 onPressed: () {
-            //      Navigator.pushNamed(context, '/stock_card_screen');
+                  //      Navigator.pushNamed(context, '/stock_card_screen');
                 },
               ),
             ],

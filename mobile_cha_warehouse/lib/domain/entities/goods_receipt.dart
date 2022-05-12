@@ -2,30 +2,52 @@ import 'package:equatable/equatable.dart';
 import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
 import 'package:mobile_cha_warehouse/domain/entities/item.dart';
 
-class GoodsReceipt extends Equatable {
-  String goodsReceiptId;
-  DateTime timestamp;
-  bool confirmed;
-  bool causeStockChanges;
-  WarehouseEmployee employee;
-  List<GoodsReceiptEntry> entries;
-  GoodsReceipt(
-      this.goodsReceiptId, this.timestamp,this.confirmed, this.causeStockChanges, this.employee, this.entries);
+class GoodsReceiptEntryContainer extends Equatable {
+  int planedQuantity;
+  int actualQuantity;
+  String productionDate;
+  String containerId;
+  // Slot storageSlot;
+
+  GoodsReceiptEntryContainer(this.planedQuantity, this.actualQuantity,
+      this.productionDate, this.containerId);
   @override
   // TODO: implement props
-  List<Object?> get props => [goodsReceiptId, timestamp, employee, entries];
+  List<Object?> get props => [planedQuantity, productionDate, containerId];
 }
 
 class GoodsReceiptEntry extends Equatable {
-  String containerId;
+  int itemId;
   double plannedQuantity;
-  double actualQuantity;
-  DateTime productionDate;
   Item item;
-  GoodsReceiptEntry(this.containerId, this.plannedQuantity, this.actualQuantity,
-      this.productionDate, this.item);
+  List<dynamic> containers;
+  dynamic note;
+  GoodsReceiptEntry(
+      this.itemId, this.plannedQuantity, this.item, this.containers, this.note);
   @override
   // TODO: implement props
-  List<Object?> get props =>
-      [containerId, plannedQuantity, actualQuantity, productionDate, item];
+  List<Object?> get props => [itemId, plannedQuantity, item, note];
+}
+
+class GoodsReceipt extends Equatable {
+  String goodsReceiptId;
+  String timestamp;
+  bool confirmed;
+  // WarehouseEmployee approver;
+  dynamic approver;
+  List<GoodsReceiptEntry> entries;
+  GoodsReceipt(this.goodsReceiptId, this.timestamp, this.confirmed,
+      this.approver, this.entries);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [goodsReceiptId, timestamp, entries];
+}
+
+class GoodsReceiptData extends Equatable {
+  int totalItem;
+  List<GoodsReceipt> items;
+  GoodsReceiptData(this.totalItem, this.items);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
 }

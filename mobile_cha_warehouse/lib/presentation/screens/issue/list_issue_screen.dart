@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/domain/entities/good_issue.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
@@ -61,13 +62,13 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
               if (issueState is IssueStateInitial) {
                 return CircularLoading();
               } else if (issueState is IssueStateFailure) {
-                return Container(
-                  width: 300 * SizeConfig.ratioWidth,
-                  child: Column(
-                      //
-                      //
-                      //
-                      ),
+                return ExceptionErrorState(
+                  height: 300,
+                  title: "Đã có lỗi xảy ra",
+                  message:
+                      "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
+                  imageDirectory: 'lib/assets/sad_face_search.png',
+                  imageHeight: 140,
                 );
               } else {
                 return SingleChildScrollView(
@@ -103,6 +104,8 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                                   initDateTime: selectedDate,
                                   okBtnClickedFunction: (pickedTime) {
                                     selectedDate = pickedTime;
+                                    print(DateFormat("dd-MM-yyyy")
+                                        .format(selectedDate));
                                   },
                                 ),
                               ),
@@ -277,9 +280,9 @@ class RowIssue extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                    width: 120 * SizeConfig.ratioWidth,
+                    width: 100 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsIssueEntryRow.goodsIssueEntry.product.id,
+                      goodsIssueEntryRow.goodsIssueEntry.item.id,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -287,9 +290,9 @@ class RowIssue extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 SizedBox(
-                  width: 60 * SizeConfig.ratioWidth,
+                  width: 100 * SizeConfig.ratioWidth,
                   child: Text(
-                      goodsIssueEntryRow.goodsIssueEntry.plannedQuantity
+                      goodsIssueEntryRow.goodsIssueEntry.totalQuantity
                           .toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
@@ -299,17 +302,6 @@ class RowIssue extends StatelessWidget {
                 ),
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsIssueEntryRow.goodsIssueEntry.actualQuantity
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-                SizedBox(
-                  width: 80 * SizeConfig.ratioWidth,
                   child: Text(goodsIssueEntryRow.goodsIssueEntry.note,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
@@ -330,16 +322,11 @@ class RowIssue extends StatelessWidget {
                   i < goodsIssueEntryRow.goodsIssueEntry.container.length;
                   i++) {
                 goodsIssueEntryContainerData.add(GoodsIssueEntryContainerData(
-                    i, goodsIssueEntryRow.goodsIssueEntry.container[i], false));
+                  i,
+                  goodsIssueEntryRow.goodsIssueEntry.container[i],
+                ));
               }
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => BlocProvider<IssueBloc>(
-              //             create: (context) => injector(),
-              //             child: ListContainerScreen(
-              //                 ))));
-                                Navigator.pushNamed(context, '/list_container_screen');
+              Navigator.pushNamed(context, '/list_container_screen');
             },
           ),
         ),

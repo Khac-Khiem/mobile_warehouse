@@ -7,6 +7,11 @@ class ContainerRepoImpl implements ContainRepo {
   ContainerService containerService;
   ContainerRepoImpl(this.containerService);
   @override
+  Future<ContainerData> getContainerById(String id) {
+    final container = containerService.getContainerLocation(id);
+    return container;
+  }
+
   Future<void> clear() {
     // TODO: implement clear
     throw UnimplementedError();
@@ -19,8 +24,8 @@ class ContainerRepoImpl implements ContainRepo {
   }
 
   @override
-  Future<ContainerData> updateContain(int plannedQuantity, DateTime productionDate,
-      Item product, int actualQuantity) {
+  Future<ContainerData> updateContain(int plannedQuantity,
+      DateTime productionDate, Item product, int actualQuantity) {
     // TODO: implement updateContain
     throw UnimplementedError();
   }
@@ -28,12 +33,6 @@ class ContainerRepoImpl implements ContainRepo {
   @override
   Future<ContainerData> updateShelfUnit(String shelfUnitId) {
     // TODO: implement updateShelfUnit
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ContainerData> getContainerFromServer(String containerId) {
-    // TODO: implement getContainerFromServer
     throw UnimplementedError();
   }
 }

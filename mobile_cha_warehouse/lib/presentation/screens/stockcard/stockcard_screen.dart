@@ -152,8 +152,8 @@ class StockCardScreen extends StatelessWidget {
                                               context)
                                           .add(
                                               StockCardViewEventSelectProductId(
-                                                  data!));
-                                      _productId = data;
+                                                  data.toString()));
+                                      _productId = data.toString();
                                     },
                                     showSearchBox: true,
                                     //  autoFocusSearchBox: true,
@@ -325,19 +325,23 @@ class StockCardScreen extends StatelessWidget {
                     height: 30 * SizeConfig.ratioHeight,
                   ),
                   BlocBuilder<StockCardViewBloc, StockCardViewState>(
-                    builder: (context, state) => CustomizedButton(
-                        text: "Truy xuất",
-                        onPressed: _productId == ''
-                            ? () {}
-                            : () {
-                                BlocProvider.of<StockCardViewBloc>(context).add(
-                                    StockCardViewEventLoad(
-                                        DateTime.now(),
-                                        _productId,
-                                        _startDate,
-                                        _endDate.add(Duration(days: 1))));
-                              }),
-                  )
+                      builder: (context, state) => CustomizedButton(
+                          text: "Truy xuất",
+                          onPressed:
+                              // _productId == ''
+                              //     ? () {}
+                              //     : () {
+                              //         BlocProvider.of<StockCardViewBloc>(context).add(
+                              //             StockCardViewEventLoad(
+                              //                 DateTime.now(),
+                              //                 _productId,
+                              //                 _startDate,
+                              //                 _endDate.add(Duration(days: 1))));
+                              //       }
+                              //
+                              () {
+                            print(allProductIdList.toString());
+                          }))
                 ],
               ),
             ),

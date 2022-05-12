@@ -5,19 +5,21 @@ import 'package:mobile_cha_warehouse/domain/entities/item.dart';
 enum EContainerType { large, medium, small, packet }
 
 class ContainerType {
-  double weight;
-  EContainerType id;
-  ContainerType(this.id, this.weight);
+  int weight;
+  String name;
+  ContainerType(this.name, this.weight);
 }
+
 // model du lieu cua mot ro
 class ContainerData extends Equatable {
   String id;
-  double plannedQuantity;
-  double actualQuantity;
-  DateTime productionDate;
+  int plannedQuantity;
+  int actualQuantity;
+  String productionDate;
   bool isConsistent;
   Item product;
-  Slot storageSlot;
+  //Slot storageSlot;
+  Location storageSlot;
   ContainerType containerType;
   ContainerData(
       this.id,
@@ -30,5 +32,14 @@ class ContainerData extends Equatable {
       this.containerType);
   @override
   // TODO: implement props
-  List<Object?> get props => [id, plannedQuantity, actualQuantity, productionDate, isConsistent, product, storageSlot,containerType];
+  List<Object?> get props => [
+        id,
+        plannedQuantity,
+        actualQuantity,
+        productionDate,
+        isConsistent,
+        product,
+        storageSlot,
+        containerType
+      ];
 }

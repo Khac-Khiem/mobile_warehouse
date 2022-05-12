@@ -98,7 +98,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                       height: 10 * SizeConfig.ratioHeight,
                     ),
                     CustomizedButton(
-                        onPressed: scanQRresult == basketReceiptId
+                        onPressed: scanQRresult != '-1'
                             ? () {
                                 AlertDialogTwoBtnCustomized(
                                     context,
@@ -106,30 +106,17 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                                     "Bạn đã lấy đúng rổ, nhấn xác nhận để hoàn thành",
                                     "Xác nhận",
                                     "Trở lại", () {
-                                  //add event click toggle container
-                                  BlocProvider.of<ReceiptBloc>(context).add(
-                                      ToggleReceiptEvent(basketReceiptIndex));
+                                  BlocProvider.of<CheckInfoBloc>(context).add(
+                                      CheckInfoEventRequested(
+                                          timeStamp: DateTime.now(),
+                                          basketID: scanQRresult));
+
                                   // go to modifyinfo
                                   Navigator.pushNamed(
                                       context, '/modify_info_screen');
                                 }, () {}, 18, 22);
                               }
-                            : () {
-                                AlertDialogTwoBtnCustomized(
-                                    context,
-                                    "Xác Nhận",
-                                    "Rổ bạn đã lấy không chính xác, nhấn Tiếp tục để quét lại",
-                                    "Tiếp tục",
-                                    "Trở lại",
-                                    () {}, () {
-                                  //back to container screen
-                                  Navigator.pushNamed(
-                                      context, '/list_container_screen');
-                                }, 18, 22);
-                              },
-                        text: scanQRresult == basketReceiptId
-                            ? 'Xác Nhận'
-                            : 'Trở lại'),
+                            : () {})
                   ]));
         }));
   }

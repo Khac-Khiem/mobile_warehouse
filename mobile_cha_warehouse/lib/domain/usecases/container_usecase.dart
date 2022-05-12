@@ -4,12 +4,10 @@ import 'package:mobile_cha_warehouse/domain/repositories/container_repository.da
 
 class ContainerUseCase {
   final ContainRepo _updateContainRepo;
-  // final UpdateContainRepo _updateContainRepo;
-  // final UpdateShelfUnitRepo _updateShelfUnitRepo;
-  // final ClearContainRepo _clearContainRepo;
+
   ContainerUseCase(this._updateContainRepo);
   Future<ContainerData> getContainerById(String id) async {
-    final container = await _updateContainRepo.getContainerFromServer(id);
+    final container = await _updateContainRepo.getContainerById(id);
     return container;
   }
 

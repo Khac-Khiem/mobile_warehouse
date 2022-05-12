@@ -7,8 +7,8 @@ class ReceiptRepositoryImpl implements ReceiptsRepo {
   ReceiptRepositoryImpl(this.receiptService);
   @override
   Future<List<GoodsReceipt>> getReceipts() {
-    // TODO: implement getReceipts
-    throw UnimplementedError();
+    final receipt = receiptService.getGoodsReceipt();
+    return receipt;
   }
 
   @override

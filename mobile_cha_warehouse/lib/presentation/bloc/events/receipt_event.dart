@@ -26,3 +26,9 @@ class ToggleReceiptEvent extends ReceiptEvent {
   @override
   List<Object> get props => [index];
 }
+class LoadReceiptEvent extends ReceiptEvent {
+  final DateTime timestamp;
+  LoadReceiptEvent(this.timestamp);
+  @override
+  List<Object> get props => [timestamp];
+}
