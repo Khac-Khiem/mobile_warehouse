@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/function.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
+import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../constant.dart';
 
@@ -36,6 +39,15 @@ class ListContainerScreen extends StatelessWidget {
               //     Navigator.pop(context);
               //   },
               // ).show();
+              AlertDialogTwoBtnCustomized(
+                      context,
+                      'Ban co chac',
+                      'Khi nhan tro lai, moi du lieu se khong duoc luu',
+                      'Tro lai',
+                      'Tiep tuc', () {
+                Navigator.pushNamed(context, '/list_issue_screen');
+              }, () {}, 18, 22)
+                  .show();
               Navigator.pop(context);
             },
           ),
@@ -97,12 +109,26 @@ class ListContainerScreen extends StatelessWidget {
                         .toList(),
                   ),
                   CustomizedButton(
-                                text: 'Xác nhận',
-                                onPressed: () => 
-                                // hiển thị thông báo 
-                                // gửi dữ liệu rổ lên server 
-                                Navigator.pop(context),
-                              )
+                      text: 'Xác nhận',
+                      onPressed: () async {
+                        for (var item in goodsIssueEntryContainerData) {
+                          if (item.goodsIssueEntryContainer.isTaken == false) {
+                            AlertDialogTwoBtnCustomized(
+                                    context,
+                                    'Bạn có chắc',
+                                    'Một số rổ chưa được xuất?',
+                                    'Xác nhận',
+                                    'Trở lại', () {
+                              Navigator.pushNamed(context, '/list_issue_screen');
+                            }, () {}, 18, 22)
+                                .show();
+                          }
+                        }
+                      }
+                      // hiển thị thông báo
+                      // gửi dữ liệu rổ lên server
+                      // Navigator.pushNamed(context, '/list_issue_screen')
+                      )
                 ],
               );
             }));
@@ -177,8 +203,7 @@ class RowContainer extends StatelessWidget {
               //Sự kiện click vào từng dòng
               //trang vi tri => tiep tuc quet ma
               BlocProvider.of<IssueBloc>(context)
-                  .add(FetchLocationIssueEvent(basketIssueId));
-
+                  .add(FetchLocationIssueEvent(basketIssueId, DateTime.now()));
               Navigator.pushNamed(context, '/location_screen');
             },
           ),

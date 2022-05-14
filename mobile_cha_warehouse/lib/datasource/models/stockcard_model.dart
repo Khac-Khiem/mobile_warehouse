@@ -1,17 +1,25 @@
-import 'package:mobile_cha_warehouse/datasource/models/warehouse_product_model.dart';
-import 'package:mobile_cha_warehouse/domain/entities/item.dart';
 import 'package:mobile_cha_warehouse/domain/entities/stock_card.dart';
 
 class StockCardEntryModel extends StockCardEntry {
   StockCardEntryModel(
-      DateTime date,
+      String date,
       double beforeQuantity,
       double inputQUantity,
       double outputQuantity,
       double afterQuantity,
-      ItemModel item)
+      String note)
       : super(date, beforeQuantity, inputQUantity, outputQuantity,
-            afterQuantity, item);
+            afterQuantity, note);
+  factory StockCardEntryModel.fromJson(Map<String, dynamic> json) {
+    return StockCardEntryModel(
+      json["date"],
+      json["beforeQuantity"],
+      json["inputQuantity"],
+      json["outputQuantity"],
+      json["afterQuantity"],
+      json["note"],
+    );
+  }
 }
 
 class StockCardModel extends StockCard {

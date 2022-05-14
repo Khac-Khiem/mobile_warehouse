@@ -38,10 +38,10 @@ class ReceiptStateListLoadSuccess extends ReceiptState {
 class ReceiptStateListRefresh extends ReceiptState {
   final int index;
   final bool entryStatus;
-  final bool isUncheckedAll;
+ // final bool isUncheckedAll;
   final DateTime timestamp; //Để có thể cập nhật toggle và toggle inconsistency
   ReceiptStateListRefresh(
-      this.index, this.entryStatus, this.isUncheckedAll, this.timestamp);
+      this.index, this.entryStatus, this.timestamp);
   @override
   List<Object> get props => [index, entryStatus, timestamp];
 }

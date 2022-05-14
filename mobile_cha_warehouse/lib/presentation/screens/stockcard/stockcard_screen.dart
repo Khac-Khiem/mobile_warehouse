@@ -1,7 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/constant.dart';
 import 'package:mobile_cha_warehouse/domain/entities/stock_card.dart';
 import 'package:mobile_cha_warehouse/function.dart';
@@ -9,7 +8,6 @@ import 'package:mobile_cha_warehouse/presentation/bloc/blocs/stockcard_bloc.dart
 import 'package:mobile_cha_warehouse/presentation/bloc/events/stockcard_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/stockcard_state.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
-import 'package:mobile_cha_warehouse/presentation/widget/main_app_name.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
 class StockCardScreen extends StatelessWidget {
@@ -238,71 +236,84 @@ class StockCardScreen extends StatelessWidget {
                       } else if (stockCardState
                           is StockCardViewStateLoadSuccess) {
                         List<StockCardEntry> stockcards =
-                            stockCardState.stockCard.items;
+                            stockCardState.stockCard;
                         TextStyle _textContentInTable =
                             TextStyle(fontSize: 16 * SizeConfig.ratioFont);
                         TextStyle _textHeaderInTable =
                             TextStyle(fontSize: 18 * SizeConfig.ratioFont);
                         return Container(
                           height: 280 * SizeConfig.ratioHeight,
-                          child: ListView(children: [
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: DataTable(
-                                columns: <DataColumn>[
-                                  DataColumn(
-                                      label: Text(
-                                    "Ngày",
-                                    style: _textHeaderInTable,
-                                  )),
-                                  DataColumn(
-                                      label: Text("Tồn đầu",
-                                          style: _textHeaderInTable)),
-                                  DataColumn(
-                                      label: Text("Nhập",
-                                          style: _textHeaderInTable)),
-                                  DataColumn(
-                                      label: Text("Xuất",
-                                          style: _textHeaderInTable)),
-                                  DataColumn(
-                                      label: Text("Tồn cuối",
-                                          style: _textHeaderInTable)),
-                                  DataColumn(
-                                      label: Text("Ghi chú",
-                                          style: _textHeaderInTable))
-                                ],
-                                rows: stockcards
-                                    .map((stockcard) =>
-                                        DataRow(cells: <DataCell>[
-                                          DataCell(Text(
-                                              DateFormat('dd/MM/yyyy')
-                                                  .format(stockcard.date),
-                                              style: _textContentInTable)),
-                                          DataCell(Text(
-                                              stockcard.beforeQuantity
-                                                  .toString(),
-                                              style: _textContentInTable)),
-                                          DataCell(Text(
-                                              stockcard.inputQUantity
-                                                  .toString(),
-                                              style: _textContentInTable)),
-                                          DataCell(Text(
-                                              stockcard.outputQuantity
-                                                  .toString(),
-                                              style: _textContentInTable)),
-                                          DataCell(Text(
-                                              stockcard.afterQuantity
-                                                  .toString(),
-                                              style: _textContentInTable)),
-                                          // DataCell(stockcard.note != null
-                                          //     ? Text(stockcard.note,
-                                          //         style: _textContentInTable)
-                                          //     : Text(" "))
-                                        ]))
-                                    .toList(),
-                              ),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: SizedBox(
+                                      width: 380 * SizeConfig.ratioWidth,
+                                      height: 60 * SizeConfig.ratioHeight,
+                                      // ignore: deprecated_member_use
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                              width: 60 * SizeConfig.ratioWidth,
+                                              child: Text(
+                                                "Ngày",
+                                                style: _textHeaderInTable,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                              width: 60 * SizeConfig.ratioWidth,
+                                              child: Text(
+                                                "Tồn đầu",
+                                                style: _textHeaderInTable,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                              width: 60 * SizeConfig.ratioWidth,
+                                              child: Text(
+                                                "Nhập",
+                                                style: _textHeaderInTable,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                              width: 60 * SizeConfig.ratioWidth,
+                                              child: Text(
+                                                "Xuất",
+                                                style: _textHeaderInTable,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                              width: 60 * SizeConfig.ratioWidth,
+                                              child: Text(
+                                                "Tồn cuối",
+                                                style: _textHeaderInTable,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                          SizedBox(
+                                              width: 60 * SizeConfig.ratioWidth,
+                                              child: Text(
+                                                "Note",
+                                                style: _textHeaderInTable,
+                                                textAlign: TextAlign.center,
+                                              )),
+                                        ],
+                                      )),
+                                ),
+                                Column(
+                                  children: stockcards
+                                      .map((item) => StockcardRow(
+                                            item,
+                                          ))
+                                      .toList(),
+                                ),
+                              ],
                             ),
-                          ]),
+                          ),
                         );
                       } else if (stockCardState
                           is StockCardViewStateLoadFailed) {
@@ -327,21 +338,16 @@ class StockCardScreen extends StatelessWidget {
                   BlocBuilder<StockCardViewBloc, StockCardViewState>(
                       builder: (context, state) => CustomizedButton(
                           text: "Truy xuất",
-                          onPressed:
-                              // _productId == ''
-                              //     ? () {}
-                              //     : () {
-                              //         BlocProvider.of<StockCardViewBloc>(context).add(
-                              //             StockCardViewEventLoad(
-                              //                 DateTime.now(),
-                              //                 _productId,
-                              //                 _startDate,
-                              //                 _endDate.add(Duration(days: 1))));
-                              //       }
-                              //
-                              () {
-                            print(allProductIdList.toString());
-                          }))
+                          onPressed: _productId == ''
+                              ? () {}
+                              : () {
+                                  BlocProvider.of<StockCardViewBloc>(context)
+                                      .add(StockCardViewEventLoad(
+                                          DateTime.now(),
+                                          _productId,
+                                          _startDate,
+                                          _endDate.add(Duration(days: 1))));
+                                }))
                 ],
               ),
             ),
@@ -400,5 +406,71 @@ class TextInput extends StatelessWidget {
                     const BorderSide(width: 1.0, color: Constants.mainColor)),
           ),
         ));
+  }
+}
+
+class StockcardRow extends StatelessWidget {
+  StockCardEntry stockCardEntry;
+  StockcardRow(this.stockCardEntry);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: SizedBox(
+        width: 380 * SizeConfig.ratioWidth,
+        height: 60 * SizeConfig.ratioHeight,
+        child: GestureDetector(
+          // ignore: deprecated_member_use
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                  width: 60 * SizeConfig.ratioWidth,
+                  child: Text(
+                    stockCardEntry.date,
+                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 60 * SizeConfig.ratioWidth,
+                  child: Text(
+                    stockCardEntry.beforeQuantity.toString(),
+                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 60 * SizeConfig.ratioWidth,
+                  child: Text(
+                    stockCardEntry.inputQUantity.toString(),
+                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 60 * SizeConfig.ratioWidth,
+                  child: Text(
+                    stockCardEntry.outputQuantity.toString(),
+                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 60 * SizeConfig.ratioWidth,
+                  child: Text(
+                    stockCardEntry.afterQuantity.toString(),
+                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+                    textAlign: TextAlign.center,
+                  )),
+              SizedBox(
+                  width: 60 * SizeConfig.ratioWidth,
+                  child: Text(
+                    stockCardEntry.note,
+                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+                    textAlign: TextAlign.center,
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

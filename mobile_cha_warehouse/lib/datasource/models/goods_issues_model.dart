@@ -1,11 +1,7 @@
-import 'package:mobile_cha_warehouse/datasource/models/storage_slot_model.dart';
 import 'package:mobile_cha_warehouse/datasource/models/warehouse_employee_model.dart';
 import 'package:mobile_cha_warehouse/datasource/models/warehouse_product_model.dart';
 import 'package:mobile_cha_warehouse/domain/entities/good_issue.dart';
-import 'package:mobile_cha_warehouse/domain/entities/item.dart';
-import 'package:mobile_cha_warehouse/domain/entities/storage_slot.dart';
-import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
+
 
 class GoodsIssueEntryContainerModel extends GoodsIssueEntryContainer {
   GoodsIssueEntryContainerModel(double quantity, String productionDate,
@@ -24,7 +20,7 @@ class GoodsIssueEntryContainerModel extends GoodsIssueEntryContainer {
 class GoodsIssueEntryModel extends GoodsIssueEntry {
   GoodsIssueEntryModel(
       int totalQuantity,
-      String note,
+      String? note,
       ItemModel item,
       WarehouseEmployeeModel employee,
       List<GoodsIssueEntryContainerModel> container

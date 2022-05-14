@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_cha_warehouse/domain/entities/goods_receipt.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/modify_info_screen.dart';
-import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
-import '../../../constant.dart';
 import '../../../function.dart';
 // trang nay dung de xem lai cac ro da quet QR
 List<QRScannedData> listReceiptsChecked = [];
@@ -82,14 +78,14 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
           ),
           Column(
               children: listReceiptsChecked.map((e) => RowReceipt(e)).toList()),
-          CustomizedButton(
-            text: "Quét mã QR",
-            bgColor: Constants.mainColor,
-            fgColor: Colors.white,
-            onPressed: () {
-              Navigator.pushNamed(context, '/qr_scanner_screen');
-            },
-          ),
+          // CustomizedButton(
+          //   text: "Quét mã QR",
+          //   bgColor: Constants.mainColor,
+          //   fgColor: Colors.white,
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, '/qr_scanner_screen');
+          //   },
+          // ),
         ],
       ),
     );

@@ -7,8 +7,9 @@ class ReceiptEvent extends Equatable {
 }
 
 class LoadAllReceiptEvent extends ReceiptEvent {
+  String startDate;
   DateTime timestamp;
-  LoadAllReceiptEvent(this.timestamp);
+  LoadAllReceiptEvent(this.timestamp, this.startDate);
   @override
   List<Object> get props => [timestamp];
 }
@@ -25,10 +26,4 @@ class ToggleReceiptEvent extends ReceiptEvent {
   ToggleReceiptEvent(this.index);
   @override
   List<Object> get props => [index];
-}
-class LoadReceiptEvent extends ReceiptEvent {
-  final DateTime timestamp;
-  LoadReceiptEvent(this.timestamp);
-  @override
-  List<Object> get props => [timestamp];
 }

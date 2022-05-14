@@ -29,7 +29,7 @@ class StockCardViewStateLoading extends StockCardViewState {
 
 class StockCardViewStateLoadSuccess extends StockCardViewState {
   final DateTime timestamp;
-  final StockCard stockCard;
+  final List<StockCardEntry> stockCard;
   StockCardViewStateLoadSuccess(this.timestamp, this.stockCard);
   @override
   List<Object> get props => [timestamp, stockCard];

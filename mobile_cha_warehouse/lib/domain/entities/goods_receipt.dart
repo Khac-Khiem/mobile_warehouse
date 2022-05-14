@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_cha_warehouse/domain/entities/container.dart';
 import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
 import 'package:mobile_cha_warehouse/domain/entities/item.dart';
 
@@ -18,10 +19,10 @@ class GoodsReceiptEntryContainer extends Equatable {
 
 class GoodsReceiptEntry extends Equatable {
   int itemId;
-  double plannedQuantity;
+  int plannedQuantity;
   Item item;
-  List<dynamic> containers;
-  dynamic note;
+  List<GoodsReceiptEntryContainer> containers;
+  String? note;
   GoodsReceiptEntry(
       this.itemId, this.plannedQuantity, this.item, this.containers, this.note);
   @override
@@ -33,8 +34,8 @@ class GoodsReceipt extends Equatable {
   String goodsReceiptId;
   String timestamp;
   bool confirmed;
-  // WarehouseEmployee approver;
-  dynamic approver;
+  WarehouseEmployee? approver;
+  //dynamic approver;
   List<GoodsReceiptEntry> entries;
   GoodsReceipt(this.goodsReceiptId, this.timestamp, this.confirmed,
       this.approver, this.entries);

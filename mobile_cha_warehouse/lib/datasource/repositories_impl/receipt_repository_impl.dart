@@ -6,14 +6,15 @@ class ReceiptRepositoryImpl implements ReceiptsRepo {
   ReceiptService receiptService;
   ReceiptRepositoryImpl(this.receiptService);
   @override
-  Future<List<GoodsReceipt>> getReceipts() {
-    final receipt = receiptService.getGoodsReceipt();
+  Future<List<GoodsReceipt>> getReceipts(String startDate) {
+    final receipt = receiptService.getGoodsReceipt(startDate);
     return receipt;
   }
 
   @override
   Future<GoodsReceipt> getReceiptById(String id) {
     // TODO: implement getReceiptById
-    throw UnimplementedError();
+    final receipt = receiptService.getGoodsReceiptById(id);
+    return receipt;
   }
 }

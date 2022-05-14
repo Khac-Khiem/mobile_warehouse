@@ -6,9 +6,9 @@ class IssueRepoImpl implements IssuesRepo {
   IssueService issueService;
   IssueRepoImpl(this.issueService);
   @override
-  Future<List<GoodsIssue>> getGoodsIssues() {
+  Future<List<GoodsIssue>> getGoodsIssues(String startDate) {
     // TODO: implement getIssues
-    final issues = issueService.getGoodsIssue();
+    final issues = issueService.getGoodsIssue(startDate);
     return issues;
   }
 
@@ -24,5 +24,12 @@ class IssueRepoImpl implements IssuesRepo {
       String goodsIssueId, List<GoodsIssueEntry> listIssueEntry) {
     // TODO: implement patchConfirmBasket
     throw UnimplementedError();
+  }
+
+  @override
+  Future<int> confirmContainer(String containerId, int quantity) {
+    // TODO: implement confirmContainer
+    final container = issueService.confirmContainer(containerId, quantity);
+    return container;
   }
 }

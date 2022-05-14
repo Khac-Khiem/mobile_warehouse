@@ -4,8 +4,8 @@ import 'package:mobile_cha_warehouse/domain/repositories/receipt_repository.dart
 class ReceiptUseCase {
   final ReceiptsRepo _receiptsRepo;
   ReceiptUseCase(this._receiptsRepo);
-  Future<List<GoodsReceipt>> getAllReceipts() async {
-    final goodsreceipts = await _receiptsRepo.getReceipts();
+  Future<List<GoodsReceipt>> getAllReceipts(String startDate) async {
+    final goodsreceipts = await _receiptsRepo.getReceipts(startDate);
     return goodsreceipts;
   }
   Future<GoodsReceipt> getReceiptsById(String id) async {

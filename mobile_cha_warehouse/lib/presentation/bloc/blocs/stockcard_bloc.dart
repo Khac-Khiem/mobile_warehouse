@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/domain/entities/item.dart';
-import 'package:mobile_cha_warehouse/domain/entities/stock_card.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/item_usecase.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/stockcard_usecase.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/stockcard_event.dart';
@@ -20,6 +18,7 @@ class StockCardViewBloc extends Bloc<StockCardViewEvent, StockCardViewState> {
       : super(StockCardViewStateLoadingProduct()) {
     on<StockCardViewEventLoadAllProductID>(_onLoadID);
     on<StockCardViewEventSelectProductId>(_onSelectItemID);
+    on<StockCardViewEventLoad>(_onLoadStockCard);
   }
   Future<void> _onLoadID(
       StockCardViewEvent event, Emitter<StockCardViewState> emit) async {
@@ -53,18 +52,36 @@ class StockCardViewBloc extends Bloc<StockCardViewEvent, StockCardViewState> {
       StockCardViewEvent event, Emitter<StockCardViewState> emit) async {
     if (event is StockCardViewEventSelectProductId) {
       try {
-     
         for (int i = 0; i < allProductList.length; i++) {
           if (allProductList[i].id == event.productId) {
             emit(StockCardViewStateSelectedProductID(allProductList[i].name));
           }
         }
-        //  emit(StockCardViewStateSelectedProductID(productSelected.name));
       } catch (e) {
         print(e);
         // yield StockCardViewStateLoadFailed(
-        //     errorPackage: new ErrorPackage(
-        //         errorCode: "Exception", message: "", detail: ""));
+
+      }
+    }
+  }
+
+  Future<void> _onLoadStockCard(
+      StockCardViewEvent event, Emitter<StockCardViewState> emit) async {
+    if (event is StockCardViewEventLoad) {
+      if (event.endDate.compareTo(event.startDate) != 1) {
+        emit(StockCardViewStateLoadFailed());
+      } else {
+        emit(StockCardViewStateLoading());
+        try {
+          final stockCardOrErr = await stockCardsUseCase.getStockcards(
+              event.productId,
+              DateFormat('yyyy-MM-dd').format(event.startDate),
+              DateFormat('yyyy-MM-dd').format(event.endDate));
+
+          emit(StockCardViewStateLoadSuccess(event.timestamp, stockCardOrErr));
+        } catch (e) {
+          emit(StockCardViewStateLoadFailed());
+        }
       }
     }
   }

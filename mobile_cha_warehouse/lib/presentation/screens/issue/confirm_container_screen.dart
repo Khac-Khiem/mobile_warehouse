@@ -1,96 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_cha_warehouse/domain/entities/goods_receipt.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/check_info_state.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/add_list_receipt.dart';
-import 'package:mobile_cha_warehouse/presentation/screens/receipt/list_container_receipt_screen.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/receipt/modify_info_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
 import '../../../constant.dart';
 
-List<String> labelTextList = [
-  "Mã QR:",
-  "Mã sản phẩm:",
-  "Kế hoạch:",
-  "Thực kiểm:",
-  "Ngày SX:",
-];
+// tương tự trang modify nhưng khác sự kiện xác nhận
 
-class LabelText extends StatelessWidget {
-  String text;
-  LabelText(this.text);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10 * SizeConfig.ratioHeight),
-      alignment: Alignment.centerRight,
-
-      width: 150 * SizeConfig.ratioWidth,
-      height: 55 * SizeConfig.ratioHeight,
-      //color: Colors.amber,
-      child: Text(
-        text,
-        style: TextStyle(
-            fontSize: 20 * SizeConfig.ratioFont, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-class QRScannedData {
-  String containerId;
-  String itemId;
-  int plannedQuantity;
-  int actualQuantity;
-  DateTime productionDate;
-  QRScannedData(this.containerId, this.itemId, this.plannedQuantity,
-      this.actualQuantity, this.productionDate);
-}
-
-// dùng để hiển thị cho người dùng chỉnh sửa
-List<QRScannedData> qrScannedData = [];
-
-class TextInput extends StatelessWidget {
-  String contentTextField;
-  TextInput(this.contentTextField);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 5 * SizeConfig.ratioHeight),
-        alignment: Alignment.centerRight,
-        width: 160 * SizeConfig.ratioWidth,
-        height: 55 * SizeConfig.ratioHeight,
-        //color: Colors.grey[200],
-        child: TextField(
-          enabled: true,
-          onChanged: (value) => {
-            qrScannedData[0].actualQuantity=int.parse(value)
-          },
-          //    readOnly: true,
-          controller: contentTextField == ''
-              ? TextEditingController()
-              : TextEditingController(text: contentTextField),
-          textAlignVertical: TextAlignVertical.center,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20 * SizeConfig.ratioFont),
-          decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 10 * SizeConfig.ratioHeight),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(
-                    width: 1.0 * SizeConfig.ratioWidth, color: Colors.black)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    width: 1.0 * SizeConfig.ratioWidth, color: Colors.black)),
-          ),
-        ));
-  }
-}
-
-class ModifyInfoScreen extends StatelessWidget {
+class ConfirmCOntainerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -181,12 +108,12 @@ class ModifyInfoScreen extends StatelessWidget {
                             // BlocProvider.of<CheckInfoBloc>(context).add(
                             //     AddContainerEvent(
                             //         DateTime.now(),qrScannedData[0].containerId,qrScannedData[0].actualQuantity));
-                             BlocProvider.of<ReceiptBloc>(context).add(
-                               ToggleReceiptEvent(basketReceiptIndex)
+                             BlocProvider.of<IssueBloc>(context).add(
+                               ToggleIssueEvent(basketIssueIndex)
                               );
                             
                             Navigator.pushNamed(
-                                context, '/list_container_receipt_screen');
+                                context, '/list_container_screen');
                           },
                         ),
                       ],

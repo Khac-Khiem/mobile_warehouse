@@ -21,7 +21,7 @@ class GoodsIssueEntryContainer extends Equatable {
 // từng dòng của một đơn xuất kho
 class GoodsIssueEntry extends Equatable {
   int totalQuantity;
-  String note;
+  String? note;
   WarehouseEmployee employee;
   Item item;
   List<GoodsIssueEntryContainer> container;

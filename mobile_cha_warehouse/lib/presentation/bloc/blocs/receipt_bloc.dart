@@ -8,12 +8,12 @@ import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/add_list_receipt.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/receipt/list_container_receipt_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/receipt_screen.dart';
 
 List<GoodsReceiptEntryData> goodsReceiptEntryData = [];
 //
 List<GoodsReceiptEntryContainerData> goodsReceiptEntryConainerData = [];
-List<GoodsReceipt> goodsReceipt = [];
 //Lấy all goodIssueId mà nhân công đó có, để đưa vô Dropdown Picker
 List<String> goodReceiptIdsView = [];
 //các Note sẽ được add thành List, căn cứ vô index, để gán vô GIEntry trong GIItemList
@@ -27,19 +27,23 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
   ReceiptBloc(this.receiptUseCase) : super(ReceiptInitialState()) {
     on<LoadAllReceiptEvent>(_onLoadingReceipt);
     on<ChooseReceiptEvent>(_onChooseReceipt);
+    on<ToggleReceiptEvent>(_onClickToggle);
   }
   Future<void> _onLoadingReceipt(
       ReceiptEvent event, Emitter<ReceiptState> emit) async {
     if (event is LoadAllReceiptEvent) {
       emit(ReceiptInitialState());
       try {
+        goodReceiptIdsView = [];
+        goodsReceiptEntryData.clear();
+        goodsIssueEntryContainerData = [];
         selectedGoodReceiptId = '';
-        final allReceipt = await receiptUseCase.getAllReceipts();
+        final allReceipt = await receiptUseCase.getAllReceipts(event.startDate);
         if (allReceipt.isNotEmpty) {
           for (int i = 0; i < allReceipt.length; i++) {
             goodReceiptIdsView.add(allReceipt[i].goodsReceiptId);
           }
-          goodsReceipt = allReceipt;
+          //  goodsReceipt = allReceipt;
           emit(ReceiptStateLoadSuccess(DateTime.now(), goodReceiptIdsView));
         } else {
           print('error');
@@ -55,13 +59,17 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     if (event is ChooseReceiptEvent) {
       emit(ReceiptStateListLoading());
       try {
-        listBasketIssueChecked.clear();
         goodsReceiptEntryData.clear();
         final receipt = await receiptUseCase.getReceiptsById(event.receiptId);
+        // print(receipt.entries[1]);
         for (int i = 0; i < receipt.entries.length; i++) {
           goodsReceiptEntryData
               .add(GoodsReceiptEntryData(i, receipt.entries[i], false));
+          print(goodsReceiptEntryData);
+          print(i);
         }
+        //test lỗi
+
         emit(ReceiptStateListLoadSuccess(DateTime.now()));
       } catch (e) {
         // state fail
@@ -70,15 +78,17 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     }
   }
 
-  // Future<void> _onClickToggle(
-  //     ReceiptEvent event, Emitter<IssueState> emit) async {
-  //   if (event is ToggleReceiptEvent) {
-  //     goodsReceiptEntryData[basketReceiptIndex].status =
-  //         !goodsIssueEntryData[basketReceiptIndex].status;
-  //     emit(IssueStateListRefresh(basketReceiptIndex,
-  //         goodsReceiptEntryData[basketReceiptIndex].status, DateTime.now()));
-  //   }
-  // }
+  Future<void> _onClickToggle(
+      ReceiptEvent event, Emitter<ReceiptState> emit) async {
+    if (event is ToggleReceiptEvent) {
+      goodsReceiptEntryConainerData[basketReceiptIndex].status =
+         !goodsReceiptEntryConainerData[basketReceiptIndex].status ;
+      
+      print(goodsReceiptEntryConainerData[basketReceiptIndex].status);
+      emit(ReceiptStateListRefresh(basketReceiptIndex,
+          goodsReceiptEntryData[basketReceiptIndex].status, DateTime.now()));
+    }
+  }
 }
 
 class GoodsReceiptEntryData {

@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mobile_cha_warehouse/datasource/models/goods_issues_model.dart';
+import 'package:mobile_cha_warehouse/datasource/service/receipt_service.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
 
 class IssueService {
-  Future<List<GoodsIssueModel>> getGoodsIssue() async {
+  Future<List<GoodsIssueModel>> getGoodsIssue(String startDate) async {
     final res = await http.get(Uri.parse(
-        'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/?Page=1&ItemsPerPage=10&StartTime=2021-03-01&EndTime=2023-05-30'));
+        'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/?Page=1&ItemsPerPage=10&StartTime=$startDate&EndTime=2023-05-30'));
     if (res.statusCode == 200) {
       dynamic body = jsonDecode(res.body);
 
@@ -27,16 +30,42 @@ class IssueService {
   Future<GoodsIssueModel> getGoodsIssueById(String id) async {
     final res = await http.get(Uri.parse(
         'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$id'));
-    //load vi tri https://cha-warehouse-management.azurewebsites.net/api/containers/a1
-    final response = await http.get(Uri.parse('https://cha-warehouse-management.azurewebsites.net/api/containers/$id'));
     if (res.statusCode == 200) {
       dynamic body = jsonDecode(res.body);
       print(body.toString());
-      GoodsIssueModel receipts = GoodsIssueModel.fromJson(body);
+      GoodsIssueModel issue = GoodsIssueModel.fromJson(body);
 
-      return receipts;
+      return issue;
     } else {
       throw "Unable to retrieve posts.";
+    }
+  }
+
+  Future<int> confirmContainer(String containerId, int quantity) async {
+    final response = await http.patch(
+        Uri.parse(
+            'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$containerId/containers'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          // 'Accept': 'application/json',
+          'Accept': '*/*',
+          // 'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "containerId": containerId,
+          "quantity": quantity,
+        }));
+    print(containerId + quantity.toString());
+    // trừ phẩn tử đã được confirm thành công
+    // goodsIssueEntryContainerData.removeAt(basketIssueIndex);
+    // print(goodsIssueEntryContainerData);
+    //
+    if (response.statusCode == 200) {
+      print('success');
+      return response.statusCode;
+    } else {
+      print('fail');
+      return response.statusCode;
     }
   }
 }

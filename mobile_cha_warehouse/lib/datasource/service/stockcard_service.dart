@@ -5,17 +5,17 @@ import 'package:mobile_cha_warehouse/datasource/models/stockcard_model.dart';
 import 'package:mobile_cha_warehouse/datasource/models/token_model.dart';
 
 class StockCardService {
-  Future<List<StockCardModel>> getGoodsIssue() async {
-    final res = await http.get(Uri.parse(''));
+  Future<List<StockCardEntryModel>> getStockCardByItem(String itemId, String startDate, String endDate) async {
+    final res = await http.get(Uri.parse('https://cha-warehouse-management.azurewebsites.net/api/stockcardentries/?StartTime=$startDate&EndTime=$endDate&ItemId=$itemId'));
     if (res.statusCode == 200) {
-    List<StockCardModel> body = jsonDecode(res.body);
-      // List<GoodsIssueModel> stations = body
-      //     .map(
-      //       (dynamic item) => StationModel.fromJson(item),
-      //     )
-      //     .toList();
+    List<dynamic> body = jsonDecode(res.body);
+      List<StockCardEntryModel> stockcard = body
+          .map(
+            (dynamic item) => StockCardEntryModel.fromJson(item),
+          )
+          .toList();
 
-      return body;
+      return stockcard;
     } else {
       throw "Unable to retrieve posts.";
     }

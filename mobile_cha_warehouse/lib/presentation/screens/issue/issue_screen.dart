@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/datasource/service/login_service.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/global.dart';
@@ -27,7 +28,7 @@ class _IssueScreenState extends State<IssueScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushNamed(context, '///');
           }, //sự kiện mũi tên back
         ),
         backgroundColor: Color(0xff001D37), //màu xanh dương đậm
@@ -52,17 +53,19 @@ class _IssueScreenState extends State<IssueScreen> {
             CustomizedButton(
               text: "Danh sách rổ",
               onPressed: () {
-                 Navigator.pushNamed(context, '/list_issue_screen');
+                Navigator.pushNamed(context, '/list_issue_screen');
                 AlertDialogOneBtnCustomized(
-                    context,
-                    'Thông báo',
-                    "Bạn đang đăng nhập với ID là " + employeeIdOverall,
-                    'Tiếp tục', () {
-                  Navigator.pushNamed(context, '/issue_screen');
-                    BlocProvider.of<IssueBloc>(context)
-                          .add(LoadAllIssueEvent(DateTime.now()));
-                }, 18, 22, () {}, false).show();
-               
+                        context,
+                        'Thông báo',
+                        "Bạn đang đăng nhập với ID là " + employeeIdOverall,
+                        'Tiếp tục', () {
+                  BlocProvider.of<IssueBloc>(context).add(LoadIssueEvent(
+                      DateTime.now(),
+                      DateFormat("dd-MM-yyyy").format(
+                          DateTime.now().subtract(Duration(days: 30)))));
+                  //  Navigator.pushNamed(context, '/issue_screen');
+                }, 18, 22, () {}, false)
+                    .show();
               },
             ),
             SizedBox(

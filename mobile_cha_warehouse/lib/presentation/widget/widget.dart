@@ -336,16 +336,7 @@ class ColumnHeader extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   )),
-              // SizedBox(
-              //   width: 60 * SizeConfig.ratioWidth,
-              //   child: Text(
-              //     "Vị trí",
-              //     style: TextStyle(
-              //         fontSize: 21 * SizeConfig.ratioFont,
-              //         fontWeight: FontWeight.bold),
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
+              
               SizedBox(
                 width: 100 * SizeConfig.ratioWidth,
                 child: Text(
@@ -399,8 +390,8 @@ class _CustomizeDatePickerState extends State<CustomizeDatePicker> {
             return Theme(
               data: ThemeData(
                   primarySwatch: Constants.materialMainColor,
-                  primaryColor: Color(0xFFC41A3B),
-                  accentColor: Color(0xFFC41A3B)),
+                  primaryColor:const Color(0xFFC41A3B),
+                  accentColor: const Color(0xFFC41A3B)),
               child: child!,
             );
           });

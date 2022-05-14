@@ -30,7 +30,7 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
   ContainerUseCase containerUseCase;
   IssueBloc(this.issueUseCase, this.containerUseCase)
       : super(IssueStateInitial()) {
-    on<LoadAllIssueEvent>(_onLoadingIssue);
+    on<LoadIssueEvent>(_onLoadingIssue);
     on<ChooseIssueEvent>(_onChooseIssue);
     on<ToggleIssueEvent>(_onClickToggle);
     on<FetchLocationIssueEvent>(_onLoadLocation);
@@ -39,15 +39,20 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
   }
   Future<void> _onLoadingIssue(
       IssueEvent event, Emitter<IssueState> emit) async {
-    if (event is LoadAllIssueEvent) {
+    if (event is LoadIssueEvent) {
       emit(IssueStateInitial());
       try {
         listBasketIssueChecked.clear();
         selectedGoodIssueId = '';
-        final allIssue = await issueUseCase.getAllIssues();
+        goodsIssueEntryContainerData = [];
+        goodsIssueEntryData = [];
+        final allIssue = await issueUseCase.getAllIssues(event.startDate);
         if (allIssue is List<GoodsIssue>) {
           for (int i = 0; i < allIssue.length; i++) {
-            goodIssueIdsView.add(allIssue[i].id);
+            if(allIssue[i].isConfirmed ==false){
+                          goodIssueIdsView.add(allIssue[i].id);
+
+            }
           }
           emit(IssueStateLoadSuccess(DateTime.now(), goodIssueIdsView));
         } else {
@@ -62,7 +67,6 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
 
   Future<void> _onChooseIssue(
       IssueEvent event, Emitter<IssueState> emit) async {
-
     if (event is ChooseIssueEvent) {
       emit(IssueStateListLoading());
       try {
@@ -104,10 +108,11 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
       emit(LoadingLocationState());
       try {
         //
+        locationContainer.clear();
         final container = await containerUseCase.getContainerById(event.id);
         locationContainer.add(container.storageSlot);
-     //   print(locationContainer[0].shelfId);
-        emit(LoadLocationContainerSuccess());
+           print(locationContainer[0].shelfId + locationContainer[0].id.toString());
+        emit(LoadLocationContainerSuccess(DateTime.now()));
       } catch (e) {
         emit(IssueStateFailure(DateTime.now()));
       }

@@ -7,6 +7,7 @@ import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
+import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
@@ -35,17 +36,17 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              // BlocProvider.of<CheckListBloc>(context)
-              //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
-              // AlertDialogTwoBtnCustomized(
-              //   context: context,
-              //   title: "Bạn có chắc?",
-              //   desc: "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
-              //   onPressedBtn1: () {
-              //     Navigator.pop(context);
-              //   },
-              // ).show();
-              Navigator.pop(context);
+              // khong cho phep thoat khoi giao dien khi ddang lamf viec, chi thoat khi da xac nhan
+              AlertDialogTwoBtnCustomized(
+                      context,
+                      'Ban co chac',
+                      'Khi nhan tro lai, moi du lieu se khong duoc luu',
+                      'Tro lai',
+                      'Tiep tuc', () {
+                Navigator.pushNamed(context, '/issues_screen');
+              }, () {}, 18, 22)
+                  .show();
+              //  Navigator.pop(context);
             },
           ),
           backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
@@ -65,8 +66,7 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                 return ExceptionErrorState(
                   height: 300,
                   title: "Đã có lỗi xảy ra",
-                  message:
-                      "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
+                  message: "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
                   imageDirectory: 'lib/assets/sad_face_search.png',
                   imageHeight: 140,
                 );
@@ -106,6 +106,11 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                                     selectedDate = pickedTime;
                                     print(DateFormat("dd-MM-yyyy")
                                         .format(selectedDate));
+                                    BlocProvider.of<IssueBloc>(context).add(
+                                        LoadIssueEvent(
+                                            DateTime.now(),
+                                            DateFormat("dd-MM-yyyy")
+                                                .format(selectedDate)));
                                   },
                                 ),
                               ),
@@ -161,7 +166,8 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                                 items: goodIssueIdsView,
                                 selectedItem: selectedGoodIssueId,
                                 onChanged: (String? data) {
-                                  selectedGoodIssueId = data!;
+                                  // ! hoac toString
+                                  selectedGoodIssueId = data.toString();
                                   BlocProvider.of<IssueBloc>(context).add(
                                       ChooseIssueEvent(
                                           DateTime.now(), selectedGoodIssueId));
@@ -242,11 +248,13 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                         goodsIssueEntryData.length != 0
                             ? CustomizedButton(
                                 text: 'Xác nhận',
-                                onPressed: () => Navigator.pop(context),
-                              )
+                                onPressed: () =>
+                                    // send confirm
+                                    Navigator.pushNamed(
+                                        context, '/issue_screen'))
                             : CustomizedButton(
                                 text: "Trở lại",
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () => () {},
                               ),
                         SizedBox(
                           height: 30 * SizeConfig.ratioHeight,
@@ -302,12 +310,13 @@ class RowIssue extends StatelessWidget {
                 ),
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
-                  child: Text(goodsIssueEntryRow.goodsIssueEntry.note,
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
+                  child:
+                      Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
+                          style: TextStyle(
+                            fontSize: 21 * SizeConfig.ratioFont,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center),
                 ),
               ],
             ),

@@ -23,7 +23,6 @@ class IssueStateLoadSuccess extends IssueState {
   List<Object> get props => [timestamp, listIssueId];
 }
 
-
 class IssueStateListLoading extends IssueState {
   @override
   List<Object> get props => [];
@@ -35,13 +34,13 @@ class IssueStateListLoadSuccess extends IssueState {
   @override
   List<Object> get props => [timestamp];
 }
+
 // refresh after click toggle
 class IssueStateListRefresh extends IssueState {
   final int index;
   final bool entryStatus;
   final DateTime timestamp; //Để có thể cập nhật toggle và toggle inconsistency
-  IssueStateListRefresh(
-      this.index, this.entryStatus, this.timestamp);
+  IssueStateListRefresh(this.index, this.entryStatus, this.timestamp);
   @override
   List<Object> get props => [index, entryStatus, timestamp];
 }
@@ -60,7 +59,7 @@ class ConfirmSuccessIssueState extends IssueState {
 
 class ConfirmFailureIssueState extends IssueState {
   final DateTime timestamp;
- 
+
   ConfirmFailureIssueState(this.timestamp);
   @override
   List<Object> get props => [timestamp];
@@ -87,14 +86,17 @@ class ReportInconsistencyFailedIssueState extends IssueState {
   @override
   List<Object> get props => [timestamp];
 }
-class LoadLocationContainerSuccess extends IssueState{
+
+class LoadLocationContainerSuccess extends IssueState {
+  DateTime timeStamp;
+  LoadLocationContainerSuccess(this.timeStamp);
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [timeStamp];
 }
-class LoadingLocationState extends IssueState{
+
+class LoadingLocationState extends IssueState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
-
 }

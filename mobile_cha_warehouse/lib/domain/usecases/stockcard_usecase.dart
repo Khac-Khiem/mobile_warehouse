@@ -4,8 +4,8 @@ import 'package:mobile_cha_warehouse/domain/repositories/stockcard_repository.da
 class StockCardsUseCase {
   final StockCardRepo _stockCardRepo;
   StockCardsUseCase(this._stockCardRepo);
-  Future<List<StockCard>> getStockcards(String id) async {
-    final stockCard = await _stockCardRepo.getStockCards(id);
+  Future<List<StockCardEntry>> getStockcards(String id, String startDate, String endDate) async {
+    final stockCard = await _stockCardRepo.getStockCards(id, startDate, endDate);
     return stockCard;
   }
 }

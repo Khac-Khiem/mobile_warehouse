@@ -1,3 +1,4 @@
+import 'package:mobile_cha_warehouse/datasource/models/stockcard_model.dart';
 import 'package:mobile_cha_warehouse/datasource/service/stockcard_service.dart';
 import 'package:mobile_cha_warehouse/domain/entities/stock_card.dart';
 import 'package:mobile_cha_warehouse/domain/repositories/stockcard_repository.dart';
@@ -5,9 +6,11 @@ import 'package:mobile_cha_warehouse/domain/repositories/stockcard_repository.da
 class StockCardRepositoryImpl implements StockCardRepo {
   StockCardService stockCardService;
   StockCardRepositoryImpl(this.stockCardService);
+
   @override
-  Future<List<StockCard>> getStockCards(String id) {
+  Future<List<StockCardEntry>> getStockCards(String id, String startDate, String endDate) {
     // TODO: implement getStockCards
-    throw UnimplementedError();
+    final stockcard = stockCardService.getStockCardByItem(id, startDate, endDate);
+    return stockcard;
   }
 }

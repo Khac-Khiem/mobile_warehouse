@@ -110,7 +110,7 @@ class _QRScannerIssueScreenState extends State<QRScannerIssueScreen> {
                                       ToggleIssueEvent(basketIssueIndex));
                                   // back to container screen
                                   Navigator.pushNamed(
-                                      context, '/list_container_screen');
+                                      context, '/confirm_container_screen');
                                 }, () {}, 18, 22);
                               }
                             : () {

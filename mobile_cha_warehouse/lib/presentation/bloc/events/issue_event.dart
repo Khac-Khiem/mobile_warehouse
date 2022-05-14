@@ -1,12 +1,14 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile_cha_warehouse/domain/entities/good_issue.dart';
 
 abstract class IssueEvent extends Equatable {}
 // sự kiện load tất cả đơn xuất kho về
 
-class LoadAllIssueEvent extends IssueEvent {
+class LoadIssueEvent extends IssueEvent {
+  final String startDate;
   final DateTime timestamp;
-  LoadAllIssueEvent(this.timestamp);
+  LoadIssueEvent(this.timestamp, this.startDate);
   @override
   List<Object> get props => [timestamp];
 }
@@ -22,10 +24,11 @@ class ChooseIssueEvent extends IssueEvent {
 
 class ChosseContainerIssueEvent extends IssueEvent {
   GoodsIssueEntry goodsIssueEntry;
-  ChosseContainerIssueEvent(this.goodsIssueEntry);
+  DateTime timeStamp;
+  ChosseContainerIssueEvent(this.goodsIssueEntry, this.timeStamp);
   @override
   // TODO: implement props
-  List<Object?> get props => [goodsIssueEntry];
+  List<Object?> get props => [goodsIssueEntry, timeStamp];
 }
 
 // sự kiện đánh dấu rổ đã lấy
@@ -62,8 +65,10 @@ class ConfirmClickedIssueEvent extends IssueEvent {
 // event load vị trí rổ khi truy xuất container
 class FetchLocationIssueEvent extends IssueEvent {
   String id;
-  FetchLocationIssueEvent(this.id);
+  DateTime timeStamp;
+  FetchLocationIssueEvent(this.id, this.timeStamp);
   @override
   // TODO: implement props
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, timeStamp];
 }
+

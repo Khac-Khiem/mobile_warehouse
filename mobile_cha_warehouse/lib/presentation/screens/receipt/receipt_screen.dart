@@ -9,6 +9,7 @@ import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
+import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
@@ -22,18 +23,6 @@ class ReceiptScreen extends StatefulWidget {
 class _ReceiptScreenState extends State<ReceiptScreen> {
   DateTime selectedDate = DateTime.now();
   // TextEditingController _dropdownController = TextEditingController();
-  _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,17 +34,17 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              // BlocProvider.of<CheckListBloc>(context)
-              //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
-              // AlertDialogTwoBtnCustomized(
-              //   context: context,
-              //   title: "Bạn có chắc?",
-              //   desc: "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
-              //   onPressedBtn1: () {
-              //     Navigator.pop(context);
-              //   },
-              // ).show();
-              Navigator.pop(context);
+              AlertDialogTwoBtnCustomized(
+                      context,
+                      'Ban co chac',
+                      'Khi nhan tro lai, moi du lieu se khong duoc luu',
+                      'Tro lai',
+                      'Tiep tuc', () {
+                Navigator.pushNamed(context, '///');
+              }, () {}, 18, 22)
+                  .show();
+
+              //  Navigator.pop(context);
             },
           ),
           backgroundColor: Color(0xff001D37), //màu xanh dương đậm
@@ -91,25 +80,28 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                     fontSize: 20 * SizeConfig.ratioFont,
                                     fontWeight: FontWeight.bold),
                               ),
-                              GestureDetector(
-                                onTap: () => _selectDate(context),
-                                child: Container(
-                                  width: 210 * SizeConfig.ratioWidth,
-                                  height: 50 * SizeConfig.ratioHeight,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1, color: Constants.mainColor),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(DateFormat('dd-MM-yyyy')
-                                          .format(selectedDate)),
-                                      Icon(Icons.calendar_today)
-                                    ],
-                                  ),
+                              Container(
+                                width: 180 * SizeConfig.ratioWidth,
+                                height: 45 * SizeConfig.ratioHeight,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1, color: Constants.mainColor),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10))),
+                                child: CustomizeDatePicker(
+                                  fontColor: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  initDateTime: selectedDate,
+                                  okBtnClickedFunction: (pickedTime) {
+                                    selectedDate = pickedTime;
+                                    print(DateFormat("dd-MM-yyyy")
+                                        .format(selectedDate));
+                                    BlocProvider.of<ReceiptBloc>(context).add(
+                                        LoadAllReceiptEvent(
+                                            DateTime.now(),
+                                            DateFormat("dd-MM-yyyy")
+                                                .format(selectedDate)));
+                                  },
                                 ),
                               ),
                             ],
@@ -129,7 +121,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Container(
-                              width: 210 * SizeConfig.ratioWidth,
+                              width: 180 * SizeConfig.ratioWidth,
                               height: 50 * SizeConfig.ratioHeight,
                               padding: const EdgeInsets.all(0),
                               decoration: BoxDecoration(
@@ -164,7 +156,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                 items: goodReceiptIdsView,
                                 selectedItem: selectedGoodReceiptId,
                                 onChanged: (String? data) {
-                                  selectedGoodReceiptId = data!;
+                                  selectedGoodReceiptId = data.toString();
                                   BlocProvider.of<ReceiptBloc>(context).add(
                                       ChooseReceiptEvent(
                                           selectedGoodReceiptId));
@@ -227,7 +219,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                                     item,
                                                   ))
                                               .toList(),
-                                        )
+                                        ),
                                       ]
                                     : [
                                         ExceptionErrorState(
@@ -242,65 +234,6 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                       ]);
                           }
                         }),
-                        // Padding(
-                        //   padding: const EdgeInsets.all(1),
-                        //   child: SizedBox(
-                        //       width: 380 * SizeConfig.ratioWidth,
-                        //       height: 60 * SizeConfig.ratioHeight,
-                        //       // ignore: deprecated_member_use
-                        //       child: Row(
-                        //         mainAxisAlignment: MainAxisAlignment.center,
-                        //         crossAxisAlignment: CrossAxisAlignment.center,
-                        //         children: [
-                        //           SizedBox(
-                        //               width: 80 * SizeConfig.ratioWidth,
-                        //               child: Text(
-                        //                 "Mã entry",
-                        //                 style: TextStyle(
-                        //                     fontSize: 21 * SizeConfig.ratioFont,
-                        //                     fontWeight: FontWeight.bold),
-                        //                 textAlign: TextAlign.center,
-                        //               )),
-                        //           SizedBox(
-                        //             width: 80 * SizeConfig.ratioWidth,
-                        //             child: Text(
-                        //               "Mã SP",
-                        //               style: TextStyle(
-                        //                   fontSize: 21 * SizeConfig.ratioFont,
-                        //                   fontWeight: FontWeight.bold),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //           ),
-                        //           SizedBox(
-                        //             width: 80 * SizeConfig.ratioWidth,
-                        //             child: Text(
-                        //               "Số lượng",
-                        //               style: TextStyle(
-                        //                   fontSize: 21 * SizeConfig.ratioFont,
-                        //                   fontWeight: FontWeight.bold),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //           ),
-                        //           // SizedBox(
-                        //           //   width: 100 * SizeConfig.ratioWidth,
-                        //           //   child: Text(
-                        //           //     "SL/KL",
-                        //           //     style: TextStyle(
-                        //           //         fontSize: 21 * SizeConfig.ratioFont,
-                        //           //         fontWeight: FontWeight.bold),
-                        //           //     textAlign: TextAlign.center,
-                        //           //   ),
-                        //           // ),
-                        //         ],
-                        //       )),
-                        // ),
-                        Column(
-                          children: goodsReceiptEntryData
-                              .map((item) => RowReceipt(
-                                    item,
-                                  ))
-                              .toList(),
-                        ),
                         CustomizedButton(
                             text: 'Xác Nhận',
                             onPressed: () =>
@@ -362,17 +295,6 @@ class RowReceipt extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center),
                 ),
-                SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
               ],
             ),
             color: goodsReceiptEntryRow.status
@@ -381,15 +303,14 @@ class RowReceipt extends StatelessWidget {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
-              goodsIssueEntryContainerData.clear();
+              goodsReceiptEntryConainerData.clear();
               //Sự kiện click vào từng dòng
               for (int i = 0;
                   i < goodsReceiptEntryRow.goodsReceiptEntry.containers.length;
                   i++) {
-                // goodsIssueEntryContainerData.add(GoodsIssueEntryContainerData(
-                //     i, goodsIssueEntryRow.goodsIssueEntry.container[i],));
-                goodsReceiptEntryConainerData
-                    .add(goodsReceiptEntryRow.goodsReceiptEntry.containers[i]);
+                goodsReceiptEntryConainerData.add(
+                    GoodsReceiptEntryContainerData(i, false,
+                        goodsReceiptEntryRow.goodsReceiptEntry.containers[i]));
               }
               Navigator.pushNamed(context, '/list_container_receipt_screen');
             },

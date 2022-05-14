@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/stockcard_event.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/qr_issue_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/qr_scanner_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/main_app_name.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
@@ -63,7 +65,7 @@ class MainScreen extends StatelessWidget {
                 text: "Nhập kho",
                 onPressed: () async {
                   BlocProvider.of<ReceiptBloc>(context)
-                      .add(LoadAllReceiptEvent(DateTime.now()));
+                      .add(LoadAllReceiptEvent(DateTime.now(),"2021-03-01"));
 
                   Navigator.pushNamed(context, '/receipt_screen');
                   scanQRresult = "-1";
@@ -76,9 +78,9 @@ class MainScreen extends StatelessWidget {
               CustomizedButton(
                 text: "Xuất kho",
                 onPressed: () async {
+                  scanQRIssueresult = "-1";
                   BlocProvider.of<IssueBloc>(context)
-                      .add(LoadAllIssueEvent(DateTime.now()));
-
+                      .add(LoadIssueEvent(DateTime.now(), '2022-10-10'));
                   Navigator.pushNamed(context, '/issue_screen');
                 },
               ),

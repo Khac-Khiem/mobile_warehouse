@@ -2,8 +2,11 @@ import 'package:ditredi/ditredi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/function.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -13,55 +16,50 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  // var _displayMode = DisplayMode.cubes;
   final _cubes = _generateCubes();
-  // final _points = _generatePoints().toList();
-
   final _controller = DiTreDiController(
     rotationX: -20,
-    // rotationY: -10,
-    // rotationZ: 0,
     light: vector.Vector3(-0.5, -0.5, 0.5),
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.west, //mũi tên back
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // BlocProvider.of<CheckListBloc>(context)
-              //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
-              // AlertDialogTwoBtnCustomized(
-              //   context: context,
-              //   title: "Bạn có chắc?",
-              //   desc: "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
-              //   onPressedBtn1: () {
-              //     Navigator.pop(context);
-              //   },
-              // ).show();
-              Navigator.pop(context);
-            },
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.west, //mũi tên back
+            color: Colors.white,
           ),
-          backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
-          //nút bên phải
-          title: const Text(
-            'Vị trí hàng hóa cần lấy',
-            style: TextStyle(fontSize: 22), //chuẩn
-          ),
+          onPressed: () {
+            // BlocProvider.of<CheckListBloc>(context)
+            //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
+            // AlertDialogTwoBtnCustomized(
+            //   context: context,
+            //   title: "Bạn có chắc?",
+            //   desc: "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
+            //   onPressedBtn1: () {
+            //     Navigator.pop(context);
+            //   },
+            // ).show();
+            Navigator.pop(context);
+          },
         ),
-        endDrawer: DrawerUser(),
+        backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
+        //nút bên phải
+        title: const Text(
+          'Vị trí hàng hóa cần lấy',
+          style: TextStyle(fontSize: 22), //chuẩn
+        ),
+      ),
+      endDrawer: DrawerUser(),
       body: BlocBuilder<IssueBloc, IssueState>(
         builder: (context, state) {
           if (state is LoadingLocationState) {
             return CircularLoading();
           } else {
             return Container(
-          //    color: Color(0xFFfbe5ae),
+              //    color: Color(0xFFfbe5ae),
               child: SafeArea(
                 child: Flex(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,10 +90,19 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                     Center(
                       child: CustomizedButton(
-                        text: 'Quét QR',
-                        onPressed: () => Navigator.pushNamed(
-                            context, '/qr_scanner_issue_screen'),
-                      ),
+                          text: 'Quét QR',
+                          onPressed: () async {
+                                BlocProvider.of<CheckInfoBloc>(context).add(
+                                    CheckInfoEventRequested(
+                                        timeStamp: DateTime.now(),
+                                        basketID: basketIssueId));
+                                Navigator.pushNamed(
+                                    context, '/confirm_container_screen');
+                              }
+                          // Navigator.pushNamed(
+                          //     context, '/qr_scanner_issue_screen'),
+
+                          ),
                     )
                   ],
                 ),
