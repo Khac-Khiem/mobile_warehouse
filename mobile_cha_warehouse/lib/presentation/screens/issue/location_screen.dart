@@ -92,13 +92,15 @@ class _LocationScreenState extends State<LocationScreen> {
                       child: CustomizedButton(
                           text: 'Quét QR',
                           onPressed: () async {
-                                BlocProvider.of<CheckInfoBloc>(context).add(
-                                    CheckInfoEventRequested(
-                                        timeStamp: DateTime.now(),
-                                        basketID: basketIssueId));
-                                Navigator.pushNamed(
-                                    context, '/confirm_container_screen');
-                              }
+                            BlocProvider.of<CheckInfoBloc>(context).add(
+                                CheckInfoEventRequested(
+                                    timeStamp: DateTime.now(),
+                                    basketID: basketIssueId));
+                            // Navigator.pushNamed(
+                            //     context, '/confirm_container_screen');
+                            Navigator.pushNamed(
+                                context, '/qr_scanner_issue_screen');
+                          }
                           // Navigator.pushNamed(
                           //     context, '/qr_scanner_issue_screen'),
 

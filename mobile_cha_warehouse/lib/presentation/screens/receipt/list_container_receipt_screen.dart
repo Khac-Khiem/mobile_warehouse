@@ -196,13 +196,13 @@ class RowContainer extends StatelessWidget {
 
               //Sự kiện click vào từng dòng
               //trang vi tri => tiep tuc quet ma
-                BlocProvider.of<CheckInfoBloc>(context).add(
-                                    CheckInfoEventRequested(
-                                        timeStamp: DateTime.now(),
-                                        basketID: basketReceiptId));
-            //  Navigator.pushNamed(context, '/qr_scanner_issue_screen');
+                // BlocProvider.of<CheckInfoBloc>(context).add(
+                //                     CheckInfoEventRequested(
+                //                         timeStamp: DateTime.now(),
+                //                         basketID: basketReceiptId));
+              Navigator.pushNamed(context, '/qr_scanner_issue_screen');
 
-                      Navigator.pushNamed(context, '/modify_info_screen');
+                 //     Navigator.pushNamed(context, '/modify_info_screen');
 
             },
           ),

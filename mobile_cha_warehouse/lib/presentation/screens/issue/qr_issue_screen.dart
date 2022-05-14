@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/function.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
@@ -106,9 +108,12 @@ class _QRScannerIssueScreenState extends State<QRScannerIssueScreen> {
                                     "Xác nhận",
                                     "Trở lại", () {
                                   //add event click toggle container
-                                    BlocProvider.of<IssueBloc>(context).add(
-                                      ToggleIssueEvent(basketIssueIndex));
-                                  // back to container screen
+                                    // BlocProvider.of<IssueBloc>(context).add(
+                                    //   ToggleIssueEvent(basketIssueIndex));
+                                     BlocProvider.of<CheckInfoBloc>(context).add(
+                                CheckInfoEventRequested(
+                                    timeStamp: DateTime.now(),
+                                    basketID: basketIssueId));
                                   Navigator.pushNamed(
                                       context, '/confirm_container_screen');
                                 }, () {}, 18, 22);
