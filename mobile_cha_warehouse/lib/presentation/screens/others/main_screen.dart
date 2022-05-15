@@ -81,7 +81,7 @@ class MainScreen extends StatelessWidget {
                   scanQRIssueresult = "-1";
                   BlocProvider.of<IssueBloc>(context)
                       .add(LoadIssueEvent(DateTime.now(), '2022-10-10'));
-                  Navigator.pushNamed(context, '/issue_screen');
+                  Navigator.pushNamed(context, '/list_issue_screen');
                 },
               ),
               SizedBox(

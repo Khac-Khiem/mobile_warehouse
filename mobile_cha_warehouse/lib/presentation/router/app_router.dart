@@ -84,8 +84,8 @@ class AppRoute {
                   BlocProvider<ReceiptBloc>(create: (context) => injector()),
                    BlocProvider<CheckInfoBloc>(create: (context) => injector()),
                 ], child: ListContainerReceiptScreen()));   
-      // case '/add_list_receipt':
-      //   return MaterialPageRoute(builder: (_) => AddListReceiptScreen());
+      case '/add_list_receipt':
+        return MaterialPageRoute(builder: (_) => AddListReceiptScreen());
       case '/qr_scanner_screen':
         return MaterialPageRoute(
             builder: (context) => BlocProvider<CheckInfoBloc>(

@@ -268,7 +268,7 @@ class RowReceipt extends StatelessWidget {
                 SizedBox(
                     width: 100 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.itemId.toString(),
+                      goodsReceiptEntryRow.goodsReceiptEntry.item.id,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -277,7 +277,7 @@ class RowReceipt extends StatelessWidget {
                     )),
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
-                  child: Text(goodsReceiptEntryRow.goodsReceiptEntry.item.id,
+                  child: Text(goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity.toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -287,7 +287,7 @@ class RowReceipt extends StatelessWidget {
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
                   child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
+                      goodsReceiptEntryRow.goodsReceiptEntry.note
                           .toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,

@@ -251,7 +251,7 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                                 onPressed: () =>
                                     // send confirm
                                     Navigator.pushNamed(
-                                        context, '/issue_screen'))
+                                        context, '///'))
                             : CustomizedButton(
                                 text: "Trở lại",
                                 onPressed: () => () {},

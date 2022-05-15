@@ -9,6 +9,7 @@ import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.d
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
+import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../constant.dart';
 
@@ -96,15 +97,37 @@ class ListContainerReceiptScreen extends StatelessWidget {
                             ),
                           ],
                         )),
+                        goodsReceiptEntryConainerData.isEmpty ? 
+                        ExceptionErrorState(
+                                        height: 300,
+                                        title: "Rổ chưa xác định",
+                                        message:
+                                            "Quét mã để tiến hành nhập kho",
+                                        imageDirectory:
+                                            'lib/assets/sad_face_search.png',
+                                        imageHeight: 140,
+                                      ):
                     Column(
                       children: goodsReceiptEntryConainerData
                           .map((item) => RowContainer(item))
                           .toList(),
                     ),
-                   CustomizedButton(
-                      text: 'Xác nhận',
+                    CustomizedButton(
+                      text: 'DS rổ đã nhập',
                       onPressed: () async {
-                        for (var item in goodsReceiptEntryConainerData ) {
+                      Navigator.pushNamed(context, '/add_list_receipt');
+                      }
+                      // hiển thị thông báo
+                      // gửi dữ liệu rổ lên server
+                      // Navigator.pushNamed(context, '/list_issue_screen')
+                      ),
+                   CustomizedButton(
+                      text: goodsReceiptEntryConainerData.isEmpty ? 'Quét mã' :'Xác nhận',
+                      onPressed: () async {
+                       if(goodsReceiptEntryConainerData.isEmpty){
+                          Navigator.pushNamed(context, '/qr_scanner_issue_screen');
+                       }else{
+                          for (var item in goodsReceiptEntryConainerData ) {
                           if (item.status == false) {
                             AlertDialogTwoBtnCustomized(
                                     context,
@@ -115,8 +138,11 @@ class ListContainerReceiptScreen extends StatelessWidget {
                               Navigator.pushNamed(context, '/receipt_screen');
                             }, () {}, 18, 22)
                                 .show();
+                          }else{
+                             Navigator.pushNamed(context, '/receipt_screen');
                           }
                         }
+                       }
                       }
                       // hiển thị thông báo
                       // gửi dữ liệu rổ lên server

@@ -9,7 +9,11 @@ import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_s
 class IssueService {
   Future<List<GoodsIssueModel>> getGoodsIssue(String startDate) async {
     final res = await http.get(Uri.parse(
-        'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/?Page=1&ItemsPerPage=10&StartTime=$startDate&EndTime=2023-05-30'));
+        'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/?Page=1&ItemsPerPage=10&StartTime=$startDate&EndTime=2023-05-30'),
+         headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': '*/*',
+        });
     if (res.statusCode == 200) {
       dynamic body = jsonDecode(res.body);
 
@@ -29,7 +33,11 @@ class IssueService {
 
   Future<GoodsIssueModel> getGoodsIssueById(String id) async {
     final res = await http.get(Uri.parse(
-        'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$id'));
+        'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$id'),
+         headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': '*/*',
+        });
     if (res.statusCode == 200) {
       dynamic body = jsonDecode(res.body);
       print(body.toString());
