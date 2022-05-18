@@ -28,7 +28,10 @@ class ReceiptService {
       // print(allReceipts);
       return allReceipts;
     } else {
-      throw "Unable to retrieve posts.";
+      List<GoodsReceiptsModel> allReceipts = [];
+
+      //throw "Unable to retrieve posts.";
+      return allReceipts;
     }
   }
 
@@ -50,4 +53,27 @@ class ReceiptService {
       throw "Unable to retrieve posts.";
     }
   }
+  // Future<int> confirmContainer(String receiptId, ) async {
+  //   final response = await http.patch(
+  //       Uri.parse(
+  //           'https://cha-warehouse-management.azurewebsites.net/api/goodsreceipts/$receiptId/containers'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json',
+  //         // 'Accept': 'application/json',
+  //         'Accept': '*/*',
+  //         // 'Authorization': 'Bearer $token',
+  //       },
+  //       body: jsonEncode(<String, dynamic>{
+  //         "containerId": containerId,
+  //         "quantity": quantity,
+  //       }));
+  //   print(containerId + quantity.toString());
+  //   if (response.statusCode == 200) {
+  //     print('success');
+  //     return response.statusCode;
+  //   } else {
+  //     print('fail');
+  //     return response.statusCode;
+  //   }
+  // }
 }

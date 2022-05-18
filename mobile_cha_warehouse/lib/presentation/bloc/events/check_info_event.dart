@@ -11,12 +11,3 @@ class CheckInfoEventRequested extends CheckInfoEvent {
       [timeStamp, basketID]; //Với mỗi basket ID thì sẽ refresh lại
 }
 
-class AddContainerEvent extends CheckInfoEvent {
-  DateTime timeStamp;
-  int quantity;
-  String containerId;
-  AddContainerEvent(this.timeStamp, this.containerId, this.quantity);
-  @override
-  // TODO: implement props
-  List<Object?> get props => [timeStamp, containerId];
-}

@@ -11,7 +11,7 @@ class CheckInfoBloc extends Bloc<CheckInfoEvent, CheckInfoState> {
   CheckInfoBloc(this.containerUseCase, this.issueUseCase)
       : super(CheckInfoStateLoading()) {
     on<CheckInfoEventRequested>(_onLoading);
-    on<AddContainerEvent>(_onAddContainer);
+   // on<AddContainerEvent>(_onAddContainer);
   }
   @override
   Future<void> _onLoading(
@@ -32,20 +32,20 @@ class CheckInfoBloc extends Bloc<CheckInfoEvent, CheckInfoState> {
     }
   }
 
-  Future<void> _onAddContainer(
-      CheckInfoEvent event, Emitter<CheckInfoState> emit) async {
-    if (event is AddContainerEvent) {
-      emit(CheckInfoStateLoading());
-      //Tất cả các lệnh dùng repository, đều phải có try catch để tránh lỗi crash
-      try {
-        final container =
-            issueUseCase.confirmContainer(event.containerId, event.quantity);
-        //Trả về view nguyên cái basket, view tự tách ra mà dùng
-        emit(AddContainerStateSuccess(DateTime.now()));
-      } catch (e) {
-        print(e);
-        emit(CheckInfoStateFailure()); // Viết vậy để truyền String vô thôi
-      }
-    }
-  }
+  // Future<void> _onAddContainer(
+  //     CheckInfoEvent event, Emitter<CheckInfoState> emit) async {
+  //   if (event is AddContainerEvent) {
+  //     emit(CheckInfoStateLoading());
+  //     //Tất cả các lệnh dùng repository, đều phải có try catch để tránh lỗi crash
+  //     try {
+  //       final container =
+  //           issueUseCase.confirmContainer(event.containerId, event.quantity);
+  //       //Trả về view nguyên cái basket, view tự tách ra mà dùng
+  //       emit(AddContainerStateSuccess(DateTime.now()));
+  //     } catch (e) {
+  //       print(e);
+  //       emit(CheckInfoStateFailure()); // Viết vậy để truyền String vô thôi
+  //     }
+  //   }
+  // }
 }

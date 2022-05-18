@@ -22,29 +22,28 @@ class ChooseIssueEvent extends IssueEvent {
   List<Object> get props => [timestamp, goodIssueId];
 }
 
-class ChosseContainerIssueEvent extends IssueEvent {
-  GoodsIssueEntry goodsIssueEntry;
-  DateTime timeStamp;
-  ChosseContainerIssueEvent(this.goodsIssueEntry, this.timeStamp);
-  @override
-  // TODO: implement props
-  List<Object?> get props => [goodsIssueEntry, timeStamp];
-}
-
-// sự kiện đánh dấu rổ đã lấy
-// class ToggleIssueEvent extends IssueEvent {
-//   final int index;
-//   final bool entryStatus;
-//   ToggleIssueEvent(this.entryStatus, this.index);
+// class ChosseContainerIssueEvent extends IssueEvent {
+//   GoodsIssueEntry goodsIssueEntry;
+//   DateTime timeStamp;
+//   ChosseContainerIssueEvent(this.goodsIssueEntry, this.timeStamp);
 //   @override
-//   List<Object> get props => [index, entryStatus];
+//   // TODO: implement props
+//   List<Object?> get props => [goodsIssueEntry, timeStamp];
 // }
-class ToggleIssueEvent extends IssueEvent {
+
+class ToggleContainerIssueEvent extends IssueEvent {
   final int index;
-  ToggleIssueEvent(this.index);
+  ToggleContainerIssueEvent(this.index);
   @override
   List<Object> get props => [index];
 }
+
+// class ToggleIssueEvent extends IssueEvent {
+//   final int index;
+//   ToggleIssueEvent(this.index);
+//   @override
+//   List<Object> get props => [index];
+// }
 
 // sự kiện báo lỗi rổ sai thông tin
 class ReportInconsistencyIssueEvent extends IssueEvent {
@@ -71,4 +70,14 @@ class FetchLocationIssueEvent extends IssueEvent {
   // TODO: implement props
   List<Object?> get props => [id, timeStamp];
 }
-
+// gửi thông tin từng rổ
+class AddContainerEvent extends IssueEvent {
+  DateTime timeStamp;
+  String issueId;
+  int quantity;
+  String containerId;
+  AddContainerEvent(this.timeStamp, this.containerId, this.quantity, this.issueId);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timeStamp, containerId];
+}

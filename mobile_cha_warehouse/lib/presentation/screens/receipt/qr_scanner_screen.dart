@@ -91,6 +91,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                     ),
                     CustomizedButton(
                       onPressed: () {
+                        scanQRresult = '1';
                         scanQR();
                       },
                       text: "Quét mã QR",
@@ -99,44 +100,59 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                       height: 10 * SizeConfig.ratioHeight,
                     ),
                     CustomizedButton(
-                        onPressed: scanQRresult == basketReceiptId
-                            ? () {
-                                AlertDialogTwoBtnCustomized(
-                                    context,
-                                    "Xác Nhận",
-                                    "Bạn đã lấy đúng rổ, nhấn xác nhận để hoàn thành",
-                                    "Xác nhận",
-                                    "Trở lại", () async {
-                                  //add event click toggle container
-                                  // BlocProvider.of<ReceiptBloc>(context).add(
-                                  //   ToggleReceiptEvent(basketReceiptIndex));
-                                  BlocProvider.of<CheckInfoBloc>(context).add(
-                                      CheckInfoEventRequested(
-                                          timeStamp: DateTime.now(),
-                                          basketID: scanQRresult));
+                        onPressed: () {
+                          // BlocProvider.of<CheckInfoBloc>(context).add(
+                          //     CheckInfoEventRequested(
+                          //         timeStamp: DateTime.now(),
+                          //         basketID: scanQRresult));
+                          // Navigator.pushNamed(context, '/modify_info_screen');
+                          //
+                          basketReceiptId == 'undefined'
+                              ? () {
                                   Navigator.pushNamed(
                                       context, '/modify_info_screen');
-                                  // back to container screen
-                                  // Navigator.pushNamed(
-                                  //     context, '/modify_info_screen');
-                                }, () {}, 18, 22);
-                              }
-                            : () {
-                                AlertDialogTwoBtnCustomized(
-                                    context,
-                                    "Xác Nhận",
-                                    "Rổ bạn đã lấy không chính xác, nhấn Tiếp tục để quét lại",
-                                    "Tiếp tục",
-                                    "Trở lại",
-                                    () {}, () {
-                                  //back to container screen
-                                  Navigator.pushNamed(
-                                      context, '/list_container_screen');
-                                }, 18, 22);
-                              },
-                        text: scanQRresult == basketReceiptId
-                            ? 'Xác Nhận'
-                            : 'Trở lại')
+                                }
+                              : () {
+                                  scanQRresult == basketReceiptId
+                                      ? () {
+                                          AlertDialogTwoBtnCustomized(
+                                              context,
+                                              "Xác Nhận",
+                                              "Bạn đã lấy đúng rổ, nhấn xác nhận để hoàn thành",
+                                              "Xác nhận",
+                                              "Trở lại", () async {
+                                            //add event click toggle container
+                                            // BlocProvider.of<ReceiptBloc>(context).add(
+                                            //   ToggleReceiptEvent(basketReceiptIndex));
+                                            BlocProvider.of<CheckInfoBloc>(
+                                                    context)
+                                                .add(CheckInfoEventRequested(
+                                                    timeStamp: DateTime.now(),
+                                                    basketID: scanQRresult));
+                                            Navigator.pushNamed(
+                                                context, '/modify_info_screen');
+                                          }, () {}, 18, 22);
+                                        }
+                                      : () {
+                                          AlertDialogTwoBtnCustomized(
+                                              context,
+                                              "Xác Nhận",
+                                              "Rổ bạn đã lấy không chính xác, nhấn Tiếp tục để quét lại",
+                                              "Tiếp tục",
+                                              "Trở lại",
+                                              () {}, () {
+                                            //back to container screen
+                                            Navigator.pushNamed(context,
+                                                '/list_container_screen');
+                                          }, 18, 22);
+                                        };
+                                };
+                        },
+                        text: basketReceiptId == 'undefined'
+                            ? 'Xác nhận'
+                            : (scanQRresult == basketReceiptId
+                                ? 'Xác Nhận'
+                                : 'Trở lại'))
                   ]));
         }));
   }

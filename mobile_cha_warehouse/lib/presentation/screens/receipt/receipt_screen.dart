@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/constant.dart';
-import 'package:mobile_cha_warehouse/domain/entities/goods_receipt.dart';
 import 'package:mobile_cha_warehouse/function.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
@@ -29,7 +27,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.west, //mũi tên back
               color: Colors.white,
             ),
@@ -70,42 +68,40 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         SizedBox(
                           height: 30 * SizeConfig.ratioHeight,
                         ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Ngày bắt đầu:    ",
-                                style: TextStyle(
-                                    fontSize: 20 * SizeConfig.ratioFont,
-                                    fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Ngày bắt đầu:    ",
+                              style: TextStyle(
+                                  fontSize: 20 * SizeConfig.ratioFont,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              width: 180 * SizeConfig.ratioWidth,
+                              height: 45 * SizeConfig.ratioHeight,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1, color: Constants.mainColor),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
+                              child: CustomizeDatePicker(
+                                fontColor: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                initDateTime: selectedDate,
+                                okBtnClickedFunction: (pickedTime) {
+                                  selectedDate = pickedTime;
+                                  print(DateFormat("dd-MM-yyyy")
+                                      .format(selectedDate));
+                                  BlocProvider.of<ReceiptBloc>(context).add(
+                                      LoadAllReceiptEvent(
+                                          DateTime.now(),
+                                          DateFormat("dd-MM-yyyy")
+                                              .format(selectedDate)));
+                                },
                               ),
-                              Container(
-                                width: 180 * SizeConfig.ratioWidth,
-                                height: 45 * SizeConfig.ratioHeight,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1, color: Constants.mainColor),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10))),
-                                child: CustomizeDatePicker(
-                                  fontColor: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  initDateTime: selectedDate,
-                                  okBtnClickedFunction: (pickedTime) {
-                                    selectedDate = pickedTime;
-                                    print(DateFormat("dd-MM-yyyy")
-                                        .format(selectedDate));
-                                    BlocProvider.of<ReceiptBloc>(context).add(
-                                        LoadAllReceiptEvent(
-                                            DateTime.now(),
-                                            DateFormat("dd-MM-yyyy")
-                                                .format(selectedDate)));
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 20 * SizeConfig.ratioHeight,
@@ -183,7 +179,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                receiptState.listIssueId.length != 0
+                                receiptState.listIssueId.isNotEmpty
                                     ? ExceptionErrorState(
                                         height: 300,
                                         title: "Đã tìm thấy đơn nhập kho",
@@ -205,12 +201,22 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                             );
                           } else if (receiptState is ReceiptStateListLoading) {
                             return CircularLoading();
+                          } else if (receiptState is ReceiptStateFailure) {
+                            return ExceptionErrorState(
+                                        height: 300,
+                                        title: "Không tìm thấy dữ liệu",
+                                        message:
+                                            "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
+                                        imageDirectory:
+                                            'lib/assets/sad_face_search.png',
+                                        imageHeight: 140,
+                                      );
                           } else {
                             return Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 //Chú ý có câu selection ở đây
-                                children: goodsReceiptEntryData.length != 0
+                                children: goodsReceiptEntryData.isNotEmpty
                                     ? [
                                         ColumnHeader(),
                                         Column(
@@ -236,8 +242,18 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         }),
                         CustomizedButton(
                             text: 'Xác Nhận',
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '///'))
+                            onPressed: ()async{
+                            //   AlertDialogTwoBtnCustomized(
+                            //         context,
+                            //         'Bạn có chắc',
+                            //         'Một số rổ chưa được xuất?',
+                            //         'Xác nhận',
+                            //         'Trở lại', () {
+                            //   Navigator.pushNamed(context, '/receipt_screen');
+                            // }, () {}, 18, 22)
+                            //     .show();
+                              Navigator.pushNamed(context, '///');
+                            })
                       ],
                     ),
                   ),
@@ -277,7 +293,9 @@ class RowReceipt extends StatelessWidget {
                     )),
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
-                  child: Text(goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity.toString(),
+                  child: Text(
+                      goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
+                          .toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -287,8 +305,7 @@ class RowReceipt extends StatelessWidget {
                 SizedBox(
                   width: 100 * SizeConfig.ratioWidth,
                   child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.note
-                          .toString(),
+                      goodsReceiptEntryRow.goodsReceiptEntry.note.toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,

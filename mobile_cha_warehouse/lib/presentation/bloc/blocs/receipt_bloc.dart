@@ -46,9 +46,12 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
           //  goodsReceipt = allReceipt;
           emit(ReceiptStateLoadSuccess(DateTime.now(), goodReceiptIdsView));
         } else {
+          emit(ReceiptStateLoadSuccess(DateTime.now(), []));
           print('error');
         }
+        
       } catch (e) {
+        emit(ReceiptStateFailure(DateTime.now()));
         // state fail
       }
     }
@@ -82,11 +85,17 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
       ReceiptEvent event, Emitter<ReceiptState> emit) async {
     if (event is ToggleReceiptEvent) {
       goodsReceiptEntryConainerData[basketReceiptIndex].status =
-         !goodsReceiptEntryConainerData[basketReceiptIndex].status ;
-      
+          !goodsReceiptEntryConainerData[basketReceiptIndex].status;
+
       print(goodsReceiptEntryConainerData[basketReceiptIndex].status);
       emit(ReceiptStateListRefresh(basketReceiptIndex,
           goodsReceiptEntryData[basketReceiptIndex].status, DateTime.now()));
+    }
+  }
+  Future<void> _onAddContainer(
+      ReceiptEvent event, Emitter<ReceiptState> emit) async {
+    if (event is AddContainerEvent) {
+   
     }
   }
 }

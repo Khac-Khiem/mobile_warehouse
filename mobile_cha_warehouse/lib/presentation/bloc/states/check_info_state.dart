@@ -29,11 +29,11 @@ class CheckInfoStateFailure extends CheckInfoState {
   List<Object> get props => [];
 }
 
-class AddContainerStateSuccess extends CheckInfoState {
-  DateTime timeStamp;
-  AddContainerStateSuccess(this.timeStamp);
+// class AddContainerStateSuccess extends CheckInfoState {
+//   DateTime timeStamp;
+//   AddContainerStateSuccess(this.timeStamp);
 
-  @override
-  // TODO: implement props
-  List<Object?> get props => [timeStamp];
-}
+//   @override
+//   // TODO: implement props
+//   List<Object?> get props => [timeStamp];
+// }

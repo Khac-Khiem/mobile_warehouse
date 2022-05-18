@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 
 abstract class IssueState extends Equatable {}
 
@@ -30,7 +31,8 @@ class IssueStateListLoading extends IssueState {
 
 class IssueStateListLoadSuccess extends IssueState {
   final DateTime timestamp; //Do mỗi lần book là nó sẽ trả ra state khác nhau
-  IssueStateListLoadSuccess(this.timestamp);
+  List<GoodsIssueEntryData> goodsIssueEntryData;
+  IssueStateListLoadSuccess(this.timestamp, this.goodsIssueEntryData );
   @override
   List<Object> get props => [timestamp];
 }

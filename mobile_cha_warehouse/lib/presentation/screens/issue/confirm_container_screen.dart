@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_cha_warehouse/domain/entities/goods_receipt.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/check_info_state.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
-import 'package:mobile_cha_warehouse/presentation/screens/receipt/add_list_receipt.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_issue_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/modify_info_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
@@ -62,7 +60,6 @@ class ConfirmCOntainerScreen extends StatelessWidget {
             }
 
             return SingleChildScrollView(
-              //   child: Text('haha'),
               child: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(10 * SizeConfig.ratioHeight),
@@ -104,14 +101,24 @@ class ConfirmCOntainerScreen extends StatelessWidget {
                           bgColor: Constants.mainColor,
                           fgColor: Colors.white,
                           onPressed: () async {
+                            //update UI
+                            goodsIssueEntryData[issueIndex].actualQuantity =
+                                goodsIssueEntryData[issueIndex].actualQuantity +
+                                    qrScannedData[0].actualQuantity;
+                            // add basket to confirm
+                            listBasketIdConfirm
+                                .add(qrScannedData[0].containerId);
+
                             //add container on server
-                            // BlocProvider.of<CheckInfoBloc>(context).add(
-                            //     AddContainerEvent(
-                            //         DateTime.now(),qrScannedData[0].containerId,qrScannedData[0].actualQuantity));
-                             BlocProvider.of<IssueBloc>(context).add(
-                               ToggleIssueEvent(basketIssueIndex)
-                              );
-                            
+                            BlocProvider.of<IssueBloc>(context).add(
+                                AddContainerEvent(
+                                    DateTime.now(),
+                                    qrScannedData[0].containerId,
+                                    qrScannedData[0].actualQuantity,
+                                    selectedGoodIssueId));
+                            BlocProvider.of<IssueBloc>(context).add(
+                                ToggleContainerIssueEvent(basketIssueIndex));
+
                             Navigator.pushNamed(
                                 context, '/list_container_screen');
                           },

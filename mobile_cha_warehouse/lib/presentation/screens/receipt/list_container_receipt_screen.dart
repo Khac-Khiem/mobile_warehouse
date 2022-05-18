@@ -97,57 +97,53 @@ class ListContainerReceiptScreen extends StatelessWidget {
                             ),
                           ],
                         )),
-                        goodsReceiptEntryConainerData.isEmpty ? 
-                        ExceptionErrorState(
-                                        height: 300,
-                                        title: "Rổ chưa xác định",
-                                        message:
-                                            "Quét mã để tiến hành nhập kho",
-                                        imageDirectory:
-                                            'lib/assets/sad_face_search.png',
-                                        imageHeight: 140,
-                                      ):
-                    Column(
-                      children: goodsReceiptEntryConainerData
-                          .map((item) => RowContainer(item))
-                          .toList(),
-                    ),
+                    goodsReceiptEntryConainerData.isEmpty
+                        ? ExceptionErrorState(
+                            height: 300,
+                            title: "Rổ chưa xác định",
+                            message: "Quét mã để tiến hành nhập kho",
+                            imageDirectory: 'lib/assets/sad_face_search.png',
+                            imageHeight: 140,
+                          )
+                        : Column(
+                            children: goodsReceiptEntryConainerData
+                                .map((item) => RowContainer(item))
+                                .toList(),
+                          ),
                     CustomizedButton(
-                      text: 'DS rổ đã nhập',
-                      onPressed: () async {
-                      Navigator.pushNamed(context, '/add_list_receipt');
-                      }
-                      // hiển thị thông báo
-                      // gửi dữ liệu rổ lên server
-                      // Navigator.pushNamed(context, '/list_issue_screen')
-                      ),
-                   CustomizedButton(
-                      text: goodsReceiptEntryConainerData.isEmpty ? 'Quét mã' :'Xác nhận',
-                      onPressed: () async {
-                       if(goodsReceiptEntryConainerData.isEmpty){
-                          Navigator.pushNamed(context, '/qr_scanner_issue_screen');
-                       }else{
-                          for (var item in goodsReceiptEntryConainerData ) {
-                          if (item.status == false) {
-                            AlertDialogTwoBtnCustomized(
-                                    context,
-                                    'Bạn có chắc',
-                                    'Một số rổ chưa được xuất?',
-                                    'Xác nhận',
-                                    'Trở lại', () {
-                              Navigator.pushNamed(context, '/receipt_screen');
-                            }, () {}, 18, 22)
-                                .show();
-                          }else{
-                             Navigator.pushNamed(context, '/receipt_screen');
+                        text: 'DS rổ đã nhập',
+                        onPressed: () async {
+                          Navigator.pushNamed(context, '/add_list_receipt');
+                        }),
+                    CustomizedButton(
+                        text: goodsReceiptEntryConainerData.isEmpty
+                            ? 'Quét mã'
+                            : 'Xác nhận',
+                        onPressed: () async {
+                          if (goodsReceiptEntryConainerData.isEmpty) {
+                            // dùng khi entry chưa xác định container
+                            basketReceiptId = 'undefined';
+                            basketReceiptIndex = 0;
+                            Navigator.pushNamed(context, '/qr_scanner_screen');
+                          } else {
+                            for (var item in goodsReceiptEntryConainerData) {
+                              if (item.status == false) {
+                                AlertDialogTwoBtnCustomized(
+                                        context,
+                                        'Bạn có chắc',
+                                        'Một số rổ chưa được xuất?',
+                                        'Xác nhận',
+                                        'Trở lại', () {
+                                  Navigator.pushNamed(
+                                      context, '/receipt_screen');
+                                }, () {}, 18, 22)
+                                    .show();
+                              } else {
+                                Navigator.pushNamed(context, '/receipt_screen');
+                              }
+                            }
                           }
-                        }
-                       }
-                      }
-                      // hiển thị thông báo
-                      // gửi dữ liệu rổ lên server
-                      // Navigator.pushNamed(context, '/list_issue_screen')
-                      )
+                        })
                   ],
                 ),
               );
@@ -222,14 +218,13 @@ class RowContainer extends StatelessWidget {
 
               //Sự kiện click vào từng dòng
               //trang vi tri => tiep tuc quet ma
-                // BlocProvider.of<CheckInfoBloc>(context).add(
-                //                     CheckInfoEventRequested(
-                //                         timeStamp: DateTime.now(),
-                //                         basketID: basketReceiptId));
-              Navigator.pushNamed(context, '/qr_scanner_issue_screen');
+              // BlocProvider.of<CheckInfoBloc>(context).add(
+              //                     CheckInfoEventRequested(
+              //                         timeStamp: DateTime.now(),
+              //                         basketID: basketReceiptId));
+              //     Navigator.pushNamed(context, '/modify_info_screen');
 
-                 //     Navigator.pushNamed(context, '/modify_info_screen');
-
+              Navigator.pushNamed(context, '/qr_scanner_screen');
             },
           ),
         ),

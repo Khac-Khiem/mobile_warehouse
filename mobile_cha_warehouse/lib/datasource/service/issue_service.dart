@@ -5,6 +5,7 @@ import 'package:mobile_cha_warehouse/datasource/models/goods_issues_model.dart';
 import 'package:mobile_cha_warehouse/datasource/service/receipt_service.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_issue_screen.dart';
 
 class IssueService {
   Future<List<GoodsIssueModel>> getGoodsIssue(String startDate) async {
@@ -49,10 +50,10 @@ class IssueService {
     }
   }
 
-  Future<int> confirmContainer(String containerId, int quantity) async {
+  Future<int> confirmContainer(String containerId, int quantity, String issueId) async {
     final response = await http.patch(
         Uri.parse(
-            'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$containerId/containers'),
+            'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$issueId/containers'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           // 'Accept': 'application/json',
@@ -64,16 +65,31 @@ class IssueService {
           "quantity": quantity,
         }));
     print(containerId + quantity.toString());
-    // trừ phẩn tử đã được confirm thành công
-    // goodsIssueEntryContainerData.removeAt(basketIssueIndex);
-    // print(goodsIssueEntryContainerData);
-    //
     if (response.statusCode == 200) {
       print('success');
       return response.statusCode;
     } else {
       print('fail');
       return response.statusCode;
+    }
+  }
+  Future<void> confirmIssue( String issueId) async {
+    final response = await http.patch(
+        Uri.parse(
+            'https://cha-warehouse-management.azurewebsites.net/api/goodsissues/$issueId/containers/confirmed'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          // 'Accept': 'application/json',
+          'Accept': '*/*',
+          // 'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String, dynamic>{
+        // listBasketIdConfirm
+        }));
+    if (response.statusCode == 200) {
+      print('success');
+    } else {
+      print('fail');
     }
   }
 }

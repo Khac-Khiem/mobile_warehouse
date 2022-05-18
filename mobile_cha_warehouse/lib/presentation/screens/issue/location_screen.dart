@@ -96,13 +96,12 @@ class _LocationScreenState extends State<LocationScreen> {
                                 CheckInfoEventRequested(
                                     timeStamp: DateTime.now(),
                                     basketID: basketIssueId));
-                            // Navigator.pushNamed(
-                            //     context, '/confirm_container_screen');
                             Navigator.pushNamed(
-                                context, '/qr_scanner_issue_screen');
+                                context, '/confirm_container_screen');
+                            // Navigator.pushNamed(
+                            //     context, '/qr_scanner_issue_screen');
                           }
-                          // Navigator.pushNamed(
-                          //     context, '/qr_scanner_issue_screen'),
+                          
 
                           ),
                     )

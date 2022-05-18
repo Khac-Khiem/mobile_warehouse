@@ -14,13 +14,13 @@ class IssueUseCase {
     return goodsIssue;
   }
 
-  Future<int> confirmContainer(String containerId, int quantity) async {
-   final container = await _issuesRepo.confirmContainer(containerId, quantity);
+  Future<int> confirmContainer(String containerId, int quantity, String issueId) async {
+   final container = await _issuesRepo.confirmContainer(containerId, quantity, issueId);
     return container;
   }
 
   Future<void> patchConfirmIssueEntry(
-      String goodIssueId, List<GoodsIssueEntry> entry) async {
-    _issuesRepo.patchConfirmIssueEntry(goodIssueId, entry);
+      String goodIssueId) async {
+    _issuesRepo.patchConfirmIssue(goodIssueId);
   }
 }

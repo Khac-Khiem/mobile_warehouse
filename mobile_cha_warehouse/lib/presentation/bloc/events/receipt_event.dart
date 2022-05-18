@@ -27,3 +27,12 @@ class ToggleReceiptEvent extends ReceiptEvent {
   @override
   List<Object> get props => [index];
 }
+class AddContainerEvent extends ReceiptEvent {
+  DateTime timeStamp;
+  int quantity;
+  String containerId;
+  AddContainerEvent(this.timeStamp, this.containerId, this.quantity);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timeStamp, containerId];
+}

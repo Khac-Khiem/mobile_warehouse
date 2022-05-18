@@ -8,6 +8,7 @@ import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.d
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_issue_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../constant.dart';
 
@@ -28,7 +29,7 @@ class ListContainerScreen extends StatelessWidget {
               Icons.west, //mũi tên back
               color: Colors.white,
             ),
-            onPressed: () {
+            onPressed: () async {
               // BlocProvider.of<CheckListBloc>(context)
               //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
               // AlertDialogTwoBtnCustomized(
@@ -48,7 +49,7 @@ class ListContainerScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/list_issue_screen');
               }, () {}, 18, 22)
                   .show();
-              Navigator.pop(context);
+              // Navigator.pop(context);
             },
           ),
           backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
@@ -118,15 +119,21 @@ class ListContainerScreen extends StatelessWidget {
                                     'Bạn có chắc',
                                     'Một số rổ chưa được xuất?',
                                     'Xác nhận',
-                                    'Trở lại', () {
-                              Navigator.pushNamed(context, '/list_issue_screen');
+                                    'Trở lại', () async {
+                              // BlocProvider.of<IssueBloc>(context)
+                              //     .add(ToggleIssueEvent(issueIndex));
+                              Navigator.pushNamed(
+                                  context, '/list_issue_screen');
                             }, () {}, 18, 22)
                                 .show();
+                          } else {
+                            //  BlocProvider.of<IssueBloc>(context)
+                            //       .add(ToggleIssueEvent(issueIndex));
+                            Navigator.pushNamed(context, '/list_issue_screen');
                           }
                         }
                       }
                       // hiển thị thông báo
-                      // gửi dữ liệu rổ lên server
                       // Navigator.pushNamed(context, '/list_issue_screen')
                       )
                 ],

@@ -99,14 +99,7 @@ class _AddListReceiptScreenState extends State<AddListReceiptScreen> {
           ),
           Column(
               children: listReceiptsChecked.map((e) => RowReceipt(e)).toList()),
-          // CustomizedButton(
-          //   text: "Quét mã QR",
-          //   bgColor: Constants.mainColor,
-          //   fgColor: Colors.white,
-          //   onPressed: () {
-          //     Navigator.pushNamed(context, '/qr_scanner_screen');
-          //   },
-          // ),
+        
         ],
       ),
     );

@@ -14,8 +14,8 @@ import '../../../constant.dart';
 List<String> labelTextList = [
   "Mã QR:",
   "Mã sản phẩm:",
-  "Kế hoạch:",
-  "Thực kiểm:",
+  "Tồn tại:",
+  "SL xuất:",
   "Ngày SX:",
 ];
 
@@ -28,7 +28,7 @@ class LabelText extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10 * SizeConfig.ratioHeight),
       alignment: Alignment.centerRight,
 
-      width: 150 * SizeConfig.ratioWidth,
+      width: 100 * SizeConfig.ratioWidth,
       height: 55 * SizeConfig.ratioHeight,
       //color: Colors.amber,
       child: Text(
@@ -61,7 +61,7 @@ class TextInput extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(vertical: 5 * SizeConfig.ratioHeight),
         alignment: Alignment.centerRight,
-        width: 160 * SizeConfig.ratioWidth,
+        width: 200 * SizeConfig.ratioWidth,
         height: 55 * SizeConfig.ratioHeight,
         //color: Colors.grey[200],
         child: TextField(

@@ -339,7 +339,9 @@ class StockCardScreen extends StatelessWidget {
                       builder: (context, state) => CustomizedButton(
                           text: "Truy xuất",
                           onPressed: _productId == ''
-                              ? () {}
+                              ? () {
+                                // màn hình yêu cầu chọn product id
+                              }
                               : () {
                                   BlocProvider.of<StockCardViewBloc>(context)
                                       .add(StockCardViewEventLoad(

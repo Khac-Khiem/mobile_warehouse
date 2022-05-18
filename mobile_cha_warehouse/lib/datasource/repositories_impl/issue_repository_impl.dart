@@ -20,16 +20,18 @@ class IssueRepoImpl implements IssuesRepo {
   }
 
   @override
-  Future patchConfirmIssueEntry(
-      String goodsIssueId, List<GoodsIssueEntry> listIssueEntry) {
+  Future patchConfirmIssue(
+      String goodsIssueId) {
     // TODO: implement patchConfirmBasket
     throw UnimplementedError();
   }
 
   @override
-  Future<int> confirmContainer(String containerId, int quantity) {
+  Future<int> confirmContainer(String containerId, int quantity, String issueId) {
     // TODO: implement confirmContainer
-    final container = issueService.confirmContainer(containerId, quantity);
+     final container = issueService.confirmContainer(containerId, quantity, issueId);
     return container;
   }
+
+  
 }
