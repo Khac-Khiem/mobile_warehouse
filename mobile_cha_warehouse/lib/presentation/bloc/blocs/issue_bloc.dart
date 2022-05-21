@@ -34,11 +34,8 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
     on<LoadIssueEvent>(_onLoadingIssue);
     on<ChooseIssueEvent>(_onChooseIssue);
     on<ToggleContainerIssueEvent>(_onClickContainerToggle);
-   // on<ToggleIssueEvent>(_onClickToggle);
     on<FetchLocationIssueEvent>(_onLoadLocation);
-    on<AddContainerEvent>(_onAddContainer);
-
-    //on((ChosseContainerIssueEvent event, emit) => )
+    on<ConFirmExportingContainer>(_onConfirm);
   }
   Future<void> _onLoadingIssue(
       IssueEvent event, Emitter<IssueState> emit) async {
@@ -111,16 +108,6 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
     }
   }
 
-  // Future<void> _onClickToggle(
-  //     IssueEvent event, Emitter<IssueState> emit) async {
-  //   if (event is ToggleIssueEvent) {
-  //     goodsIssueEntryData[issueIndex].status =
-  //         !goodsIssueEntryData[issueIndex].status;
-  //     emit(IssueStateListRefresh(
-  //         issueIndex, goodsIssueEntryData[issueIndex].status, DateTime.now()));
-  //   }
-  // }
-
   Future<void> _onLoadLocation(
       IssueEvent event, Emitter<IssueState> emit) async {
     if (event is FetchLocationIssueEvent) {
@@ -139,20 +126,15 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
     }
   }
 
-  Future<void> _onAddContainer(
-      IssueEvent event, Emitter<IssueState> emit) async {
-    if (event is AddContainerEvent) {
+  Future<void> _onConfirm(IssueEvent event, Emitter<IssueState> emit) async {
+    if (event is ConFirmExportingContainer) {
       emit(IssueStateConfirmLoading());
       try {
-        final statusRequest = await issueUseCase.confirmContainer(
-            event.containerId, event.quantity, event.issueId);
-        if (statusRequest == 200) {
-        } else {
-          //
-        }
+        final confirm = issueUseCase.patchConfirmIssueEntry(event.issueId, event.containerId);
+        emit(ConfirmSuccessIssueState(DateTime.now()));
       } catch (e) {
-        print(e);
-        //  emit(IssueStateFailure(DateTime.now()));
+        print('fail');
+        emit(ConfirmFailureIssueState(DateTime.now()));
       }
     }
   }

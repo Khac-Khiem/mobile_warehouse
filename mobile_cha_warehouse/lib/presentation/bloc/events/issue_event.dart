@@ -22,15 +22,6 @@ class ChooseIssueEvent extends IssueEvent {
   List<Object> get props => [timestamp, goodIssueId];
 }
 
-// class ChosseContainerIssueEvent extends IssueEvent {
-//   GoodsIssueEntry goodsIssueEntry;
-//   DateTime timeStamp;
-//   ChosseContainerIssueEvent(this.goodsIssueEntry, this.timeStamp);
-//   @override
-//   // TODO: implement props
-//   List<Object?> get props => [goodsIssueEntry, timeStamp];
-// }
-
 class ToggleContainerIssueEvent extends IssueEvent {
   final int index;
   ToggleContainerIssueEvent(this.index);
@@ -38,27 +29,12 @@ class ToggleContainerIssueEvent extends IssueEvent {
   List<Object> get props => [index];
 }
 
-// class ToggleIssueEvent extends IssueEvent {
-//   final int index;
-//   ToggleIssueEvent(this.index);
-//   @override
-//   List<Object> get props => [index];
-// }
-
 // sự kiện báo lỗi rổ sai thông tin
 class ReportInconsistencyIssueEvent extends IssueEvent {
   final int index;
   ReportInconsistencyIssueEvent(this.index);
   @override
   List<Object> get props => [index];
-}
-
-//sự kiện nhấn nút xác nhận để gửi lên server
-class ConfirmClickedIssueEvent extends IssueEvent {
-  final DateTime timestamp;
-  ConfirmClickedIssueEvent(this.timestamp);
-  @override
-  List<Object> get props => [timestamp];
 }
 
 // event load vị trí rổ khi truy xuất container
@@ -70,14 +46,13 @@ class FetchLocationIssueEvent extends IssueEvent {
   // TODO: implement props
   List<Object?> get props => [id, timeStamp];
 }
-// gửi thông tin từng rổ
-class AddContainerEvent extends IssueEvent {
-  DateTime timeStamp;
+
+class ConFirmExportingContainer extends IssueEvent {
   String issueId;
-  int quantity;
-  String containerId;
-  AddContainerEvent(this.timeStamp, this.containerId, this.quantity, this.issueId);
+  List<String> containerId;
+  ConFirmExportingContainer(this.issueId, this.containerId);
   @override
+
   // TODO: implement props
-  List<Object?> get props => [timeStamp, containerId];
+  List<Object?> get props => [containerId];
 }

@@ -4,7 +4,7 @@ import 'package:mobile_cha_warehouse/domain/entities/good_issue.dart';
 
 
 class GoodsIssueEntryContainerModel extends GoodsIssueEntryContainer {
-  GoodsIssueEntryContainerModel(double quantity, String productionDate,
+  GoodsIssueEntryContainerModel(int quantity, String productionDate,
       String containerId, bool isTaken)
       : super(quantity, productionDate, containerId, isTaken);
   factory GoodsIssueEntryContainerModel.fromJson(Map<String, dynamic> json) {

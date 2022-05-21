@@ -5,11 +5,7 @@ import 'package:mobile_cha_warehouse/domain/entities/goods_receipt.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/receipt_usecase.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
-import 'package:mobile_cha_warehouse/presentation/screens/receipt/add_list_receipt.dart';
-import 'package:mobile_cha_warehouse/presentation/screens/receipt/list_container_receipt_screen.dart';
-import 'package:mobile_cha_warehouse/presentation/screens/receipt/receipt_screen.dart';
 
 List<GoodsReceiptEntryData> goodsReceiptEntryData = [];
 //
@@ -27,8 +23,20 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
   ReceiptBloc(this.receiptUseCase) : super(ReceiptInitialState()) {
     on<LoadAllReceiptEvent>(_onLoadingReceipt);
     on<ChooseReceiptEvent>(_onChooseReceipt);
-    on<ToggleReceiptEvent>(_onClickToggle);
+    on<AddcontainerScanned>(_onAddContainerUi);
+    on<AddContainerEvent>(_onAddContainer);
+    on<ConfirmReceiptEvent>(_onConfirm);
   }
+//  if (allIssue.isNotEmpty) {
+//           for (int i = 0; i < allIssue.length; i++) {
+//             if (allIssue[i].isConfirmed == false) {
+//               goodIssueIdsView.add(allIssue[i].id);
+//             }
+//           }
+//           emit(IssueStateLoadSuccess(DateTime.now(), goodIssueIdsView));
+//         }
+
+
   Future<void> _onLoadingReceipt(
       ReceiptEvent event, Emitter<ReceiptState> emit) async {
     if (event is LoadAllReceiptEvent) {
@@ -41,7 +49,9 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
         final allReceipt = await receiptUseCase.getAllReceipts(event.startDate);
         if (allReceipt.isNotEmpty) {
           for (int i = 0; i < allReceipt.length; i++) {
-            goodReceiptIdsView.add(allReceipt[i].goodsReceiptId);
+            if(allReceipt[i].confirmed == false){
+              goodReceiptIdsView.add(allReceipt[i].goodsReceiptId);
+            }
           }
           //  goodsReceipt = allReceipt;
           emit(ReceiptStateLoadSuccess(DateTime.now(), goodReceiptIdsView));
@@ -49,7 +59,6 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
           emit(ReceiptStateLoadSuccess(DateTime.now(), []));
           print('error');
         }
-        
       } catch (e) {
         emit(ReceiptStateFailure(DateTime.now()));
         // state fail
@@ -81,21 +90,44 @@ class ReceiptBloc extends Bloc<ReceiptEvent, ReceiptState> {
     }
   }
 
-  Future<void> _onClickToggle(
-      ReceiptEvent event, Emitter<ReceiptState> emit) async {
-    if (event is ToggleReceiptEvent) {
-      goodsReceiptEntryConainerData[basketReceiptIndex].status =
-          !goodsReceiptEntryConainerData[basketReceiptIndex].status;
-
-      print(goodsReceiptEntryConainerData[basketReceiptIndex].status);
-      emit(ReceiptStateListRefresh(basketReceiptIndex,
-          goodsReceiptEntryData[basketReceiptIndex].status, DateTime.now()));
-    }
-  }
   Future<void> _onAddContainer(
       ReceiptEvent event, Emitter<ReceiptState> emit) async {
     if (event is AddContainerEvent) {
-   
+      try {
+        final containerconfirm =
+            receiptUseCase.addContainerReceipt(event.receiptId, event.data);
+     //   emit(ConfirmSuccessReceiptState(DateTime.now()));
+      } catch (e) {
+        print('fail');
+     //   emit(ConfirmFailureReceiptState(DateTime.now()));
+      }
+    }
+  }
+
+  Future<void> _onAddContainerUi(
+      ReceiptEvent event, Emitter<ReceiptState> emit) async {
+    if (event is AddcontainerScanned) {
+      emit(ReceiptStateListLoading());
+      try {
+        goodsReceiptEntryConainerData.add(event.goodsReceiptEntryContainerData);
+        emit(ReceiptStateListRefresh(DateTime.now()));
+      } catch (e) {
+        print('fail');
+        emit(ConfirmFailureReceiptState(DateTime.now()));
+      }
+    }
+  }
+  Future<void> _onConfirm(
+      ReceiptEvent event, Emitter<ReceiptState> emit) async {
+    if (event is ConfirmReceiptEvent) {
+      try {
+        final confirm =
+            receiptUseCase.confirmContainer(event.receiptId);
+        emit(ConfirmSuccessReceiptState(DateTime.now()));
+      } catch (e) {
+        print('fail');
+        emit(ConfirmFailureReceiptState(DateTime.now()));
+      }
     }
   }
 }
@@ -107,10 +139,20 @@ class GoodsReceiptEntryData {
   GoodsReceiptEntryData(this.index, this.goodsReceiptEntry, this.status);
 }
 
+// dùng để add container lên server
 class GoodsReceiptEntryContainerData {
-  int index;
-  bool status;
-  GoodsReceiptEntryContainer goodsReceiptEntryContainer;
-  GoodsReceiptEntryContainerData(
-      this.index, this.status, this.goodsReceiptEntryContainer);
+  String containerId;
+  String itemId;
+  int actualQuantity;
+  int plannedQuantity;
+  String productionDate;
+  GoodsReceiptEntryContainerData(this.containerId, this.itemId,
+      this.plannedQuantity, this.actualQuantity, this.productionDate);
+  Map<String, dynamic> toJson() => {
+        "containerId": containerId,
+        "itemId": itemId,
+        "plannedQuantity": plannedQuantity,
+        "actualQuantity": actualQuantity,
+        "productionDate": productionDate
+      };
 }

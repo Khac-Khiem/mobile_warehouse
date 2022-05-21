@@ -108,14 +108,12 @@ class ConfirmCOntainerScreen extends StatelessWidget {
                             // add basket to confirm
                             listBasketIdConfirm
                                 .add(qrScannedData[0].containerId);
-
-                            //add container on server
-                            BlocProvider.of<IssueBloc>(context).add(
-                                AddContainerEvent(
-                                    DateTime.now(),
-                                    qrScannedData[0].containerId,
-                                    qrScannedData[0].actualQuantity,
-                                    selectedGoodIssueId));
+                            // BlocProvider.of<IssueBloc>(context).add(
+                            //     AddContainerEvent(
+                            //         DateTime.now(),
+                            //         qrScannedData[0].containerId,
+                            //         qrScannedData[0].actualQuantity,
+                            //         selectedGoodIssueId));
                             BlocProvider.of<IssueBloc>(context).add(
                                 ToggleContainerIssueEvent(basketIssueIndex));
 

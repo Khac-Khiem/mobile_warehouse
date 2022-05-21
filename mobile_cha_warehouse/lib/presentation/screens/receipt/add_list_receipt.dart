@@ -3,6 +3,7 @@ import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/modify_info_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import '../../../function.dart';
+//bỏ qua
 // trang nay dung de xem lai cac ro da quet QR
 List<QRScannedData> listReceiptsChecked = [];
 

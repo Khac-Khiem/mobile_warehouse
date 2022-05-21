@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/function.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
@@ -17,7 +15,6 @@ String basketIssueId = '';
 int basketIssueIndex = 0;
 
 class ListContainerScreen extends StatelessWidget {
-  // List<GoodsIssueEntryContainerData> goodsIssueEntryContainerData;
   ListContainerScreen();
 
   @override
@@ -30,16 +27,6 @@ class ListContainerScreen extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () async {
-              // BlocProvider.of<CheckListBloc>(context)
-              //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
-              // AlertDialogTwoBtnCustomized(
-              //   context: context,
-              //   title: "Bạn có chắc?",
-              //   desc: "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
-              //   onPressedBtn1: () {
-              //     Navigator.pop(context);
-              //   },
-              // ).show();
               AlertDialogTwoBtnCustomized(
                       context,
                       'Ban co chac',
@@ -74,7 +61,7 @@ class ListContainerScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                              width: 80 * SizeConfig.ratioWidth,
+                              width: 120 * SizeConfig.ratioWidth,
                               child: Text(
                                 "Mã Rổ",
                                 style: TextStyle(
@@ -83,7 +70,7 @@ class ListContainerScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               )),
                           SizedBox(
-                            width: 100 * SizeConfig.ratioWidth,
+                            width: 80 * SizeConfig.ratioWidth,
                             child: Text(
                               "SL",
                               style: TextStyle(
@@ -120,22 +107,23 @@ class ListContainerScreen extends StatelessWidget {
                                     'Một số rổ chưa được xuất?',
                                     'Xác nhận',
                                     'Trở lại', () async {
-                              // BlocProvider.of<IssueBloc>(context)
-                              //     .add(ToggleIssueEvent(issueIndex));
+                       
+                              BlocProvider.of<IssueBloc>(context).add(
+                                  ConFirmExportingContainer(selectedGoodIssueId,
+                                      listBasketIdConfirm));
+
                               Navigator.pushNamed(
                                   context, '/list_issue_screen');
                             }, () {}, 18, 22)
                                 .show();
                           } else {
-                            //  BlocProvider.of<IssueBloc>(context)
-                            //       .add(ToggleIssueEvent(issueIndex));
+                              BlocProvider.of<IssueBloc>(context).add(
+                                  ConFirmExportingContainer(selectedGoodIssueId,
+                                      listBasketIdConfirm));
                             Navigator.pushNamed(context, '/list_issue_screen');
                           }
                         }
-                      }
-                      // hiển thị thông báo
-                      // Navigator.pushNamed(context, '/list_issue_screen')
-                      )
+                      })
                 ],
               );
             }));
@@ -155,65 +143,69 @@ class RowContainer extends StatelessWidget {
         child: GestureDetector(
           // ignore: deprecated_member_use
           child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                    width: 80 * SizeConfig.ratioWidth,
+              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: 80 * SizeConfig.ratioWidth,
+                      child: Text(
+                        goodsIssueEntryContainerData
+                            .goodsIssueEntryContainer.containerId,
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  SizedBox(
+                    width: 100 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsIssueEntryContainerData
-                          .goodsIssueEntryContainer.containerId,
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsIssueEntryContainerData
-                          .goodsIssueEntryContainer.quantity
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-                SizedBox(
-                  width: 120 * SizeConfig.ratioWidth,
-                  child: Text(
-                      DateFormat("dd-MM-yyyy").format(DateTime.parse(
-                          goodsIssueEntryContainerData
-                              .goodsIssueEntryContainer.productionDate)),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-              ],
-            ),
-            color: goodsIssueEntryContainerData.goodsIssueEntryContainer.isTaken
-                ? Colors.grey[700]
-                : Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
-            onPressed: () async {
-              basketIssueId = goodsIssueEntryContainerData
-                  .goodsIssueEntryContainer.containerId;
-              basketIssueIndex = goodsIssueEntryContainerData.index;
-
-              //Sự kiện click vào từng dòng
-              //trang vi tri => tiep tuc quet ma
-              BlocProvider.of<IssueBloc>(context)
-                  .add(FetchLocationIssueEvent(basketIssueId, DateTime.now()));
-              Navigator.pushNamed(context, '/location_screen');
-            },
-          ),
+                        goodsIssueEntryContainerData
+                            .goodsIssueEntryContainer.quantity
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                  SizedBox(
+                    width: 120 * SizeConfig.ratioWidth,
+                    child: Text(
+                        DateFormat("dd-MM-yyyy").format(DateTime.parse(
+                            goodsIssueEntryContainerData
+                                .goodsIssueEntryContainer.productionDate)),
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+              color:
+                  goodsIssueEntryContainerData.goodsIssueEntryContainer.isTaken
+                      ? Colors.grey[700]
+                      : Colors.grey[300],
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              onPressed:
+                  //nếu rổ đã được taken thì không cho phép ấn vào
+                  goodsIssueEntryContainerData.goodsIssueEntryContainer.isTaken
+                      ? () {}
+                      : () async {
+                          basketIssueId = goodsIssueEntryContainerData
+                              .goodsIssueEntryContainer.containerId;
+                          basketIssueIndex = goodsIssueEntryContainerData.index;
+                          //Sự kiện click vào từng dòng
+                          //trang vi tri => tiep tuc quet ma
+                          BlocProvider.of<IssueBloc>(context).add(
+                              FetchLocationIssueEvent(
+                                  basketIssueId, DateTime.now()));
+                          Navigator.pushNamed(context, '/location_screen');
+                        }),
         ),
       ),
     );

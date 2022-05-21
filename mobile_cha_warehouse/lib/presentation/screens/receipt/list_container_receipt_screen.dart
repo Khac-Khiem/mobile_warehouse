@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_cha_warehouse/function.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/receipt_state.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/receipt/qr_scanner_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
-import '../../../constant.dart';
-
-//to check info basket with QRcode
-String basketReceiptId = '';
-int basketReceiptIndex = 0;
 
 class ListContainerReceiptScreen extends StatelessWidget {
   // List<GoodsIssueEntryContainerData> goodsIssueEntryContainerData;
@@ -31,122 +24,122 @@ class ListContainerReceiptScreen extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () {
-              // BlocProvider.of<CheckListBloc>(context)
-              //     .add(CheckListEventBackClicked(timestamp: DateTime.now()));
-              // AlertDialogTwoBtnCustomized(
-              //   context: context,
-              //   title: "Bạn có chắc?",
-              //   desc: "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
-              //   onPressedBtn1: () {
-              //     Navigator.pop(context);
-              //   },
-              // ).show();
-              Navigator.pop(context);
+              AlertDialogTwoBtnCustomized(
+                      context,
+                      'Ban co chac',
+                      'Khi nhan tro lai, moi du lieu se khong duoc luu',
+                      'Tro lai',
+                      'Tiep tuc', () {
+                Navigator.pushNamed(context, '///');
+              }, () {}, 18, 22)
+                  .show();
             },
           ),
           backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
           //nút bên phải
           title: const Text(
-            'Danh sách các rổ cần nhập',
+            'Danh sách các rổ đã nhập',
             style: TextStyle(fontSize: 22), //chuẩn
           ),
         ),
         endDrawer: DrawerUser(),
         body: BlocConsumer<ReceiptBloc, ReceiptState>(
-            listener: (context, issueState) {},
-            builder: (context, issueState) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                        width: 380 * SizeConfig.ratioWidth,
-                        height: 60 * SizeConfig.ratioHeight,
-                        // ignore: deprecated_member_use
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                                width: 80 * SizeConfig.ratioWidth,
+            listener: (context, receiptState) {},
+            builder: (context, receiptState) {
+              if (receiptState is ReceiptStateListLoading) {
+                return CircularLoading();
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                          width: 380 * SizeConfig.ratioWidth,
+                          height: 60 * SizeConfig.ratioHeight,
+                          // ignore: deprecated_member_use
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  width: 80 * SizeConfig.ratioWidth,
+                                  child: Text(
+                                    "Mã Rổ",
+                                    style: TextStyle(
+                                        fontSize: 21 * SizeConfig.ratioFont,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  )),
+                              SizedBox(
+                                width: 100 * SizeConfig.ratioWidth,
                                 child: Text(
-                                  "Mã Rổ",
+                                  "SL",
                                   style: TextStyle(
                                       fontSize: 21 * SizeConfig.ratioFont,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
-                                )),
-                            SizedBox(
-                              width: 100 * SizeConfig.ratioWidth,
-                              child: Text(
-                                "SL",
-                                style: TextStyle(
-                                    fontSize: 21 * SizeConfig.ratioFont,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 120 * SizeConfig.ratioWidth,
-                              child: Text(
-                                "Ngày SX",
-                                style: TextStyle(
-                                    fontSize: 21 * SizeConfig.ratioFont,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
+                              SizedBox(
+                                width: 120 * SizeConfig.ratioWidth,
+                                child: Text(
+                                  "Ngày SX",
+                                  style: TextStyle(
+                                      fontSize: 21 * SizeConfig.ratioFont,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
+                            ],
+                          )),
+                      goodsReceiptEntryConainerData.isEmpty
+                          ? ExceptionErrorState(
+                              height: 300,
+                              title: "Chưa có rổ được nhập",
+                              message: "Quét mã để tiến hành nhập kho",
+                              imageDirectory: 'lib/assets/sad_face_search.png',
+                              imageHeight: 140,
+                            )
+                          : Column(
+                              children: goodsReceiptEntryConainerData
+                                  .map((item) => RowContainer(item))
+                                  .toList(),
                             ),
-                          ],
-                        )),
-                    goodsReceiptEntryConainerData.isEmpty
-                        ? ExceptionErrorState(
-                            height: 300,
-                            title: "Rổ chưa xác định",
-                            message: "Quét mã để tiến hành nhập kho",
-                            imageDirectory: 'lib/assets/sad_face_search.png',
-                            imageHeight: 140,
-                          )
-                        : Column(
-                            children: goodsReceiptEntryConainerData
-                                .map((item) => RowContainer(item))
-                                .toList(),
-                          ),
-                    CustomizedButton(
-                        text: 'DS rổ đã nhập',
-                        onPressed: () async {
-                          Navigator.pushNamed(context, '/add_list_receipt');
-                        }),
-                    CustomizedButton(
-                        text: goodsReceiptEntryConainerData.isEmpty
-                            ? 'Quét mã'
-                            : 'Xác nhận',
-                        onPressed: () async {
-                          if (goodsReceiptEntryConainerData.isEmpty) {
-                            // dùng khi entry chưa xác định container
-                            basketReceiptId = 'undefined';
-                            basketReceiptIndex = 0;
+                      //bỏ qua, xem trực tiếp tại trang list container
+                      // CustomizedButton(
+                      //     text: 'DS rổ đã nhập',
+                      //     onPressed: () async {
+                      //       Navigator.pushNamed(context, '/add_list_receipt');
+                      //     }),
+                      CustomizedButton(
+                          text: 'Quét mã',
+                          onPressed: () {
+                            scanQRresult = '-1';
+                            //   Navigator.pushNamed(context, '/modify_info_screen');
                             Navigator.pushNamed(context, '/qr_scanner_screen');
-                          } else {
-                            for (var item in goodsReceiptEntryConainerData) {
-                              if (item.status == false) {
-                                AlertDialogTwoBtnCustomized(
-                                        context,
-                                        'Bạn có chắc',
-                                        'Một số rổ chưa được xuất?',
-                                        'Xác nhận',
-                                        'Trở lại', () {
-                                  Navigator.pushNamed(
-                                      context, '/receipt_screen');
-                                }, () {}, 18, 22)
-                                    .show();
-                              } else {
-                                Navigator.pushNamed(context, '/receipt_screen');
-                              }
-                            }
-                          }
-                        })
-                  ],
-                ),
-              );
+                          }),
+                      CustomizedButton(
+                          text: 'Xác nhận',
+                          onPressed: () async {
+                            AlertDialogTwoBtnCustomized(
+                                    context,
+                                    'Bạn có chắc',
+                                    'Xác nhận bạn đã nhập đủ số lượng?',
+                                    'Xác nhận',
+                                    'Trở lại', () async {
+                              // add container event
+                              // BlocProvider.of<ReceiptBloc>(context).add(
+                              //     AddContainerEvent(
+                              //         DateTime.now(),
+                              //         goodsReceiptEntryConainerData,
+                              //         selectedGoodReceiptId));
+                              Navigator.pushNamed(context, '/receipt_screen');
+                            }, () {}, 18, 22)
+                                .show();
+                          })
+                    ],
+                  ),
+                );
+              }
             }));
   }
 }
@@ -170,10 +163,9 @@ class RowContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                    width: 80 * SizeConfig.ratioWidth,
+                    width: 140 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsReceiptEntryContainerData
-                          .goodsReceiptEntryContainer.containerId,
+                      goodsReceiptEntryContainerData.containerId,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -181,11 +173,8 @@ class RowContainer extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsReceiptEntryContainerData
-                          .goodsReceiptEntryContainer.planedQuantity
-                          .toString(),
+                  width: 120 * SizeConfig.ratioWidth,
+                  child: Text(goodsReceiptEntryContainerData.itemId,
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -193,11 +182,9 @@ class RowContainer extends StatelessWidget {
                       textAlign: TextAlign.center),
                 ),
                 SizedBox(
-                  width: 120 * SizeConfig.ratioWidth,
+                  width: 100 * SizeConfig.ratioWidth,
                   child: Text(
-                      DateFormat("dd-MM-yyyy").format(DateTime.parse(
-                          goodsReceiptEntryContainerData
-                              .goodsReceiptEntryContainer.productionDate)),
+                      goodsReceiptEntryContainerData.plannedQuantity.toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -206,25 +193,11 @@ class RowContainer extends StatelessWidget {
                 ),
               ],
             ),
-            color: goodsReceiptEntryContainerData.status
-                ? Colors.grey[700]
-                : Colors.grey[300],
+            color: Colors.grey[300],
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
-              basketReceiptId = goodsReceiptEntryContainerData
-                  .goodsReceiptEntryContainer.containerId;
-              basketReceiptIndex = goodsReceiptEntryContainerData.index;
-
-              //Sự kiện click vào từng dòng
-              //trang vi tri => tiep tuc quet ma
-              // BlocProvider.of<CheckInfoBloc>(context).add(
-              //                     CheckInfoEventRequested(
-              //                         timeStamp: DateTime.now(),
-              //                         basketID: basketReceiptId));
-              //     Navigator.pushNamed(context, '/modify_info_screen');
-
-              Navigator.pushNamed(context, '/qr_scanner_screen');
+              // Navigator.pushNamed(context, '/qr_scanner_screen');
             },
           ),
         ),

@@ -10,8 +10,10 @@ class StockCardViewStateLoadingProduct extends StockCardViewState {
 }
 
 class StockCardViewStateLoadProductSuccess extends StockCardViewState {
+  DateTime timeStamp;
+  StockCardViewStateLoadProductSuccess(this.timeStamp);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [timeStamp];
 }
 
 class StockCardViewStateSelectedProductID extends StockCardViewState {

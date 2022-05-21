@@ -11,6 +11,9 @@ import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
+// nếu quét mã sai item sẽ báo lỗi và cho quét lại
+String receiptItemId = '';
+
 class ReceiptScreen extends StatefulWidget {
   const ReceiptScreen({Key? key}) : super(key: key);
 
@@ -203,14 +206,13 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                             return CircularLoading();
                           } else if (receiptState is ReceiptStateFailure) {
                             return ExceptionErrorState(
-                                        height: 300,
-                                        title: "Không tìm thấy dữ liệu",
-                                        message:
-                                            "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
-                                        imageDirectory:
-                                            'lib/assets/sad_face_search.png',
-                                        imageHeight: 140,
-                                      );
+                              height: 300,
+                              title: "Không tìm thấy dữ liệu",
+                              message:
+                                  "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
+                              imageDirectory: 'lib/assets/sad_face_search.png',
+                              imageHeight: 140,
+                            );
                           } else {
                             return Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -242,16 +244,19 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         }),
                         CustomizedButton(
                             text: 'Xác Nhận',
-                            onPressed: ()async{
-                            //   AlertDialogTwoBtnCustomized(
-                            //         context,
-                            //         'Bạn có chắc',
-                            //         'Một số rổ chưa được xuất?',
-                            //         'Xác nhận',
-                            //         'Trở lại', () {
-                            //   Navigator.pushNamed(context, '/receipt_screen');
-                            // }, () {}, 18, 22)
-                            //     .show();
+                            onPressed: () async {
+                               BlocProvider.of<ReceiptBloc>(context).add(
+                                 ConfirmReceiptEvent(DateTime.now(), selectedGoodReceiptId)
+                                );
+                              //   AlertDialogTwoBtnCustomized(
+                              //         context,
+                              //         'Bạn có chắc',
+                              //         'Một số entry chưa được nhập?',
+                              //         'Xác nhận',
+                              //         'Trở lại', () {
+                              //   Navigator.pushNamed(context, '/receipt_screen');
+                              // }, () {}, 18, 22)
+                              //     .show();
                               Navigator.pushNamed(context, '///');
                             })
                       ],
@@ -322,13 +327,7 @@ class RowReceipt extends StatelessWidget {
             onPressed: () async {
               goodsReceiptEntryConainerData.clear();
               //Sự kiện click vào từng dòng
-              for (int i = 0;
-                  i < goodsReceiptEntryRow.goodsReceiptEntry.containers.length;
-                  i++) {
-                goodsReceiptEntryConainerData.add(
-                    GoodsReceiptEntryContainerData(i, false,
-                        goodsReceiptEntryRow.goodsReceiptEntry.containers[i]));
-              }
+              receiptItemId = goodsReceiptEntryRow.goodsReceiptEntry.item.id;
               Navigator.pushNamed(context, '/list_container_receipt_screen');
             },
           ),

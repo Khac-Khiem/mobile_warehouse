@@ -37,7 +37,7 @@ class StockCardViewBloc extends Bloc<StockCardViewEvent, StockCardViewState> {
             allProductList.add(productOrErr[i]);
           }
           print(allProductIdList.toString());
-          emit(StockCardViewStateLoadProductSuccess());
+          emit(StockCardViewStateLoadProductSuccess(DateTime.now()));
         } else {
           print(productOrErr.toString());
           //     yield StockCardViewStateLoadFailed(errorPackage: productOrErr);

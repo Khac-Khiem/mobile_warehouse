@@ -85,42 +85,40 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                     SizedBox(
                       height: 30 * SizeConfig.ratioHeight,
                     ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Ngày bắt đầu:    ",
-                            style: TextStyle(
-                                fontSize: 20 * SizeConfig.ratioFont,
-                                fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Ngày bắt đầu:    ",
+                          style: TextStyle(
+                              fontSize: 20 * SizeConfig.ratioFont,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                          width: 180 * SizeConfig.ratioWidth,
+                          height: 45 * SizeConfig.ratioHeight,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1, color: Constants.mainColor),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          child: CustomizeDatePicker(
+                            fontColor: Colors.black,
+                            fontWeight: FontWeight.normal,
+                            initDateTime: selectedDate,
+                            okBtnClickedFunction: (pickedTime) {
+                              selectedDate = pickedTime;
+                              // print(DateFormat("dd-MM-yyyy")
+                              //     .format(selectedDate));
+                              BlocProvider.of<IssueBloc>(context).add(
+                                  LoadIssueEvent(
+                                      DateTime.now(),
+                                      DateFormat("dd-MM-yyyy")
+                                          .format(selectedDate)));
+                            },
                           ),
-                          Container(
-                            width: 180 * SizeConfig.ratioWidth,
-                            height: 45 * SizeConfig.ratioHeight,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: Constants.mainColor),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10))),
-                            child: CustomizeDatePicker(
-                              fontColor: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              initDateTime: selectedDate,
-                              okBtnClickedFunction: (pickedTime) {
-                                selectedDate = pickedTime;
-                                // print(DateFormat("dd-MM-yyyy")
-                                //     .format(selectedDate));
-                                BlocProvider.of<IssueBloc>(context).add(
-                                    LoadIssueEvent(
-                                        DateTime.now(),
-                                        DateFormat("dd-MM-yyyy")
-                                            .format(selectedDate)));
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 20 * SizeConfig.ratioHeight,
@@ -218,6 +216,8 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                           ],
                         );
                       } else if (issueState is IssueStateListLoading) {
+                        return CircularLoading();
+                      } else if (issueState is IssueStateFailure) {
                         return ExceptionErrorState(
                           height: 300,
                           title: "Không tìm thấy dữ liệu",
@@ -226,8 +226,6 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                           imageDirectory: 'lib/assets/sad_face_search.png',
                           imageHeight: 140,
                         );
-                      } else if (issueState is IssueStateFailure) {
-                        return CircularLoading();
                       } else {
                         return Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -260,8 +258,9 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                         ? CustomizedButton(
                             text: 'Xác nhận',
                             onPressed: () {
-                              BlocProvider.of<IssueBloc>(context).add(
-                                  ConfirmClickedIssueEvent(DateTime.now()));
+                              // confirm exporting container
+                              // BlocProvider.of<IssueBloc>(context).add(
+                              //     ConfirmClickedIssueEvent(DateTime.now()));
                               Navigator.pushNamed(context, '///');
                             })
                         : CustomizedButton(
@@ -300,7 +299,7 @@ class RowIssue extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                    width: 100 * SizeConfig.ratioWidth,
+                    width: 150 * SizeConfig.ratioWidth,
                     child: Text(
                       goodsIssueEntryRow.goodsIssueEntry.item.id,
                       style: TextStyle(
@@ -310,7 +309,7 @@ class RowIssue extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
+                  width: 70 * SizeConfig.ratioWidth,
                   child: Text(
                       goodsIssueEntryRow.goodsIssueEntry.totalQuantity
                           .toString(),
@@ -321,8 +320,8 @@ class RowIssue extends StatelessWidget {
                       textAlign: TextAlign.center),
                 ),
                 SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
-                  child: Text(goodsIssueEntryRow.actualQuantity.toString(),
+                  width: 70 * SizeConfig.ratioWidth,
+                  child: Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
                         fontWeight: FontWeight.bold,
@@ -336,6 +335,8 @@ class RowIssue extends StatelessWidget {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
+              //clear mỗi khi vào 1 entry issue mới
+              listBasketIdConfirm.clear();
               // dùng để try xuất entry
               issueIndex = goodsIssueEntryRow.index;
               // xóa dữ liệu container trước đó
@@ -372,7 +373,7 @@ class ColumnHeaderIssue extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
+                  width: 140 * SizeConfig.ratioWidth,
                   child: Text(
                     "Mã SP",
                     style: TextStyle(
@@ -381,7 +382,7 @@ class ColumnHeaderIssue extends StatelessWidget {
                     textAlign: TextAlign.center,
                   )),
               SizedBox(
-                width: 100 * SizeConfig.ratioWidth,
+                width: 80 * SizeConfig.ratioWidth,
                 child: Text(
                   "KL",
                   style: TextStyle(
@@ -391,9 +392,9 @@ class ColumnHeaderIssue extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 100 * SizeConfig.ratioWidth,
+                width: 80 * SizeConfig.ratioWidth,
                 child: Text(
-                  "Xuất thực tế",
+                  "Note",
                   style: TextStyle(
                       fontSize: 21 * SizeConfig.ratioFont,
                       fontWeight: FontWeight.bold),

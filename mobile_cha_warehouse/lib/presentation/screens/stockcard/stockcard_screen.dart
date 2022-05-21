@@ -240,16 +240,17 @@ class StockCardScreen extends StatelessWidget {
                         TextStyle _textContentInTable =
                             TextStyle(fontSize: 16 * SizeConfig.ratioFont);
                         TextStyle _textHeaderInTable =
-                            TextStyle(fontSize: 18 * SizeConfig.ratioFont);
+                            TextStyle(fontSize: 18 * SizeConfig.ratioFont, color: Colors.white);
                         return Container(
                           height: 280 * SizeConfig.ratioHeight,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
+                           // scrollDirection: Axis.horizontal,
                             child: Column(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(1),
-                                  child: SizedBox(
+                                  child: Container(
+                                    color: Constants.mainColor,
                                       width: 380 * SizeConfig.ratioWidth,
                                       height: 60 * SizeConfig.ratioHeight,
                                       // ignore: deprecated_member_use
@@ -294,13 +295,13 @@ class StockCardScreen extends StatelessWidget {
                                                 style: _textHeaderInTable,
                                                 textAlign: TextAlign.center,
                                               )),
-                                          SizedBox(
-                                              width: 60 * SizeConfig.ratioWidth,
-                                              child: Text(
-                                                "Note",
-                                                style: _textHeaderInTable,
-                                                textAlign: TextAlign.center,
-                                              )),
+                                          // SizedBox(
+                                          //     width: 60 * SizeConfig.ratioWidth,
+                                          //     child: Text(
+                                          //       "Note",
+                                          //       style: _textHeaderInTable,
+                                          //       textAlign: TextAlign.center,
+                                          //     )),
                                         ],
                                       )),
                                 ),
@@ -462,13 +463,13 @@ class StockcardRow extends StatelessWidget {
                     style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
                     textAlign: TextAlign.center,
                   )),
-              SizedBox(
-                  width: 60 * SizeConfig.ratioWidth,
-                  child: Text(
-                    stockCardEntry.note,
-                    style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
-                    textAlign: TextAlign.center,
-                  )),
+              // SizedBox(
+              //     width: 60 * SizeConfig.ratioWidth,
+              //     child: Text(
+              //       stockCardEntry.note,
+              //       style: TextStyle(fontSize: 18 * SizeConfig.ratioFont),
+              //       textAlign: TextAlign.center,
+              //     )),
             ],
           ),
         ),

@@ -1,9 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mobile_cha_warehouse">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="mobile_cha_warehouse"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:usesCleartextTraffic="true"
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

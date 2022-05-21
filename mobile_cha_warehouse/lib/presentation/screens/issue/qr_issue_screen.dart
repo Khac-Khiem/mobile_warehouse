@@ -9,8 +9,10 @@ import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dar
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/states/check_info_state.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/issue/list_issue_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
 import '../../../constant.dart';
@@ -69,7 +71,8 @@ class _QRScannerIssueScreenState extends State<QRScannerIssueScreen> {
           ),
         ),
         endDrawer: DrawerUser(),
-        body: Builder(builder: (BuildContext context) {
+        body: BlocBuilder<CheckInfoBloc, CheckInfoState>(
+            builder: (context, checkInfoState) {
           return Container(
               alignment: Alignment.center,
               child: Column(
@@ -90,8 +93,6 @@ class _QRScannerIssueScreenState extends State<QRScannerIssueScreen> {
                     CustomizedButton(
                       onPressed: () {
                         scanQR();
-
-                       
                       },
                       text: "Quét mã QR",
                     ),
@@ -102,34 +103,48 @@ class _QRScannerIssueScreenState extends State<QRScannerIssueScreen> {
                         onPressed: scanQRIssueresult == basketIssueId
                             ? () {
                                 AlertDialogTwoBtnCustomized(
-                                    context,
-                                    "Xác Nhận",
-                                    "Bạn đã lấy đúng rổ, nhấn xác nhận để hoàn thành",
-                                    "Xác nhận",
-                                    "Trở lại", () {
+                                        context,
+                                        "Xác Nhận",
+                                        "Bạn đã lấy đúng rổ, nhấn xác nhận để hoàn thành",
+                                        "Xác nhận",
+                                        "Trở lại", () async {
+                                  //update UI
+                                  goodsIssueEntryData[issueIndex]
+                                          .actualQuantity =
+                                      goodsIssueEntryContainerData[
+                                              basketIssueIndex]
+                                          .goodsIssueEntryContainer
+                                          .quantity;
+                                  // add basket to confirm
+                                  listBasketIdConfirm.add(scanQRIssueresult);
                                   //add event click toggle container
-                                    // BlocProvider.of<IssueBloc>(context).add(
-                                    //   ToggleIssueEvent(basketIssueIndex));
-                                     BlocProvider.of<CheckInfoBloc>(context).add(
-                                CheckInfoEventRequested(
-                                    timeStamp: DateTime.now(),
-                                    basketID: basketIssueId));
+                                  BlocProvider.of<IssueBloc>(context).add(
+                                      ToggleContainerIssueEvent(
+                                          basketIssueIndex));
+                                  //      BlocProvider.of<CheckInfoBloc>(context).add(
+                                  // CheckInfoEventRequested(
+                                  //     timeStamp: DateTime.now(),
+                                  //     basketID: basketIssueId));
+                                  // Navigator.pushNamed(
+                                  //     context, '/confirm_container_screen');
                                   Navigator.pushNamed(
-                                      context, '/confirm_container_screen');
-                                }, () {}, 18, 22);
+                                      context, '/list_container_screen');
+                                }, () {}, 18, 22)
+                                    .show();
                               }
                             : () {
                                 AlertDialogTwoBtnCustomized(
-                                    context,
-                                    "Xác Nhận",
-                                    "Rổ bạn đã lấy không chính xác, nhấn Tiếp tục để quét lại",
-                                    "Tiếp tục",
-                                    "Trở lại",
-                                    () {}, () {
+                                        context,
+                                        "Xác Nhận",
+                                        "Rổ bạn đã lấy không chính xác, nhấn Tiếp tục để quét lại",
+                                        "Tiếp tục",
+                                        "Trở lại",
+                                        () {}, () {
                                   //back to container screen
                                   Navigator.pushNamed(
                                       context, '/list_container_screen');
-                                }, 18, 22);
+                                }, 18, 22)
+                                    .show();
                               },
                         text: scanQRIssueresult == basketIssueId
                             ? 'Xác Nhận'

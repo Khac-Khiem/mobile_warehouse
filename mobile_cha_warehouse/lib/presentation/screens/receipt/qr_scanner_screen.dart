@@ -7,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/function.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/stockcard_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/stockcard_event.dart';
 import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/list_container_receipt_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/receipt_screen.dart';
@@ -100,59 +102,40 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                       height: 10 * SizeConfig.ratioHeight,
                     ),
                     CustomizedButton(
-                        onPressed: () {
-                          // BlocProvider.of<CheckInfoBloc>(context).add(
-                          //     CheckInfoEventRequested(
-                          //         timeStamp: DateTime.now(),
-                          //         basketID: scanQRresult));
-                          // Navigator.pushNamed(context, '/modify_info_screen');
-                          //
-                          basketReceiptId == 'undefined'
-                              ? () {
-                                  Navigator.pushNamed(
-                                      context, '/modify_info_screen');
-                                }
-                              : () {
-                                  scanQRresult == basketReceiptId
-                                      ? () {
-                                          AlertDialogTwoBtnCustomized(
-                                              context,
-                                              "Xác Nhận",
-                                              "Bạn đã lấy đúng rổ, nhấn xác nhận để hoàn thành",
-                                              "Xác nhận",
-                                              "Trở lại", () async {
-                                            //add event click toggle container
-                                            // BlocProvider.of<ReceiptBloc>(context).add(
-                                            //   ToggleReceiptEvent(basketReceiptIndex));
-                                            BlocProvider.of<CheckInfoBloc>(
-                                                    context)
-                                                .add(CheckInfoEventRequested(
-                                                    timeStamp: DateTime.now(),
-                                                    basketID: scanQRresult));
-                                            Navigator.pushNamed(
-                                                context, '/modify_info_screen');
-                                          }, () {}, 18, 22);
-                                        }
-                                      : () {
-                                          AlertDialogTwoBtnCustomized(
-                                              context,
-                                              "Xác Nhận",
-                                              "Rổ bạn đã lấy không chính xác, nhấn Tiếp tục để quét lại",
-                                              "Tiếp tục",
-                                              "Trở lại",
-                                              () {}, () {
-                                            //back to container screen
-                                            Navigator.pushNamed(context,
-                                                '/list_container_screen');
-                                          }, 18, 22);
-                                        };
-                                };
-                        },
-                        text: basketReceiptId == 'undefined'
-                            ? 'Xác nhận'
-                            : (scanQRresult == basketReceiptId
-                                ? 'Xác Nhận'
-                                : 'Trở lại'))
+                        onPressed: scanQRresult == '-1'
+                            ? () {
+                                // AlertDialogTwoBtnCustomized(
+                                //         context,
+                                //         'Bạn có chắc',
+                                //         'Chưa có rổ được quét?',
+                                //         'Xác nhận',
+                                //         'Trở lại',
+                                //         () async {},
+                                //         () {},
+                                //         18,
+                                //         22)
+                                //     .show();
+                                // test
+                                // BlocProvider.of<StockCardViewBloc>(context).add(
+                                //     StockCardViewEventLoadAllProductID(
+                                //         DateTime.now()));
+
+                                // Navigator.pushNamed(
+                                //     context, '/modify_info_screen');
+                              }
+                            : () {
+                                // load itemId
+                                BlocProvider.of<StockCardViewBloc>(context).add(
+                                    StockCardViewEventLoadAllProductID(
+                                        DateTime.now()));
+                                // BlocProvider.of<CheckInfoBloc>(context).add(
+                                //     CheckInfoEventRequested(
+                                //         timeStamp: DateTime.now(),
+                                //         basketID: scanQRresult));
+                                Navigator.pushNamed(
+                                    context, '/modify_info_screen');
+                              },
+                        text: 'Xác nhận')
                   ]));
         }));
   }

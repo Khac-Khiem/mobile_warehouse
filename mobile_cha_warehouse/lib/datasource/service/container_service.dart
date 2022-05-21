@@ -16,7 +16,7 @@ class ContainerService {
       //   print(body.toString());
       ContainerModel items = ContainerModel.fromJson(body);
 
-      print(items.storageSlot.shelfId);
+      print(items.storageSlot.shelfId+items.storageSlot.cellId.toString()+items.storageSlot.rowId.toString());
       return items;
     } else {
       throw "Unable to retrieve posts.";

@@ -58,55 +58,51 @@ class _LocationScreenState extends State<LocationScreen> {
           if (state is LoadingLocationState) {
             return CircularLoading();
           } else {
-            return Container(
-              //    color: Color(0xFFfbe5ae),
-              child: SafeArea(
-                child: Flex(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  direction: Axis.vertical,
-                  children: [
-                    SizedBox(
-                      height: 20 * SizeConfig.ratioHeight,
+            return SafeArea(
+              child: Flex(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                direction: Axis.vertical,
+                children: [
+                  SizedBox(
+                    height: 20 * SizeConfig.ratioHeight,
+                  ),
+                  Center(
+                    child: Text(
+                      locationContainer[0].shelfId +
+                          '.' +
+                          locationContainer[0].rowId.toString() +
+                          '.' +
+                          locationContainer[0].cellId.toString(),
+                      style: const TextStyle(
+                          fontSize: 32, fontWeight: FontWeight.bold),
                     ),
-                    Center(
-                      child: Text(
-                        locationContainer[0].shelfId +
-                            '.' +
-                            locationContainer[0].rowId.toString() +
-                            '.' +
-                            locationContainer[0].cellId.toString(),
-                        style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Expanded(
-                      child: DiTreDiDraggable(
+                  ),
+                  Expanded(
+                    child: DiTreDiDraggable(
+                      controller: _controller,
+                      child: DiTreDi(
+                        figures: _cubes.toList(),
                         controller: _controller,
-                        child: DiTreDi(
-                          figures: _cubes.toList(),
-                          controller: _controller,
-                        ),
                       ),
                     ),
-                    Center(
-                      child: CustomizedButton(
-                          text: 'Quét QR',
-                          onPressed: () async {
-                            BlocProvider.of<CheckInfoBloc>(context).add(
-                                CheckInfoEventRequested(
-                                    timeStamp: DateTime.now(),
-                                    basketID: basketIssueId));
-                            Navigator.pushNamed(
-                                context, '/confirm_container_screen');
-                            // Navigator.pushNamed(
-                            //     context, '/qr_scanner_issue_screen');
-                          }
-                          
-
-                          ),
-                    )
-                  ],
-                ),
+                  ),
+                  Center(
+                    child: CustomizedButton(
+                        text: 'Quét QR',
+                        onPressed: () async {
+                          // quy trình test
+                          // BlocProvider.of<CheckInfoBloc>(context).add(
+                          //     CheckInfoEventRequested(
+                          //         timeStamp: DateTime.now(),
+                          //         basketID: basketIssueId));
+                          // Navigator.pushNamed(
+                          //     context, '/confirm_container_screen');
+                          // quy trình thực tế
+                          Navigator.pushNamed(
+                              context, '/qr_scanner_issue_screen');
+                        }),
+                  )
+                ],
               ),
             );
           }
@@ -134,7 +130,7 @@ Iterable<Cube3D> _generateCubes() sync* {
     // Color(0xffFDE2CA),
   ];
 
-  const count = 4;
+  const count = 5;
   for (int x = count; x > 0; x--) {
     for (int y = count; y > 0; y--) {
       for (int z = count; z > 0; z--) {

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 
 class ReceiptEvent extends Equatable {
   @override
@@ -27,12 +28,30 @@ class ToggleReceiptEvent extends ReceiptEvent {
   @override
   List<Object> get props => [index];
 }
+
 class AddContainerEvent extends ReceiptEvent {
   DateTime timeStamp;
-  int quantity;
-  String containerId;
-  AddContainerEvent(this.timeStamp, this.containerId, this.quantity);
+  GoodsReceiptEntryContainerData data;
+  String receiptId;
+  AddContainerEvent(this.timeStamp, this.data, this.receiptId);
   @override
   // TODO: implement props
-  List<Object?> get props => [timeStamp, containerId];
+  List<Object?> get props => [timeStamp, receiptId];
+}
+
+class ConfirmReceiptEvent extends ReceiptEvent {
+  DateTime timeStamp;
+  String receiptId;
+  ConfirmReceiptEvent(this.timeStamp, this.receiptId);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timeStamp, receiptId];
+}
+
+class AddcontainerScanned extends ReceiptEvent {
+  GoodsReceiptEntryContainerData goodsReceiptEntryContainerData;
+  AddcontainerScanned(this.goodsReceiptEntryContainerData);
+   @override
+  // TODO: implement props
+  List<Object?> get props => [goodsReceiptEntryContainerData];
 }

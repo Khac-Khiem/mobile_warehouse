@@ -5,7 +5,7 @@ import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
 
 // model lưu trữ từng rổ của một dòng trong đơn xuất kho
 class GoodsIssueEntryContainer extends Equatable {
-  double quantity;
+  int quantity;
   String productionDate;
   String containerId;
   // Slot storageSlot;
