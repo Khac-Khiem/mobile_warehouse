@@ -328,7 +328,7 @@ class ColumnHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
+                  width: 150 * SizeConfig.ratioWidth,
                   child: Text(
                     "Mã SP",
                     style: TextStyle(
@@ -338,7 +338,7 @@ class ColumnHeader extends StatelessWidget {
                   )),
               
               SizedBox(
-                width: 100 * SizeConfig.ratioWidth,
+                width: 60 * SizeConfig.ratioWidth,
                 child: Text(
                   "KL",
                   style: TextStyle(
@@ -348,7 +348,7 @@ class ColumnHeader extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 100 * SizeConfig.ratioWidth,
+                width: 150 * SizeConfig.ratioWidth,
                 child: Text(
                   "Ghi chú",
                   style: TextStyle(

@@ -77,9 +77,10 @@ class StockCardViewBloc extends Bloc<StockCardViewEvent, StockCardViewState> {
               event.productId,
               DateFormat('yyyy-MM-dd').format(event.startDate),
               DateFormat('yyyy-MM-dd').format(event.endDate));
-
+          print(stockCardOrErr);
           emit(StockCardViewStateLoadSuccess(event.timestamp, stockCardOrErr));
         } catch (e) {
+          print(e);
           emit(StockCardViewStateLoadFailed());
         }
       }

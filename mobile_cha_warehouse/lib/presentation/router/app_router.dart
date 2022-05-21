@@ -7,6 +7,8 @@ import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dar
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/receipt_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/stockcard_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/inventory/inventory_screen.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/inventory/qr_inventory.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/confirm_container_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/issue_screen.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
@@ -104,6 +106,17 @@ class AppRoute {
             builder: (context) => BlocProvider<StockCardViewBloc>(
                 create: (context) => injector(),
                 child: StockCardScreen()));
+      // iventory
+      case '/qr_inventory_screen':
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider<CheckInfoBloc>(
+                create: (context) => injector(),
+                child: QRScreen()));
+      case '/inventory_screen':
+        return MaterialPageRoute(
+            builder: (context) => BlocProvider<CheckInfoBloc>(
+                create: (context) => injector(),
+                child: InventoryScreen()));
       default:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
     }

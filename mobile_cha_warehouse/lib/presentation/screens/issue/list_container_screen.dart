@@ -61,7 +61,7 @@ class ListContainerScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                              width: 120 * SizeConfig.ratioWidth,
+                              width: 150 * SizeConfig.ratioWidth,
                               child: Text(
                                 "Mã Rổ",
                                 style: TextStyle(
@@ -80,7 +80,7 @@ class ListContainerScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: 120 * SizeConfig.ratioWidth,
+                            width: 150 * SizeConfig.ratioWidth,
                             child: Text(
                               "Ngày SX",
                               style: TextStyle(
@@ -149,7 +149,7 @@ class RowContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                      width: 80 * SizeConfig.ratioWidth,
+                      width: 150 * SizeConfig.ratioWidth,
                       child: Text(
                         goodsIssueEntryContainerData
                             .goodsIssueEntryContainer.containerId,
@@ -160,7 +160,7 @@ class RowContainer extends StatelessWidget {
                         textAlign: TextAlign.center,
                       )),
                   SizedBox(
-                    width: 100 * SizeConfig.ratioWidth,
+                    width: 60 * SizeConfig.ratioWidth,
                     child: Text(
                         goodsIssueEntryContainerData
                             .goodsIssueEntryContainer.quantity
@@ -172,7 +172,7 @@ class RowContainer extends StatelessWidget {
                         textAlign: TextAlign.center),
                   ),
                   SizedBox(
-                    width: 120 * SizeConfig.ratioWidth,
+                    width: 150 * SizeConfig.ratioWidth,
                     child: Text(
                         DateFormat("dd-MM-yyyy").format(DateTime.parse(
                             goodsIssueEntryContainerData

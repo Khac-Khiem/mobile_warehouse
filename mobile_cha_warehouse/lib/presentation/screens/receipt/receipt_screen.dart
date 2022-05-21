@@ -287,7 +287,7 @@ class RowReceipt extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                    width: 100 * SizeConfig.ratioWidth,
+                    width: 150 * SizeConfig.ratioWidth,
                     child: Text(
                       goodsReceiptEntryRow.goodsReceiptEntry.item.id,
                       style: TextStyle(
@@ -297,7 +297,7 @@ class RowReceipt extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
+                  width: 60 * SizeConfig.ratioWidth,
                   child: Text(
                       goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
                           .toString(),
@@ -308,7 +308,7 @@ class RowReceipt extends StatelessWidget {
                       textAlign: TextAlign.center),
                 ),
                 SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
+                  width: 150 * SizeConfig.ratioWidth,
                   child: Text(
                       goodsReceiptEntryRow.goodsReceiptEntry.note.toString(),
                       style: TextStyle(

@@ -135,7 +135,7 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                         ),
                         Container(
                           width: 180 * SizeConfig.ratioWidth,
-                          height: 45 * SizeConfig.ratioHeight,
+                          height: 50 * SizeConfig.ratioHeight,
                           padding: const EdgeInsets.all(0),
                           decoration: BoxDecoration(
                               border: Border.all(
@@ -309,7 +309,7 @@ class RowIssue extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 SizedBox(
-                  width: 70 * SizeConfig.ratioWidth,
+                  width: 60 * SizeConfig.ratioWidth,
                   child: Text(
                       goodsIssueEntryRow.goodsIssueEntry.totalQuantity
                           .toString(),
@@ -320,7 +320,7 @@ class RowIssue extends StatelessWidget {
                       textAlign: TextAlign.center),
                 ),
                 SizedBox(
-                  width: 70 * SizeConfig.ratioWidth,
+                  width: 150 * SizeConfig.ratioWidth,
                   child: Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
                       style: TextStyle(
                         fontSize: 21 * SizeConfig.ratioFont,
@@ -373,7 +373,7 @@ class ColumnHeaderIssue extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 140 * SizeConfig.ratioWidth,
+                  width: 150 * SizeConfig.ratioWidth,
                   child: Text(
                     "Mã SP",
                     style: TextStyle(
@@ -382,7 +382,7 @@ class ColumnHeaderIssue extends StatelessWidget {
                     textAlign: TextAlign.center,
                   )),
               SizedBox(
-                width: 80 * SizeConfig.ratioWidth,
+                width: 60 * SizeConfig.ratioWidth,
                 child: Text(
                   "KL",
                   style: TextStyle(
@@ -392,7 +392,7 @@ class ColumnHeaderIssue extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 80 * SizeConfig.ratioWidth,
+                width: 150 * SizeConfig.ratioWidth,
                 child: Text(
                   "Note",
                   style: TextStyle(

@@ -22,7 +22,7 @@ class CellModel extends Cell {
       : super(row, column, slices);
 }
 
-class RowModel extends Row {
+class RowModel extends RowData {
   RowModel(int id, List<CellModel> cells) : super(id, cells);
 }
 

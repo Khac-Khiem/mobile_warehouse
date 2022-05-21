@@ -101,7 +101,7 @@ class MainScreen extends StatelessWidget {
               CustomizedButton(
                 text: "Kiểm kê",
                 onPressed: () {
-                  //      Navigator.pushNamed(context, '/stock_card_screen');
+                  Navigator.pushNamed(context, '/qr_inventory_screen');
                 },
               ),
             ],

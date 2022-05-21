@@ -19,7 +19,9 @@ class ContainerService {
       print(items.storageSlot.shelfId+items.storageSlot.cellId.toString()+items.storageSlot.rowId.toString());
       return items;
     } else {
+      
       throw "Unable to retrieve posts.";
     }
+   
   }
 }

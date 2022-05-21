@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/function.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
+import 'package:mobile_cha_warehouse/presentation/dialog/dialog.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
 import '../../../constant.dart';
-
 
 String scanQRInventoryresult = '-1'; //Scan QR ra
 
@@ -43,20 +45,7 @@ class _QRScannerScreenState extends State<QRScreen> {
           leading: IconButton(
               icon: const Icon(Icons.west_outlined),
               onPressed: () {
-                if (scanQRInventoryresult!= "-1") {
-                  // AlertDialogTwoBtnCustomized(
-                  //         context: context,
-                  //         title: "Bạn có chắc?",
-                  //         desc:
-                  //             "Khi nhấn nút Trở về, mọi dữ liệu sẽ không được lưu",
-                  //         onPressedBtn1: () {
-                  //           Navigator.pop(context);
-                  //         },
-                  //         onPressedBtn2: () {})
-                  //     .show();
-                } else {
-                  Navigator.of(context).pop();
-                }
+                Navigator.pushNamed(context, '///');
               }),
           backgroundColor: Constants.mainColor,
           title: Text(
@@ -85,10 +74,9 @@ class _QRScannerScreenState extends State<QRScreen> {
                     ),
                     CustomizedButton(
                       onPressed: () {
-                      scanQR();
-                 
-                      Navigator.of(context)
-                                  .popAndPushNamed("");
+                        scanQR();
+                        // Navigator.of(context)
+                        //     .popAndPushNamed("/inventory_screen");
                       },
                       text: "Quét mã QR",
                     ),
@@ -98,19 +86,35 @@ class _QRScannerScreenState extends State<QRScreen> {
                     CustomizedButton(
                       onPressed: scanQRInventoryresult != '-1'
                           ? () {
+                              print(scanQRInventoryresult);
+                              // tra thong tin basket sau do cong vao textfieldcontent
+                              BlocProvider.of<CheckInfoBloc>(context).add(
+                                  CheckInfoEventRequested(
+                                      timeStamp: DateTime.now(),
+                                      basketID: scanQRInventoryresult));
                               Navigator.of(context)
-                                  .popAndPushNamed("/inventory_screen");
-                                  // tra thong tin basket sau do cong vao textfieldcontent 
+                                  .pushNamed("/inventory_screen");
+                            }
+                          : () async {
+                              // print(scanQRInventoryresult);
                               // BlocProvider.of<CheckInfoBloc>(context).add(
                               //     CheckInfoEventRequested(
                               //         timeStamp: DateTime.now(),
-                              //         basketID: scanQRresult));
-                            }
-                          : (){},
+                              //         basketID: "NCC - TB - 05172022 - 0029"));
+                              // Navigator.of(context)
+                              //     .pushNamed("/inventory_screen");
+                              AlertDialogTwoBtnCustomized(
+                                      context,
+                                      'Bạn có chắc',
+                                      'Mã rổ chưa xác định',
+                                      'Quét lại',
+                                      'Tiếp tục', () {
+                                Navigator.pushNamed(context, '/qr_inventory_screen');
+                              }, () {}, 18, 22)
+                                  .show();
+                            },
                       text: "Tiếp tục",
                     ),
-                  
-                    
                   ]));
         }));
   }

@@ -40,10 +40,10 @@ class Cell extends Equatable {
   List<Object?> get props => [];
 }
 
-class Row extends Equatable {
+class RowData extends Equatable {
   int id;
   List<Cell> cells;
-  Row(this.id, this.cells);
+  RowData(this.id, this.cells);
   @override
   // TODO: implement props
   List<Object?> get props => [id];
@@ -51,7 +51,7 @@ class Row extends Equatable {
 
 class Shelf extends Equatable {
   int id;
-  List<Row> rows;
+  List<RowData> rows;
   Shelf(this.id, this.rows);
   @override
   // TODO: implement props
@@ -69,5 +69,5 @@ class Location extends Equatable {
       this.id);
   @override
   // TODO: implement props
-  List<Object?> get props =>[id];
+  List<Object?> get props => [id];
 }

@@ -67,14 +67,27 @@ class _LocationScreenState extends State<LocationScreen> {
                     height: 20 * SizeConfig.ratioHeight,
                   ),
                   Center(
-                    child: Text(
-                      locationContainer[0].shelfId +
-                          '.' +
-                          locationContainer[0].rowId.toString() +
-                          '.' +
-                          locationContainer[0].cellId.toString(),
-                      style: const TextStyle(
-                          fontSize: 32, fontWeight: FontWeight.bold),
+                    child: Column(
+                      children: [
+                        Text(
+                          locationContainer[0].shelfId +
+                              '.' +
+                              locationContainer[0].rowId.toString() +
+                              '.' +
+                              locationContainer[0].cellId.toString(),
+                          style: const TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                         Text(
+                          locationContainer[0].sliceId.toString() +
+                              '.' +
+                              locationContainer[0].levelId.toString() +
+                              '.' +
+                              locationContainer[0].id.toString(),
+                          style: const TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
