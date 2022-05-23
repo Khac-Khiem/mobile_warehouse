@@ -4,7 +4,7 @@ import 'package:mobile_cha_warehouse/function.dart';
 
 class MainAppName extends StatelessWidget {
   String title;
-  MainAppName({this.title = "QUẢN LÍ KHO"});
+  MainAppName({this.title = "QUẢN LÝ KHO"});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,7 +24,7 @@ class MainAppName extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image(
-                image: const AssetImage('lib/assets/CHAlogo_square_transparent.png'),
+                image: const AssetImage('lib/assets/logo_CHA_new_version.png'),
                 width: 100 * SizeConfig.ratioWidth,
               ),
               SizedBox(
@@ -32,7 +32,7 @@ class MainAppName extends StatelessWidget {
               ),
               Image(
                   image: const AssetImage(
-                      'lib/assets/Logo BK_vien trang_transparent.png'),
+                      'lib/assets/logo_BK_new_version.png'),
                   width: 100 * SizeConfig.ratioWidth)
             ],
           ),

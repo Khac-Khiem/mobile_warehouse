@@ -32,7 +32,7 @@ class IssueStateListLoading extends IssueState {
 class IssueStateListLoadSuccess extends IssueState {
   final DateTime timestamp; //Do mỗi lần book là nó sẽ trả ra state khác nhau
   List<GoodsIssueEntryData> goodsIssueEntryData;
-  IssueStateListLoadSuccess(this.timestamp, this.goodsIssueEntryData );
+  IssueStateListLoadSuccess(this.timestamp, this.goodsIssueEntryData);
   @override
   List<Object> get props => [timestamp];
 }
@@ -101,4 +101,12 @@ class LoadingLocationState extends IssueState {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
+}
+
+class LoadLocationFailState extends IssueState {
+  DateTime timeStamp;
+  LoadLocationFailState(this.timeStamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timeStamp];
 }

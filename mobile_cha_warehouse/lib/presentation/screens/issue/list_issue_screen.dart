@@ -39,11 +39,11 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
               // khong cho phep thoat khoi giao dien khi ddang lamf viec, chi thoat khi da xac nhan
               AlertDialogTwoBtnCustomized(
                       context,
-                      'Ban co chac',
-                      'Khi nhan tro lai, moi du lieu se khong duoc luu',
-                      'Tro lai',
-                      'Tiep tuc', () {
-                Navigator.pushNamed(context, '/issues_screen');
+                      'Bạn có chắc',
+                      'Khi nhấn trở lại, mọi dữ liệu sẽ không được lưu',
+                      'Trở lại',
+                      'Tiếp tục', () {
+                Navigator.pushNamed(context, '///');
               }, () {}, 18, 22)
                   .show();
               //  Navigator.pop(context);
@@ -61,6 +61,7 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
             listener: (context, issueState) {
           if (issueState is IssueStateListLoadSuccess) {
             goodsIssueEntryData = issueState.goodsIssueEntryData;
+            print(goodsIssueEntryData);
           }
         }, builder: (context, issueState) {
           if (issueState is IssueStateInitial) {
@@ -206,7 +207,7 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                                   )
                                 : ExceptionErrorState(
                                     height: 300,
-                                    title: "Không tìm thấy dữ liệu",
+                                    title: "Không tìm thấy đơn xuất kho",
                                     message:
                                         "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
                                     imageDirectory:
@@ -233,12 +234,15 @@ class _ListIssueScreenState extends State<ListIssueScreen> {
                             children: goodsIssueEntryData.isNotEmpty
                                 ? [
                                     ColumnHeaderIssue(),
-                                    Column(
-                                      children: goodsIssueEntryData
-                                          .map((item) => RowIssue(
-                                                item,
-                                              ))
-                                          .toList(),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Column(
+                                        children: goodsIssueEntryData
+                                            .map((item) => RowIssue(
+                                                  item,
+                                                ))
+                                            .toList(),
+                                      ),
                                     )
                                   ]
                                 : [
@@ -289,7 +293,7 @@ class RowIssue extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: SizedBox(
         width: 380 * SizeConfig.ratioWidth,
-        height: 60 * SizeConfig.ratioHeight,
+        height: 70 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
           child: RaisedButton(
@@ -321,12 +325,13 @@ class RowIssue extends StatelessWidget {
                 ),
                 SizedBox(
                   width: 150 * SizeConfig.ratioWidth,
-                  child: Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
+                  child:
+                      Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
+                          style: TextStyle(
+                            fontSize: 21 * SizeConfig.ratioFont,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center),
                 ),
               ],
             ),

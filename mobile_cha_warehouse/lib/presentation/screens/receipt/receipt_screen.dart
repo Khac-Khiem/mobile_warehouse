@@ -37,10 +37,10 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
             onPressed: () {
               AlertDialogTwoBtnCustomized(
                       context,
-                      'Ban co chac',
-                      'Khi nhan tro lai, moi du lieu se khong duoc luu',
-                      'Tro lai',
-                      'Tiep tuc', () {
+                      'Bạn có chắc',
+                      'Khi nhấn trở lại, mọi dữ liệu sẽ không được lưu',
+                      'Trở lại',
+                      'Tiếp tục', () {
                 Navigator.pushNamed(context, '///');
               }, () {}, 18, 22)
                   .show();
@@ -134,9 +134,9 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                     hintText: "Chọn đơn",
                                     hintStyle: TextStyle(
                                         fontSize: 18 * SizeConfig.ratioFont),
-                                    prefixText: "    ",
-                                    prefixStyle: TextStyle(
-                                        fontSize: 18 * SizeConfig.ratioFont),
+                                    // prefixText: "    ",
+                                    // prefixStyle: TextStyle(
+                                    //     fontSize: 18 * SizeConfig.ratioFont),
                                     border: const UnderlineInputBorder(
                                         borderSide: BorderSide.none)),
                                 showAsSuffixIcons: true,
@@ -193,7 +193,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                       )
                                     : ExceptionErrorState(
                                         height: 300,
-                                        title: "Không tìm thấy dữ liệu",
+                                        title: "Không tìm thấy đơn nhập kho",
                                         message:
                                             "Vui lòng kiểm tra lại tài khoản \nvà ngày bắt đầu.",
                                         imageDirectory:
@@ -221,12 +221,15 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                                 children: goodsReceiptEntryData.isNotEmpty
                                     ? [
                                         ColumnHeader(),
-                                        Column(
-                                          children: goodsReceiptEntryData
-                                              .map((item) => RowReceipt(
-                                                    item,
-                                                  ))
-                                              .toList(),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Column(
+                                            children: goodsReceiptEntryData
+                                                .map((item) => RowReceipt(
+                                                      item,
+                                                    ))
+                                                .toList(),
+                                          ),
                                         ),
                                       ]
                                     : [
@@ -245,9 +248,9 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
                         CustomizedButton(
                             text: 'Xác Nhận',
                             onPressed: () async {
-                               BlocProvider.of<ReceiptBloc>(context).add(
-                                 ConfirmReceiptEvent(DateTime.now(), selectedGoodReceiptId)
-                                );
+                              BlocProvider.of<ReceiptBloc>(context).add(
+                                  ConfirmReceiptEvent(
+                                      DateTime.now(), selectedGoodReceiptId));
                               //   AlertDialogTwoBtnCustomized(
                               //         context,
                               //         'Bạn có chắc',
@@ -277,7 +280,7 @@ class RowReceipt extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: SizedBox(
         width: 380 * SizeConfig.ratioWidth,
-        height: 60 * SizeConfig.ratioHeight,
+        height: 70 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
           child: RaisedButton(
@@ -326,7 +329,23 @@ class RowReceipt extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               goodsReceiptEntryConainerData.clear();
+              for (int i = 0;
+                  i < goodsReceiptEntryRow.goodsReceiptEntry.containers.length;
+                  i++) {
+                goodsReceiptEntryConainerData.add(
+                    GoodsReceiptEntryContainerData(
+                        goodsReceiptEntryRow
+                            .goodsReceiptEntry.containers[i].containerId,
+                        goodsReceiptEntryRow.goodsReceiptEntry.item.id,
+                        goodsReceiptEntryRow
+                            .goodsReceiptEntry.containers[i].planedQuantity,
+                        goodsReceiptEntryRow
+                            .goodsReceiptEntry.containers[i].actualQuantity,
+                        goodsReceiptEntryRow
+                            .goodsReceiptEntry.containers[i].productionDate));
+              }
               //Sự kiện click vào từng dòng
+              // truyền itemid vào trang modyfi để tránh lỗi nhập sai mã sản phẩm
               receiptItemId = goodsReceiptEntryRow.goodsReceiptEntry.item.id;
               Navigator.pushNamed(context, '/list_container_receipt_screen');
             },

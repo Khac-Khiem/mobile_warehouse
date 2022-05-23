@@ -27,7 +27,7 @@ class MainScreen extends StatelessWidget {
                 'Đăng xuất khỏi hệ thống', 'Đăng xuất', 'Trở lại', () {
           logout(context);
         }, () {
-          Navigator.pushNamed(context, '/list_receipt');
+          Navigator.pushNamed(context, '///');
         }, 18, 22)
             .show();
         // AlertDialogTwoBtnCustomized(
@@ -80,7 +80,7 @@ class MainScreen extends StatelessWidget {
                 onPressed: () async {
                   scanQRIssueresult = "-1";
                   BlocProvider.of<IssueBloc>(context)
-                      .add(LoadIssueEvent(DateTime.now(), '2022-10-10'));
+                      .add(LoadIssueEvent(DateTime.now(), '2021-10-10'));
                   Navigator.pushNamed(context, '/list_issue_screen');
                 },
               ),

@@ -56,3 +56,11 @@ class ConFirmExportingContainer extends IssueEvent {
   // TODO: implement props
   List<Object?> get props => [containerId];
 }
+
+class TestIssueEvent extends IssueEvent {
+  DateTime timeStamp;
+  TestIssueEvent(this.timeStamp);
+  @override
+  // TODO: implement props
+  List<Object?> get props => [timeStamp];
+}

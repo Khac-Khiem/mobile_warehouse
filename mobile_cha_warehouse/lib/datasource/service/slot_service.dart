@@ -1,22 +1,21 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:mobile_cha_warehouse/datasource/models/goods_issues_model.dart';
+import 'package:mobile_cha_warehouse/datasource/models/cell_data_model.dart';
 
 class SlotService {
-  // Future<List<GoodsIssueModel>> getGoodsIssue() async {
-  //   final res = await http.get(Uri.parse(''));
-  //   if (res.statusCode == 200) {
-  //     List<GoodsIssueModel> body = jsonDecode(res.body);
-  //     // List<GoodsIssueModel> stations = body
-  //     //     .map(
-  //     //       (dynamic item) => StationModel.fromJson(item),
-  //     //     )
-  //     //     .toList();
+  Future<CellDataModel> getCellById(String id) async {
+    final res = await http.get(Uri.parse(
+        'https://cha-warehouse-management.azurewebsites.net/api/shelves/cells?containerId=$id&='));
+    if (res.statusCode == 200) {
+      dynamic body = jsonDecode(res.body);
+    //  print(body);
+      CellDataModel cell = CellDataModel.fromJson(body);
 
-  //     return body;
-  //   } else {
-  //     throw "Unable to retrieve posts.";
-  //   }
-  // }
+      return cell;
+    } else {
+      print(res.statusCode);
+      throw "Unable to retrieve posts.";
+    }
+  }
 }

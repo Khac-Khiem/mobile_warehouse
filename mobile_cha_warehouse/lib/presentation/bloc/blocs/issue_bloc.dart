@@ -6,6 +6,7 @@ import 'package:mobile_cha_warehouse/domain/entities/storage_slot.dart';
 import 'package:mobile_cha_warehouse/domain/entities/warehouse_employee.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/container_usecase.dart';
 import 'package:mobile_cha_warehouse/domain/usecases/issue_usecase.dart';
+import 'package:mobile_cha_warehouse/domain/usecases/slot_usecase.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
@@ -25,17 +26,22 @@ List<String> goodIssueIdsView = [];
 List<String> listNoteIssueEntry = [];
 //Good Issue mà dropdown chọn
 String selectedGoodIssueId = '';
+int xAxis = 0;
+int yAxis = 0;
+int zAxis = 0;
 
 class IssueBloc extends Bloc<IssueEvent, IssueState> {
   IssueUseCase issueUseCase;
   ContainerUseCase containerUseCase;
-  IssueBloc(this.issueUseCase, this.containerUseCase)
+  SlotUseCase slotUseCase;
+  IssueBloc(this.issueUseCase, this.containerUseCase, this.slotUseCase)
       : super(IssueStateInitial()) {
     on<LoadIssueEvent>(_onLoadingIssue);
     on<ChooseIssueEvent>(_onChooseIssue);
     on<ToggleContainerIssueEvent>(_onClickContainerToggle);
     on<FetchLocationIssueEvent>(_onLoadLocation);
     on<ConFirmExportingContainer>(_onConfirm);
+    on<TestIssueEvent>(_onRefresh);
   }
   Future<void> _onLoadingIssue(
       IssueEvent event, Emitter<IssueState> emit) async {
@@ -82,7 +88,7 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
               status: false,
               actualQuantity: 0));
         }
-
+        
         emit(IssueStateListLoadSuccess(DateTime.now(), goodsIssueEntryData));
       } catch (e) {
         emit(IssueStateFailure(DateTime.now()));
@@ -113,15 +119,32 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
     if (event is FetchLocationIssueEvent) {
       emit(LoadingLocationState());
       try {
+        print('a');
         //
+        final cell = await slotUseCase.getCellById(event.id);
+        xAxis = cell.slices!.length;
+        for (int i = 0; i < cell.slices!.length; i++) {
+          for (int j = 1; j < cell.slices![i].slots!.length; j++) {
+            if (cell.slices![i].slots![j].levelId! >
+                cell.slices![i].slots![j - 1].levelId!) {
+              yAxis = cell.slices![i].slots![j].levelId!;
+            }
+            if (cell.slices![i].slots![j].id! >
+                cell.slices![i].slots![j - 1].id!) {
+              zAxis = cell.slices![i].slots![j].id!;
+            }
+          }
+        }
+
         locationContainer.clear();
         final container = await containerUseCase.getContainerById(event.id);
         locationContainer.add(container.storageSlot);
-        print(
-            locationContainer[0].shelfId + locationContainer[0].id.toString());
+        // print(
+        //     locationContainer[0].shelfId + locationContainer[0].id.toString());
         emit(LoadLocationContainerSuccess(DateTime.now()));
       } catch (e) {
-        emit(IssueStateFailure(DateTime.now()));
+        print('b');
+        emit(LoadLocationFailState(DateTime.now()));
       }
     }
   }
@@ -130,12 +153,25 @@ class IssueBloc extends Bloc<IssueEvent, IssueState> {
     if (event is ConFirmExportingContainer) {
       emit(IssueStateConfirmLoading());
       try {
-        final confirm = issueUseCase.patchConfirmIssueEntry(event.issueId, event.containerId);
+        final confirm = issueUseCase.patchConfirmIssueEntry(
+            event.issueId, event.containerId);
         emit(ConfirmSuccessIssueState(DateTime.now()));
       } catch (e) {
         print('fail');
         emit(ConfirmFailureIssueState(DateTime.now()));
       }
+    }
+  }
+
+  Future<void> _onRefresh(IssueEvent event, Emitter<IssueState> emit) async {
+    if (event is TestIssueEvent) {
+      print('aaaa');
+      emit(IssueStateListRefresh(
+          basketIssueIndex,
+          goodsIssueEntryContainerData[basketIssueIndex]
+              .goodsIssueEntryContainer
+              .isTaken,
+          DateTime.now()));
     }
   }
 }

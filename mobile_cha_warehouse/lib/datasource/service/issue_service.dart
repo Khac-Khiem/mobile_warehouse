@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mobile_cha_warehouse/datasource/models/goods_issues_model.dart';
-import 'package:mobile_cha_warehouse/datasource/service/receipt_service.dart';
 
 class IssueService {
   Future<List<GoodsIssueModel>> getGoodsIssue(String startDate) async {
@@ -18,12 +17,12 @@ class IssueService {
 
       List<dynamic> bodyResponse = body['items'];
       //  print(bodyResponse.toString());
-      List<GoodsIssueModel> allReceipts = bodyResponse
+      List<GoodsIssueModel> allIssues = bodyResponse
           .map(
             (dynamic item) => GoodsIssueModel.fromJson(item),
           )
           .toList();
-      return allReceipts;
+      return allIssues;
     } else {
       throw "Unable to retrieve posts.";
     }

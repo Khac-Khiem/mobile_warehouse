@@ -104,12 +104,7 @@ class ListContainerReceiptScreen extends StatelessWidget {
                                   .map((item) => RowContainer(item))
                                   .toList(),
                             ),
-                      //bỏ qua, xem trực tiếp tại trang list container
-                      // CustomizedButton(
-                      //     text: 'DS rổ đã nhập',
-                      //     onPressed: () async {
-                      //       Navigator.pushNamed(context, '/add_list_receipt');
-                      //     }),
+                    
                       CustomizedButton(
                           text: 'Quét mã',
                           onPressed: () {
@@ -153,11 +148,11 @@ class RowContainer extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: SizedBox(
         width: 380 * SizeConfig.ratioWidth,
-        height: 60 * SizeConfig.ratioHeight,
+        height: 80 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
           child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

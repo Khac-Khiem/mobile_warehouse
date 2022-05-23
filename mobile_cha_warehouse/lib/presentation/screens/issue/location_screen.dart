@@ -2,11 +2,10 @@ import 'package:ditredi/ditredi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_cha_warehouse/function.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/blocs/check_info_bloc.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/blocs/issue_bloc.dart';
-import 'package:mobile_cha_warehouse/presentation/bloc/events/check_info_event.dart';
+import 'package:mobile_cha_warehouse/presentation/bloc/events/issue_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/issue_state.dart';
-import 'package:mobile_cha_warehouse/presentation/screens/issue/list_container_screen.dart';
+import 'package:mobile_cha_warehouse/presentation/widget/exception_widget.dart';
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
@@ -42,7 +41,11 @@ class _LocationScreenState extends State<LocationScreen> {
             //     Navigator.pop(context);
             //   },
             // ).show();
-            Navigator.pop(context);
+            // ep State
+            // BlocProvider.of<IssueBloc>(context)
+            //     .add(TestIssueEvent(DateTime.now()));
+           
+            Navigator.pushNamed(context, '/list_container_screen');
           },
         ),
         backgroundColor: const Color(0xff001D37), //màu xanh dương đậm
@@ -57,6 +60,17 @@ class _LocationScreenState extends State<LocationScreen> {
         builder: (context, state) {
           if (state is LoadingLocationState) {
             return CircularLoading();
+          }
+          if (state is LoadLocationFailState) {
+            return Center(
+              child: ExceptionErrorState(
+                height: 300,
+                title: "Không tìm thấy vị trí rổ",
+                message: "Vui lòng kiểm tra lại đơn.",
+                imageDirectory: 'lib/assets/sad_face_search.png',
+                imageHeight: 140,
+              ),
+            );
           } else {
             return SafeArea(
               child: Flex(
@@ -78,7 +92,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           style: const TextStyle(
                               fontSize: 32, fontWeight: FontWeight.bold),
                         ),
-                         Text(
+                        Text(
                           locationContainer[0].sliceId.toString() +
                               '.' +
                               locationContainer[0].levelId.toString() +
@@ -127,29 +141,23 @@ class _LocationScreenState extends State<LocationScreen> {
 
 Iterable<Cube3D> _generateCubes() sync* {
   final colors = [
-    Color(0xff001D20),
-    Color(0xff001D30),
-    Color(0xff001D40),
-    Color(0xff001D50),
-    Color(0xff001D60),
-    Color(0xff001D70),
-    // Color(0xff945305),
-    // Color(0xffBD6B09),
-    // Color(0xffD0770B),
-    // Color(0xffEC870E),
-    // Color(0xffF09C42),
-    // Color(0xffF5B16D),
-    // Color(0xffFACE9C),
-    // Color(0xffFDE2CA),
+    const Color(0xff001D20),
+    const Color(0xff001D30),
+    const Color(0xff001D40),
+    const Color(0xff001D50),
+    const Color(0xff001D60),
+    const Color(0xff001D70),
   ];
 
-  const count = 5;
-  for (int x = count; x > 0; x--) {
-    for (int y = count; y > 0; y--) {
-      for (int z = count; z > 0; z--) {
+  int countx = xAxis;
+  int county = yAxis;
+  int countz = zAxis;
+  for (int x = countx; x > 0; x--) {
+    for (int y = county; y > 0; y--) {
+      for (int z = countz; z > 0; z--) {
         if (x == locationContainer[0].sliceId &&
             y == locationContainer[0].levelId &&
-            z == locationContainer[0].id) {
+            z == zAxis - locationContainer[0].id + 1) {
           yield Cube3D(
             2,
             vector.Vector3(

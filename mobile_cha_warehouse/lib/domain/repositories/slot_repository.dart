@@ -1,5 +1,5 @@
-import 'package:mobile_cha_warehouse/domain/entities/storage_slot.dart';
+import 'package:mobile_cha_warehouse/domain/entities/cell_data.dart';
 
 abstract class SlotRepository {
-  Future<Slot> getSlotStatus();
+  Future<CellData> getCellByContainer(String id);
 }

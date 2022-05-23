@@ -50,7 +50,7 @@ class InventoryScreen extends StatelessWidget {
                     height: 300,
                     title: "Không tìm thấy dữ liệu",
                     message:
-                        "Các rổ trong đơn này có thể \nđã được lấy ra khỏi kho, \nvui lòng kiểm tra lại.",
+                        "Rổ này có thể \nđã được lấy ra khỏi kho, \nvui lòng kiểm tra lại.",
                     imageDirectory: 'lib/assets/sad_commander.png',
                     imageHeight: 100,
                   ),

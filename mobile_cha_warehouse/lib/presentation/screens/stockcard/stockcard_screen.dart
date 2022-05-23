@@ -25,7 +25,7 @@ class StockCardScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.west_outlined),
             onPressed: () {
-              Navigator.pop(context);
+                 Navigator.pushNamed(context, '///');
             },
           ),
           actions: [
@@ -105,7 +105,7 @@ class StockCardScreen extends StatelessWidget {
                                 if (stockCardState
                                     is StockCardViewStateLoadingProduct) {
                                   return const Center(
-                                      child: Text("Chờ tý, đang tải"));
+                                      child: Text("Loading...."));
                                 } else {
                                   return DropdownSearch(
                                     dropdownSearchDecoration: InputDecoration(
@@ -170,7 +170,51 @@ class StockCardScreen extends StatelessWidget {
                                 _productName = stockCardState.productName;
                               }
                               _productName = _productName;
-                              return TextInput(_productName);
+                              return Container(
+                                
+                                  alignment: Alignment.centerRight,
+                                  width: 180 * SizeConfig.ratioWidth,
+                                  height: 50 * SizeConfig.ratioHeight,
+                                  //color: Colors.grey[200],
+                                  child: TextField(
+                                    enabled: true,
+                                    readOnly: true,
+                                    controller: TextEditingController(
+                                        text: _productName),
+                                    textAlignVertical: TextAlignVertical.center,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 18 * SizeConfig.ratioFont),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              width: 1.0,
+                                              color: Constants.mainColor)),
+                                      disabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              width: 1.0,
+                                              color: Constants.mainColor)),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              width: 1.0,
+                                              color: Constants.mainColor)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              width: 1.0,
+                                              color: Constants.mainColor)),
+                                    ),
+                                  ));
                             }),
                             SizedBox(
                               height: 10 * SizeConfig.ratioHeight,
@@ -243,18 +287,17 @@ class StockCardScreen extends StatelessWidget {
                         TextStyle _textHeaderInTable = TextStyle(
                             fontSize: 15 * SizeConfig.ratioFont,
                             color: Colors.white);
-                        return 
-                        Container(
+                        return Container(
                           height: 280 * SizeConfig.ratioHeight,
                           child: SingleChildScrollView(
-                           scrollDirection: Axis.vertical,
+                            scrollDirection: Axis.vertical,
                             child: Column(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(1),
                                   child: Container(
-                                    color: Constants.mainColor,
-                                      width: 280 * SizeConfig.ratioWidth,
+                                      color: Constants.mainColor,
+                                      width: 310 * SizeConfig.ratioWidth,
                                       height: 50 * SizeConfig.ratioHeight,
                                       // ignore: deprecated_member_use
                                       child: Row(
@@ -271,28 +314,28 @@ class StockCardScreen extends StatelessWidget {
                                                 textAlign: TextAlign.center,
                                               )),
                                           SizedBox(
-                                              width: 50 * SizeConfig.ratioWidth,
+                                              width: 55 * SizeConfig.ratioWidth,
                                               child: Text(
                                                 "Tồn đầu",
                                                 style: _textHeaderInTable,
                                                 textAlign: TextAlign.center,
                                               )),
                                           SizedBox(
-                                              width: 50 * SizeConfig.ratioWidth,
+                                              width: 55 * SizeConfig.ratioWidth,
                                               child: Text(
                                                 "Nhập",
                                                 style: _textHeaderInTable,
                                                 textAlign: TextAlign.center,
                                               )),
                                           SizedBox(
-                                              width: 50 * SizeConfig.ratioWidth,
+                                              width: 55 * SizeConfig.ratioWidth,
                                               child: Text(
                                                 "Xuất",
                                                 style: _textHeaderInTable,
                                                 textAlign: TextAlign.center,
                                               )),
                                           SizedBox(
-                                              width: 50 * SizeConfig.ratioWidth,
+                                              width: 55 * SizeConfig.ratioWidth,
                                               child: Text(
                                                 "Tồn cuối",
                                                 style: _textHeaderInTable,
@@ -321,7 +364,9 @@ class StockCardScreen extends StatelessWidget {
                         );
                       } else if (stockCardState
                           is StockCardViewStateLoadFailed) {
-                        return Container(child: Text('fail'),);
+                        return Container(
+                          child: Text('fail'),
+                        );
                       } else {
                         return Center(
                           child: ExceptionErrorState(
@@ -337,7 +382,7 @@ class StockCardScreen extends StatelessWidget {
                     }),
                   ),
                   SizedBox(
-                    height: 30 * SizeConfig.ratioHeight,
+                    height: 15 * SizeConfig.ratioHeight,
                   ),
                   BlocBuilder<StockCardViewBloc, StockCardViewState>(
                       builder: (context, state) => CustomizedButton(
@@ -381,8 +426,7 @@ class TextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-            padding: EdgeInsets.symmetric(vertical: 10 * SizeConfig.ratioHeight),
-
+        padding: EdgeInsets.symmetric(vertical: 10 * SizeConfig.ratioHeight),
         alignment: Alignment.centerRight,
         width: 180 * SizeConfig.ratioWidth,
         height: 55 * SizeConfig.ratioHeight,
@@ -425,7 +469,7 @@ class StockcardRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: SizedBox(
-        width: 280 * SizeConfig.ratioWidth,
+        width: 310 * SizeConfig.ratioWidth,
         height: 50 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
@@ -443,28 +487,28 @@ class StockcardRow extends StatelessWidget {
                     textAlign: TextAlign.center,
                   )),
               SizedBox(
-                  width: 50 * SizeConfig.ratioWidth,
+                  width: 55 * SizeConfig.ratioWidth,
                   child: Text(
                     stockCardEntry.beforeQuantity.toString(),
                     style: TextStyle(fontSize: 15 * SizeConfig.ratioFont),
                     textAlign: TextAlign.center,
                   )),
               SizedBox(
-                  width: 50 * SizeConfig.ratioWidth,
+                  width: 55 * SizeConfig.ratioWidth,
                   child: Text(
                     stockCardEntry.inputQUantity.toString(),
                     style: TextStyle(fontSize: 15 * SizeConfig.ratioFont),
                     textAlign: TextAlign.center,
                   )),
               SizedBox(
-                  width: 50 * SizeConfig.ratioWidth,
+                  width: 55 * SizeConfig.ratioWidth,
                   child: Text(
                     stockCardEntry.outputQuantity.toString(),
                     style: TextStyle(fontSize: 15 * SizeConfig.ratioFont),
                     textAlign: TextAlign.center,
                   )),
               SizedBox(
-                  width: 50 * SizeConfig.ratioWidth,
+                  width: 55 * SizeConfig.ratioWidth,
                   child: Text(
                     stockCardEntry.afterQuantity.toString(),
                     style: TextStyle(fontSize: 15 * SizeConfig.ratioFont),

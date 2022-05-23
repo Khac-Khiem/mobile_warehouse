@@ -7,6 +7,7 @@ import 'package:mobile_cha_warehouse/presentation/bloc/blocs/stockcard_bloc.dart
 import 'package:mobile_cha_warehouse/presentation/bloc/events/receipt_event.dart';
 import 'package:mobile_cha_warehouse/presentation/bloc/states/stockcard_state.dart';
 import 'package:mobile_cha_warehouse/presentation/screens/receipt/qr_scanner_screen.dart';
+import 'package:mobile_cha_warehouse/presentation/screens/receipt/receipt_screen.dart';
 
 import 'package:mobile_cha_warehouse/presentation/widget/widget.dart';
 
@@ -152,6 +153,8 @@ class ModifyInfoScreen extends StatelessWidget {
                             //color: Colors.grey[200],
                             child: TextField(
                               enabled: true,
+                              readOnly: true,
+
                               // onChanged: (value) =>
                               //     {qrScannedData[0].containerId = value},
                               controller:
@@ -173,94 +176,95 @@ class ModifyInfoScreen extends StatelessWidget {
                                         color: Colors.black)),
                               ),
                             )),
-                        // Container(
-                        //     padding: EdgeInsets.symmetric(
-                        //         vertical: 5 * SizeConfig.ratioHeight),
-                        //     alignment: Alignment.centerRight,
-                        //     width: 200 * SizeConfig.ratioWidth,
-                        //     height: 55 * SizeConfig.ratioHeight,
-                        //     //color: Colors.grey[200],
-                        //     child: TextField(
-                        //       enabled: true,
-                        //       onChanged: (value) => {itemId = value},
-                        //       //    readOnly: true,
-                        //       controller: TextEditingController(),
-                        //       textAlignVertical: TextAlignVertical.center,
-                        //       textAlign: TextAlign.center,
-                        //       style: TextStyle(
-                        //           fontSize: 20 * SizeConfig.ratioFont),
-                        //       decoration: InputDecoration(
-                        //         contentPadding: EdgeInsets.symmetric(
-                        //             horizontal: 10 * SizeConfig.ratioHeight),
-                        //         border: OutlineInputBorder(
-                        //             borderSide: BorderSide(
-                        //                 width: 1.0 * SizeConfig.ratioWidth,
-                        //                 color: Colors.black)),
-                        //         focusedBorder: OutlineInputBorder(
-                        //             borderSide: BorderSide(
-                        //                 width: 1.0 * SizeConfig.ratioWidth,
-                        //                 color: Colors.black)),
-                        //       ),
-                        //     )),
+                        //
                         Container(
-                          width: 200 * SizeConfig.ratioWidth,
-                          height: 55 * SizeConfig.ratioHeight,
-                          padding: const EdgeInsets.all(0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: Constants.mainColor),
-                            // borderRadius: const BorderRadius.all(
-                            //     const Radius.circular(10))),
-                          ),
-                          child: BlocBuilder<StockCardViewBloc,
-                                  StockCardViewState>(
-                              builder: (context, stockCardState) {
-                            if (stockCardState
-                                is StockCardViewStateLoadingProduct) {
-                              return const Center(
-                                  child: Text("Chờ tý, đang tải"));
-                            } else {
-                              return DropdownSearch(
-                                dropdownSearchDecoration: InputDecoration(
-                                    contentPadding: SizeConfig.ratioHeight >= 1
-                                        ? EdgeInsets.fromLTRB(
-                                            50 * SizeConfig.ratioWidth,
-                                            14 * SizeConfig.ratioHeight,
-                                            3 * SizeConfig.ratioWidth,
-                                            3 * SizeConfig.ratioHeight)
-                                        : const EdgeInsets.fromLTRB(45, 7, 3,
-                                            3), //Không thêm ratio do để nó cân với fontSize, fontSize trong đây ko chỉnh được
-                                    hintText: "Chọn mã",
-                                    hintStyle: TextStyle(
-                                        fontSize: 16 * SizeConfig.ratioFont),
-                                    border: const UnderlineInputBorder(
-                                        borderSide: BorderSide.none),
-                                    fillColor: Colors.blue),
-                                showAsSuffixIcons: true,
-                                popupTitle: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Text(
-                                    "Chọn mã sản phẩm",
-                                    style: TextStyle(
-                                        fontSize: 22 * SizeConfig.ratioFont),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                popupBackgroundColor: Colors.grey[200],
-                                // popupShape: RoundedRectangleBorder(
-                                //     borderRadius:
-                                //         BorderRadius.circular(10)),
-                                items: allProductIdList,
-                                //searchBoxDecoration: InputDecoration(),
-                                onChanged: (String? data) {
-                                  itemId = data.toString();
-                                },
-                                showSearchBox: true,
-                                //  autoFocusSearchBox: true,
-                              );
-                            }
-                          }),
-                        ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5 * SizeConfig.ratioHeight),
+                            alignment: Alignment.centerRight,
+                            width: 200 * SizeConfig.ratioWidth,
+                            height: 55 * SizeConfig.ratioHeight,
+                            //color: Colors.grey[200],
+                            child: TextField(
+                              enabled: true,
+                              //  onChanged: (value) => {itemId = value},
+                              readOnly: true,
+                              controller: TextEditingController(text: receiptItemId),
+                              textAlignVertical: TextAlignVertical.center,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20 * SizeConfig.ratioFont),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10 * SizeConfig.ratioHeight),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1.0 * SizeConfig.ratioWidth,
+                                        color: Colors.black)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 1.0 * SizeConfig.ratioWidth,
+                                        color: Colors.black)),
+                              ),
+                            )),
+                        // Container(
+                        //   width: 200 * SizeConfig.ratioWidth,
+                        //   height: 55 * SizeConfig.ratioHeight,
+                        //   padding: const EdgeInsets.all(0),
+                        //   decoration: BoxDecoration(
+                        //     border: Border.all(
+                        //         width: 1, color: Constants.mainColor),
+                        //     // borderRadius: const BorderRadius.all(
+                        //     //     const Radius.circular(10))),
+                        //   ),
+                        //   child: BlocBuilder<StockCardViewBloc,
+                        //           StockCardViewState>(
+                        //       builder: (context, stockCardState) {
+                        //     if (stockCardState
+                        //         is StockCardViewStateLoadingProduct) {
+                        //       return const Center(
+                        //           child: Text("Chờ tý, đang tải"));
+                        //     } else {
+                        //       return DropdownSearch(
+                        //         dropdownSearchDecoration: InputDecoration(
+                        //             contentPadding: SizeConfig.ratioHeight >= 1
+                        //                 ? EdgeInsets.fromLTRB(
+                        //                     50 * SizeConfig.ratioWidth,
+                        //                     14 * SizeConfig.ratioHeight,
+                        //                     3 * SizeConfig.ratioWidth,
+                        //                     3 * SizeConfig.ratioHeight)
+                        //                 : const EdgeInsets.fromLTRB(45, 7, 3,
+                        //                     3), //Không thêm ratio do để nó cân với fontSize, fontSize trong đây ko chỉnh được
+                        //             hintText: "Chọn mã",
+                        //             hintStyle: TextStyle(
+                        //                 fontSize: 16 * SizeConfig.ratioFont),
+                        //             border: const UnderlineInputBorder(
+                        //                 borderSide: BorderSide.none),
+                        //             fillColor: Colors.blue),
+                        //         showAsSuffixIcons: true,
+                        //         popupTitle: Padding(
+                        //           padding: const EdgeInsets.all(20),
+                        //           child: Text(
+                        //             "Chọn mã sản phẩm",
+                        //             style: TextStyle(
+                        //                 fontSize: 22 * SizeConfig.ratioFont),
+                        //             textAlign: TextAlign.center,
+                        //           ),
+                        //         ),
+                        //         popupBackgroundColor: Colors.grey[200],
+                        //         // popupShape: RoundedRectangleBorder(
+                        //         //     borderRadius:
+                        //         //         BorderRadius.circular(10)),
+                        //         items: allProductIdList,
+                        //         //searchBoxDecoration: InputDecoration(),
+                        //         onChanged: (String? data) {
+                        //           itemId = data.toString();
+                        //         },
+                        //         showSearchBox: true,
+                        //         //  autoFocusSearchBox: true,
+                        //       );
+                        //     }
+                        //   }),
+                        // ),
                         Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: 5 * SizeConfig.ratioHeight),
@@ -370,7 +374,7 @@ class ModifyInfoScreen extends StatelessWidget {
                         BlocProvider.of<ReceiptBloc>(context).add(
                             AddcontainerScanned(GoodsReceiptEntryContainerData(
                                 scanQRresult,
-                                itemId,
+                                receiptItemId,
                                 planned,
                                 actual,
                                 DateTime.now().toString())));
@@ -380,7 +384,7 @@ class ModifyInfoScreen extends StatelessWidget {
                                 DateTime.now(),
                                 GoodsReceiptEntryContainerData(
                                     scanQRresult,
-                                    itemId,
+                                    receiptItemId,
                                     planned,
                                     actual,
                                     DateTime.now().toString()),
