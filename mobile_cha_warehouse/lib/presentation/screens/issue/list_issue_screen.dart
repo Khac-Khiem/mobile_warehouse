@@ -296,8 +296,17 @@ class RowIssue extends StatelessWidget {
         height: 70 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              primary: goodsIssueEntryRow.status
+                  ? Colors.grey[700]
+                  : Colors.grey[300],
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            ),
+            // padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -335,10 +344,10 @@ class RowIssue extends StatelessWidget {
                 ),
               ],
             ),
-            color:
-                goodsIssueEntryRow.status ? Colors.grey[700] : Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
+            // color:
+            //     goodsIssueEntryRow.status ? Colors.grey[700] : Colors.grey[300],
+            // shape: const RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               //clear mỗi khi vào 1 entry issue mới
               listBasketIdConfirm.clear();

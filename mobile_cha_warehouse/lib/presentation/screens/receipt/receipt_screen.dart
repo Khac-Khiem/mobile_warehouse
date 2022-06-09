@@ -283,8 +283,19 @@ class RowReceipt extends StatelessWidget {
         height: 70 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: goodsReceiptEntryRow.status
+                  ? Colors.grey[700]
+                  : Colors.grey[300],
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+
+              // primary: bgColor,
+              // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            ),
+            //  padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -322,11 +333,11 @@ class RowReceipt extends StatelessWidget {
                 ),
               ],
             ),
-            color: goodsReceiptEntryRow.status
-                ? Colors.grey[700]
-                : Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
+            // color: goodsReceiptEntryRow.status
+            //     ? Colors.grey[700]
+            //     : Colors.grey[300],
+            // shape: const RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               goodsReceiptEntryConainerData.clear();
               for (int i = 0;

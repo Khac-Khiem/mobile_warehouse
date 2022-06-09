@@ -144,8 +144,17 @@ class RowContainer extends StatelessWidget {
         height: 80 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+                primary:goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
+                 ? Colors.grey[700]
+                 : Colors.grey[300],
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              ),
+              // padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -187,16 +196,16 @@ class RowContainer extends StatelessWidget {
                   ),
                 ],
               ),
-              color: goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
-                  ? Colors.grey[700]
-                  : Colors.grey[300],
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              // color: goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
+              //     ? Colors.grey[700]
+              //     : Colors.grey[300],
+              // shape: const RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(8))),
               onPressed:
                   //nếu rổ đã được taken thì không cho phép ấn vào
                   goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
                       ? () {}
-                      : ()  {
+                      : () {
                           basketIssueId = goodsIssueEntryContainer
                               .goodsIssueEntryContainer.containerId;
                           basketIssueIndex = goodsIssueEntryContainer.index;
@@ -206,7 +215,7 @@ class RowContainer extends StatelessWidget {
                           BlocProvider.of<IssueBloc>(context).add(
                               FetchLocationIssueEvent(
                                   basketIssueId, DateTime.now()));
-                        //  print(locationContainer);
+                          //  print(locationContainer);
                           Navigator.pushNamed(context, '/location_screen');
                         }),
         ),

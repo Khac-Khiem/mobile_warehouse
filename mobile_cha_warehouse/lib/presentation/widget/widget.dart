@@ -30,13 +30,20 @@ class CustomizedButton extends StatelessWidget {
       child: SizedBox(
         width: width * SizeConfig.ratioWidth,
         height: height * SizeConfig.ratioHeight,
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-          disabledColor: Colors.grey,
-          color: bgColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radius * SizeConfig.ratioWidth),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(radius * SizeConfig.ratioWidth),
+            ),
+            primary: bgColor,
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
           ),
+          // disabledColor: Colors.grey,
+          // color: bgColor,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(radius * SizeConfig.ratioWidth),
+          // ),
           child: Text(
             text,
             style: TextStyle(
@@ -336,7 +343,6 @@ class ColumnHeader extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   )),
-              
               SizedBox(
                 width: 60 * SizeConfig.ratioWidth,
                 child: Text(
@@ -390,7 +396,7 @@ class _CustomizeDatePickerState extends State<CustomizeDatePicker> {
             return Theme(
               data: ThemeData(
                   primarySwatch: Constants.materialMainColor,
-                  primaryColor:const Color(0xFFC41A3B),
+                  primaryColor: const Color(0xFFC41A3B),
                   accentColor: const Color(0xFFC41A3B)),
               child: child!,
             );

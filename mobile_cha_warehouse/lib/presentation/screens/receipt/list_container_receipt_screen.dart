@@ -151,8 +151,19 @@ class RowContainer extends StatelessWidget {
         height: 80 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+          child: ElevatedButton(
+               style: ElevatedButton.styleFrom(
+              primary:
+                 
+                   Colors.grey[300],
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+
+              // primary: bgColor,
+              // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            ),
+           // padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -188,9 +199,9 @@ class RowContainer extends StatelessWidget {
                 ),
               ],
             ),
-            color: Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
+            // color: Colors.grey[300],
+            // shape: const RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               // Navigator.pushNamed(context, '/qr_scanner_screen');
             },
