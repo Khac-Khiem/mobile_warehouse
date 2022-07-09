@@ -151,46 +151,54 @@ class RowContainer extends StatelessWidget {
         height: 80 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                    width: 140 * SizeConfig.ratioWidth,
+          child: ElevatedButton(
+           // padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+             
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                 borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: 140 * SizeConfig.ratioWidth,
+                      child: Text(
+                        goodsReceiptEntryContainerData.containerId,
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  SizedBox(
+                    width: 120 * SizeConfig.ratioWidth,
+                    child: Text(goodsReceiptEntryContainerData.itemId,
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                  SizedBox(
+                    width: 100 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsReceiptEntryContainerData.containerId,
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                SizedBox(
-                  width: 120 * SizeConfig.ratioWidth,
-                  child: Text(goodsReceiptEntryContainerData.itemId,
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-                SizedBox(
-                  width: 100 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsReceiptEntryContainerData.plannedQuantity.toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-              ],
+                        goodsReceiptEntryContainerData.plannedQuantity.toString(),
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
             ),
-            color: Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
+            // color: Colors.grey[300],
+            // shape: const RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               // Navigator.pushNamed(context, '/qr_scanner_screen');
             },

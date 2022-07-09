@@ -13,7 +13,7 @@ void showDialogChooseSlotContinue(BuildContext newContext, String slotID) {
             content: Text("Vị trí sẽ chọn là: $slotID"),
             actions: <Widget>[
               // ignore: deprecated_member_use
-              FlatButton(
+              TextButton(
                 child: Text('Đồng ý',
                     style: TextStyle(
                         fontSize: 18 * SizeConfig.ratioFont,
@@ -25,7 +25,7 @@ void showDialogChooseSlotContinue(BuildContext newContext, String slotID) {
                 },
               ),
               // ignore: deprecated_member_use
-              FlatButton(
+              TextButton(
                 child: Text(
                   'Hủy bỏ',
                   style: TextStyle(
@@ -48,7 +48,7 @@ void showDialogChooseSlotContinueSuccess(
             content: Text("Đã chọn vị trí $slotID"),
             actions: <Widget>[
               // ignore: deprecated_member_use
-              FlatButton(
+              TextButton(
                 child: Text('Đồng ý',
                     style: TextStyle(
                         fontSize: 18 * SizeConfig.ratioFont,

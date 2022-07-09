@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:mobile_cha_warehouse/domain/entities/item.dart';
 
 class StockCardEntry extends Equatable {
   String date;

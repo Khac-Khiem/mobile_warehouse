@@ -31,16 +31,23 @@ class CustomizedButton extends StatelessWidget {
         width: width * SizeConfig.ratioWidth,
         height: height * SizeConfig.ratioHeight,
         // ignore: deprecated_member_use
-        child: RaisedButton(
-          disabledColor: Colors.grey,
-          color: bgColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radius * SizeConfig.ratioWidth),
-          ),
-          child: Text(
-            text,
-            style: TextStyle(
-                fontSize: fontSize * SizeConfig.ratioFont, color: fgColor),
+        child: ElevatedButton(
+          // disabledColor: Colors.grey,
+          // color: bgColor,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(radius * SizeConfig.ratioWidth),
+          // ),
+          child: Container(
+             decoration: BoxDecoration(
+            color: bgColor,
+
+                 borderRadius: BorderRadius.circular(radius * SizeConfig.ratioWidth),
+              ),
+            child: Text(
+              text,
+              style: TextStyle(
+                  fontSize: fontSize * SizeConfig.ratioFont, color: fgColor),
+            ),
           ),
           onPressed: onPressed,
         ),

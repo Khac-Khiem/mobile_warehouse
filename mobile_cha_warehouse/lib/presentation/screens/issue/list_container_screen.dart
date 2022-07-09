@@ -143,55 +143,64 @@ class RowContainer extends StatelessWidget {
         width: 380 * SizeConfig.ratioWidth,
         height: 80 * SizeConfig.ratioHeight,
         child: GestureDetector(
-          // ignore: deprecated_member_use
-          child: RaisedButton(
-              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      width: 150 * SizeConfig.ratioWidth,
-                      child: Text(
-                        goodsIssueEntryContainer
-                            .goodsIssueEntryContainer.containerId,
-                        style: TextStyle(
-                          fontSize: 21 * SizeConfig.ratioFont,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      )),
-                  SizedBox(
-                    width: 60 * SizeConfig.ratioWidth,
-                    child: Text(
-                        goodsIssueEntryContainer
-                            .goodsIssueEntryContainer.quantity
-                            .toString(),
-                        style: TextStyle(
-                          fontSize: 21 * SizeConfig.ratioFont,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center),
-                  ),
-                  SizedBox(
-                    width: 150 * SizeConfig.ratioWidth,
-                    child: Text(
-                        DateFormat("dd-MM-yyyy").format(DateTime.parse(
-                            goodsIssueEntryContainer
-                                .goodsIssueEntryContainer.productionDate)),
-                        style: TextStyle(
-                          fontSize: 21 * SizeConfig.ratioFont,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center),
-                  ),
-                ],
-              ),
-              color: goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
+          child: ElevatedButton(
+            //  padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+               
+                 decoration: BoxDecoration(
+                     color: goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
                   ? Colors.grey[700]
                   : Colors.grey[300],
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8))),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                        width: 150 * SizeConfig.ratioWidth,
+                        child: Text(
+                          goodsIssueEntryContainer
+                              .goodsIssueEntryContainer.containerId,
+                          style: TextStyle(
+                            fontSize: 21 * SizeConfig.ratioFont,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        )),
+                    SizedBox(
+                      width: 60 * SizeConfig.ratioWidth,
+                      child: Text(
+                          goodsIssueEntryContainer
+                              .goodsIssueEntryContainer.quantity
+                              .toString(),
+                          style: TextStyle(
+                            fontSize: 21 * SizeConfig.ratioFont,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center),
+                    ),
+                    SizedBox(
+                      width: 150 * SizeConfig.ratioWidth,
+                      child: Text(
+                          DateFormat("dd-MM-yyyy").format(DateTime.parse(
+                              goodsIssueEntryContainer
+                                  .goodsIssueEntryContainer.productionDate)),
+                          style: TextStyle(
+                            fontSize: 21 * SizeConfig.ratioFont,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+              ),
+              // color: goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken
+              //     ? Colors.grey[700]
+              //     : Colors.grey[300],
+              // shape: const RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.all(Radius.circular(8))),
               onPressed:
                   //nếu rổ đã được taken thì không cho phép ấn vào
                   goodsIssueEntryContainer.goodsIssueEntryContainer.isTaken

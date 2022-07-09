@@ -296,49 +296,54 @@ class RowIssue extends StatelessWidget {
         height: 70 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                    width: 150 * SizeConfig.ratioWidth,
+          child: ElevatedButton(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+             
+              decoration: BoxDecoration(
+                 color: goodsIssueEntryRow.status
+                  ? Colors.grey[700]
+                  : Colors.grey[300],
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: 150 * SizeConfig.ratioWidth,
+                      child: Text(
+                        goodsIssueEntryRow.goodsIssueEntry.item.id,
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  SizedBox(
+                    width: 60 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsIssueEntryRow.goodsIssueEntry.item.id,
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                SizedBox(
-                  width: 60 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsIssueEntryRow.goodsIssueEntry.totalQuantity
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-                SizedBox(
-                  width: 150 * SizeConfig.ratioWidth,
-                  child:
-                      Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
-                          style: TextStyle(
-                            fontSize: 21 * SizeConfig.ratioFont,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center),
-                ),
-              ],
+                        goodsIssueEntryRow.goodsIssueEntry.totalQuantity
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                  SizedBox(
+                    width: 150 * SizeConfig.ratioWidth,
+                    child:
+                        Text(goodsIssueEntryRow.goodsIssueEntry.note.toString(),
+                            style: TextStyle(
+                              fontSize: 21 * SizeConfig.ratioFont,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
             ),
-            color:
-                goodsIssueEntryRow.status ? Colors.grey[700] : Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               //clear mỗi khi vào 1 entry issue mới
               listBasketIdConfirm.clear();

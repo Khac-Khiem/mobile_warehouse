@@ -283,50 +283,60 @@ class RowReceipt extends StatelessWidget {
         height: 70 * SizeConfig.ratioHeight,
         child: GestureDetector(
           // ignore: deprecated_member_use
-          child: RaisedButton(
-            padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
+          child: ElevatedButton(
+          //  padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+              
+               decoration: BoxDecoration(
+                 color: goodsReceiptEntryRow.status
+                 ? Colors.grey[700]
+                 : Colors.grey[300],
+                 borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      width: 150 * SizeConfig.ratioWidth,
+                      child: Text(
+                        goodsReceiptEntryRow.goodsReceiptEntry.item.id,
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )),
+                  SizedBox(
+                    width: 60 * SizeConfig.ratioWidth,
+                    child: Text(
+                        goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
+                            .toString(),
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                  SizedBox(
                     width: 150 * SizeConfig.ratioWidth,
                     child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.item.id,
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )),
-                SizedBox(
-                  width: 60 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.plannedQuantity
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-                SizedBox(
-                  width: 150 * SizeConfig.ratioWidth,
-                  child: Text(
-                      goodsReceiptEntryRow.goodsReceiptEntry.note.toString(),
-                      style: TextStyle(
-                        fontSize: 21 * SizeConfig.ratioFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center),
-                ),
-              ],
+                        goodsReceiptEntryRow.goodsReceiptEntry.note.toString(),
+                        style: TextStyle(
+                          fontSize: 21 * SizeConfig.ratioFont,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
             ),
-            color: goodsReceiptEntryRow.status
-                ? Colors.grey[700]
-                : Colors.grey[300],
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8))),
+            // color: goodsReceiptEntryRow.status
+            //     ? Colors.grey[700]
+            //     : Colors.grey[300],
+            // shape: const RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.all(Radius.circular(8))),
             onPressed: () async {
               goodsReceiptEntryConainerData.clear();
               for (int i = 0;

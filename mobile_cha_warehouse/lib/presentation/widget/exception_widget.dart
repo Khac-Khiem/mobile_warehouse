@@ -1,11 +1,11 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import '../../function.dart';
 
 class ExceptionErrorState extends StatelessWidget {
   String title;
-
-  ///Nếu không có message, thì phải gán message = ""
   String message;
   String imageDirectory;
   double imageHeight;
@@ -13,13 +13,13 @@ class ExceptionErrorState extends StatelessWidget {
   double width;
   double distanceTextImage;
   ExceptionErrorState(
-      {this.title = "Đây là title báo lỗi",
+      {Key? key, this.title = "Đây là title báo lỗi",
       this.message = "Đây là message báo lỗi",
       this.imageDirectory = 'lib/assets/sad_face_cloud_2.png',
       this.imageHeight = 100,
       this.height = 250,
       this.width = 300,
-      this.distanceTextImage = 30});
+      this.distanceTextImage = 30}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
